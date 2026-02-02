@@ -6,6 +6,7 @@ import UseCases from "@/components/home/use-cases";
 import SecuritySection from "@/components/home/security-section";
 import MVPScope from "@/components/home/mvp-scope";
 import CTASection from "@/components/home/cta-section";
+import SimplePricing from "@/components/home/simple-pricing";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <UseCases />
       <SecuritySection />
       <MVPScope />
+      <SimplePricing />
       <CTASection />
     </main>
   );
