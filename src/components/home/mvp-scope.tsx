@@ -52,7 +52,7 @@ const MVPScope = () => {
   return (
     <section
       id="mvp-scope"
-      className="relative py-24 lg:py-32 overflow-hidden bg-background">
+      className="relative py-20 overflow-hidden bg-background">
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2" />
