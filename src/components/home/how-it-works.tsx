@@ -133,40 +133,56 @@ const HowItWorks = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="relative grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
           {/* Connecting Line - Desktop */}
-          <div className="hidden lg:block absolute top-22 left-[10%] right-[10%] h-[2px] pointer-events-none">
+          <div className="hidden lg:block absolute top-18 left-[10%] right-[10%] h-[2px] pointer-events-none overflow-visible">
             <svg
               width="100%"
-              height="2"
+              height="20"
+              viewBox="0 0 1000 20"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+              className="overflow-visible">
               <motion.path
-                d="M0 1H1000"
+                d="M0 10H1000"
                 stroke="url(#line-gradient)"
                 strokeWidth="2"
-                strokeDasharray="8 8"
+                strokeDasharray="12 12"
                 initial={{ strokeDashoffset: 100 }}
                 animate={{ strokeDashoffset: 0 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="opacity-30"
+              />
+              <motion.path
+                d="M0 10H1000"
+                stroke="url(#line-gradient)"
+                strokeWidth="2"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2, ease: "easeInOut" }}
+                className="drop-shadow-[0_0_8px_rgba(var(--primary),0.5)]"
               />
               <defs>
                 <linearGradient
                   id="line-gradient"
                   x1="0"
-                  y1="0"
-                  x2="100%"
-                  y2="0">
+                  y1="10"
+                  x2="1000"
+                  y2="10"
+                  gradientUnits="userSpaceOnUse">
                   <stop stopColor="#25D366" />
-                  <stop offset="0.5" stopColor="var(--color-primary)" />
-                  <stop offset="1" stopColor="#4285F4" />
+                  <stop offset="0.5" stopColor="hsl(var(--primary))" />
+                  <stop offset="1" stopColor="#4183f3" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
 
           {steps.map((step, index) => (
-            <motion.div key={index} className="relative group">
-              <Card className="h-full bg-card/40 backdrop-blur-sm border-border/50 hover:border-primary/30 transition-all duration-500 rounded-[2.5rem] overflow-hidden group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] group-hover:-translate-y-2">
-                <CardContent className="p-8 flex flex-col items-center text-center">
+            <motion.div
+              key={index}
+              className="relative group flex flex-col h-full">
+              <Card className="flex-1 flex py-0 gap-0 flex-col bg-card/40 backdrop-blur-sm border-border/50 hover:border-primary/30 transition-all duration-500 rounded-[2.5rem] overflow-hidden group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] group-hover:-translate-y-2">
+                <CardContent className="p-8 pb-10 flex-1 flex flex-col items-center text-center">
                   {/* Step Number Badge */}
                   <div className="mb-8 w-16 h-16 rounded-3xl relative flex items-center justify-center overflow-hidden">
                     <div
