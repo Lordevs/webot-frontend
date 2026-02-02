@@ -1,10 +1,11 @@
 import HeroSection from "@/components/home/hero-section";
-import { Zap, Shield, Users, CheckCircle2 } from "lucide-react";
+import ProblemSection from "@/components/home/problem-section";
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <HeroSection />
+      <ProblemSection />
     </main>
   );
 }
