@@ -37,13 +37,12 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       {/* Grid Pattern Background */}
       <GridPattern
-        width={60}
-        height={60}
+        width={40}
+        height={40}
         x={-1}
         y={-1}
-        strokeDasharray={"4 2"}
         className={cn(
-          "mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,white,transparent)] stroke-primary/30",
+          "mask-[radial-gradient(1050px_circle_at_center,white,transparent)] stroke-primary/10 dark:stroke-primary/5",
         )}
       />
 
@@ -90,10 +89,10 @@ const HeroSection = () => {
               className="text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-bold leading-[1.1] tracking-tight">
               Schedule Meetings{" "}
               <span className="text-gradient-primary">Directly From</span>{" "}
-              <span className="relative inline-block">
+              <span className="relative inline-block text-[#075E54]">
                 WhatsApp
                 <svg
-                  className="absolute -bottom-2 left-0 w-full h-3 text-primary/30"
+                  className="absolute -bottom-2 left-0 w-full h-3"
                   viewBox="0 0 200 12"
                   fill="none">
                   <path
