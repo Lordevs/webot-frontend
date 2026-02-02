@@ -89,7 +89,7 @@ const HeroSection = () => {
               className="text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-bold leading-[1.1] tracking-tight">
               Schedule Meetings{" "}
               <span className="text-gradient-primary">Directly From</span>{" "}
-              <span className="relative inline-block text-[#075E54]">
+              <span className="relative inline-block text-primary">
                 WhatsApp
                 <svg
                   className="absolute -bottom-2 left-0 w-full h-3"
@@ -121,11 +121,14 @@ const HeroSection = () => {
             <motion.div
               variants={fadeInUp}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button size="lg" className="group shadow-glow rounded-full">
+              <Button
+                size="lg"
+                className="group shadow-glow rounded-full bg-linear-to-tl from-primary to-secondary-foreground">
                 Connect WhatsApp
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button
+                variant="outline"
                 size="lg"
                 className="rounded-full"
                 onClick={scrollToHowItWorks}>
