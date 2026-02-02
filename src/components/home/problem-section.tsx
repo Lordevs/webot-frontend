@@ -50,7 +50,7 @@ export default function ProblemSection() {
   return (
     <section
       id="problem-section"
-      className="relative py-20 overflow-hidden bg-popover/90">
+      className="relative py-20 overflow-hidden bg-popover/70">
       {/* Background decoration with subtle animated blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
