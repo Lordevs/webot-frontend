@@ -12,10 +12,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
+const WhatsAppIcon = ({ className }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    className={className}
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
+  </svg>
+);
+
 const steps = [
   {
     number: "01",
-    icon: MessageCircle,
+    icon: WhatsAppIcon,
     title: "Message on WhatsApp",
     description: '"Schedule a meeting tomorrow at 3 PM"',
     color: "#25D366",
@@ -77,7 +87,7 @@ const HowItWorks = () => {
       {/* Background patterns */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--color-primary)_0%,transparent_70%)] opacity-[0.03]" />
-        <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000,transparent)] opacity-20" />
+        <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[64px_64px] mask-[radial-gradient(ellipse_60%_50%_at_50%_50%,#000,transparent)] opacity-20" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -123,7 +133,7 @@ const HowItWorks = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="relative grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
           {/* Connecting Line - Desktop */}
-          <div className="hidden lg:block absolute top-[5.5rem] left-[10%] right-[10%] h-[2px] pointer-events-none">
+          <div className="hidden lg:block absolute top-22 left-[10%] right-[10%] h-[2px] pointer-events-none">
             <svg
               width="100%"
               height="2"
@@ -158,10 +168,10 @@ const HowItWorks = () => {
               <Card className="h-full bg-card/40 backdrop-blur-sm border-border/50 hover:border-primary/30 transition-all duration-500 rounded-[2.5rem] overflow-hidden group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] group-hover:-translate-y-2">
                 <CardContent className="p-8 flex flex-col items-center text-center">
                   {/* Step Number Badge */}
-                  <div className="mb-8 w-16 h-16 rounded-[1.5rem] relative flex items-center justify-center overflow-hidden">
+                  <div className="mb-8 w-16 h-16 rounded-3xl relative flex items-center justify-center overflow-hidden">
                     <div
                       className={cn(
-                        "absolute inset-0 bg-gradient-to-br opacity-20",
+                        "absolute inset-0 bg-linear-to-br opacity-20",
                         step.gradient,
                       )}
                     />
@@ -206,7 +216,7 @@ const HowItWorks = () => {
                   <motion.div
                     animate={{ y: [0, 5, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-[2px] h-6 bg-gradient-to-b from-primary/50 to-transparent"
+                    className="w-[2px] h-6 bg-linear-to-b from-primary/50 to-transparent"
                   />
                 </div>
               )}
