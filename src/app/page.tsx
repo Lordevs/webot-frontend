@@ -1,6 +1,10 @@
 import HeroSection from "@/components/home/hero-section";
-import Navbar from "@/components/home/navbar";
+import { Zap, Shield, Users, CheckCircle2 } from "lucide-react";
 
 export default function Home() {
-  return <main className="min-h-screen"></main>;
+  return (
+    <main className="min-h-screen">
+      <HeroSection />
+    </main>
+  );
 }
