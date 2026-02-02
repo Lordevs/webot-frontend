@@ -20,8 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${outfit.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${outfit.variable} antialiased`}
+        suppressHydrationWarning>
         <Navbar />
         {children}
       </body>
