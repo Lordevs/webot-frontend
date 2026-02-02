@@ -110,7 +110,7 @@ const HowItWorks = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl lg:text-5xl font-black tracking-tight text-foreground leading-[1.1]">
+            className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.1]">
             Four simple steps to <br className="hidden md:block" />
             <span className="text-primary italic">complete automation</span>
           </motion.h2>
