@@ -4,6 +4,7 @@ import SolutionSection from "@/components/home/solution-section";
 import HowItWorks from "@/components/home/how-it-works";
 import UseCases from "@/components/home/use-cases";
 import SecuritySection from "@/components/home/security-section";
+import MVPScope from "@/components/home/mvp-scope";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <HowItWorks />
       <UseCases />
       <SecuritySection />
+      <MVPScope />
     </main>
   );
 }
