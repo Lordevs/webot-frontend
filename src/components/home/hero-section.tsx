@@ -34,7 +34,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Grid Pattern Background */}
       <GridPattern
         width={40}
@@ -168,12 +168,15 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="relative">
             <div className="relative max-w-[340px] mx-auto">
-              {/* Phone frame */}
-              <div className="relative bg-[#1d1d1f] rounded-[3rem] p-3 shadow-2xl border border-white/10">
+              {/* Phone frame with hover tilt */}
+              <motion.div
+                whileHover={{ rotateY: -5, rotateX: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                className="relative bg-[#1d1d1f] rounded-[3rem] p-3 shadow-2xl border border-white/10 perspective-1000">
                 {/* Notch */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#1d1d1f] rounded-b-3xl z-20" />
 
-                <div className="bg-card rounded-[2.5rem] overflow-hidden border border-white/5">
+                <div className="bg-card rounded-[2.5rem] overflow-hidden border border-white/5 shadow-inner">
                   {/* WhatsApp header */}
                   <div className="bg-[#075E54] px-4 py-4 flex items-center gap-3 pt-10">
                     <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
@@ -214,11 +217,11 @@ const HeroSection = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 1 }}
                       className="flex justify-end">
-                      <div className="chat-bubble chat-bubble-user max-w-[80%] shadow-sm">
-                        <p className="text-[13px] leading-relaxed">
+                      <div className="bg-[#dcf8c6] text-foreground rounded-2xl rounded-tr-none p-3 shadow-sm max-w-[80%] border border-black/3">
+                        <p className="text-[12px] leading-relaxed">
                           Schedule a meeting with Alex tomorrow at 3 PM
                         </p>
-                        <p className="text-[9px] text-foreground/40 text-right mt-1 flex items-center justify-end gap-1 font-bold">
+                        <p className="text-[8px] text-foreground/30 text-right mt-1 flex items-center justify-end gap-1 font-bold uppercase tracking-tighter">
                           10:24
                           <CheckCircle2 className="w-2.5 h-2.5 text-[#53bdeb]" />
                         </p>
@@ -231,25 +234,25 @@ const HeroSection = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 1.8 }}
                       className="flex justify-start">
-                      <div className="chat-bubble chat-bubble-bot max-w-[85%] shadow-sm">
-                        <p className="text-[13px] leading-relaxed">
+                      <div className="bg-white text-foreground rounded-2xl rounded-tl-none p-3 shadow-sm max-w-[85%] border border-black/5">
+                        <p className="text-[12px] leading-relaxed">
                           Got it! I'll schedule a meeting with Alex for:
                         </p>
-                        <div className="mt-2.5 p-2.5 rounded-xl bg-primary/5 border border-primary/10">
-                          <p className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">
+                        <div className="mt-2.5 p-2 rounded-xl bg-primary/3 border border-primary/10">
+                          <p className="text-[10px] font-bold text-primary mb-1 uppercase tracking-wider">
                             Proposed Event
                           </p>
-                          <p className="text-[12px] font-semibold">
+                          <p className="text-[11px] font-semibold text-foreground/90">
                             📅 Tomorrow, Feb 3
                           </p>
-                          <p className="text-[12px] font-semibold">
+                          <p className="text-[11px] font-semibold text-foreground/90">
                             🕒 3:00 PM — 30 min
                           </p>
-                          <p className="text-[12px] font-semibold text-blue-600">
+                          <p className="text-[11px] font-semibold text-blue-600">
                             📍 Google Meet link
                           </p>
                         </div>
-                        <p className="text-[9px] text-muted-foreground text-right mt-1.5 font-bold">
+                        <p className="text-[8px] text-muted-foreground text-right mt-1.5 font-bold uppercase tracking-tighter">
                           10:24
                         </p>
                       </div>
@@ -261,19 +264,19 @@ const HeroSection = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 2.6 }}
                       className="flex justify-start">
-                      <div className="chat-bubble chat-bubble-bot max-w-[220px]! shadow-sm">
-                        <p className="text-[13px] font-bold mb-2.5">
+                      <div className="bg-white text-foreground rounded-2xl rounded-tl-none p-3 shadow-sm max-w-[200px] border border-black/5">
+                        <p className="text-[12px] font-bold mb-2.5 tracking-tight">
                           Confirm booking?
                         </p>
                         <div className="flex gap-2">
-                          <button className="flex-1 px-3 py-2 bg-[#25D366] text-white rounded-xl text-[11px] font-bold shadow-sm hover:opacity-90 transition-opacity">
+                          <button className="flex-1 px-3 py-1.5 bg-[#25D366] text-white rounded-lg text-[10px] font-bold shadow-sm hover:opacity-90 transition-opacity">
                             Confirm
                           </button>
-                          <button className="flex-1 px-3 py-2 bg-muted text-muted-foreground rounded-xl text-[11px] font-bold hover:bg-muted/80 transition-colors">
+                          <button className="flex-1 px-3 py-1.5 bg-muted/50 text-muted-foreground rounded-lg text-[10px] font-bold hover:bg-muted transition-colors">
                             Edit
                           </button>
                         </div>
-                        <p className="text-[9px] text-muted-foreground text-right mt-1.5 font-bold">
+                        <p className="text-[8px] text-muted-foreground text-right mt-1.5 font-bold uppercase tracking-tighter">
                           10:24
                         </p>
                       </div>
@@ -297,29 +300,37 @@ const HeroSection = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Floating calendar notification */}
               <motion.div
+                initial={{ opacity: 0, x: 20 }}
                 animate={{
-                  y: [0, -10, 0],
+                  opacity: 1,
+                  x: 0,
+                  y: [0, -8, 0],
+                  rotate: [0, -1, 0, 1, 0],
                 }}
                 transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
+                  opacity: { duration: 0.5, delay: 1 },
+                  x: { duration: 0.5, delay: 1 },
+                  y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
+                  rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
                 }}
-                className="absolute -right-6 lg:-right-16 top-24 bg-card rounded-2xl p-4 shadow-2xl border border-border hidden sm:block z-30">
-                <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-[#4285F4] flex items-center justify-center shadow-lg">
-                    <Calendar className="w-6 h-6 text-white" />
+                className="absolute -right-2 lg:-right-12 top-20 bg-white/90 backdrop-blur-xl rounded-3xl p-2 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)] border border-white/50 hidden sm:block z-30 min-w-[160px]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/10">
+                    <Calendar className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mb-1">
-                      Google Calendar
-                    </p>
-                    <p className="text-sm font-bold tracking-tight">
-                      Meeting Booked!
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+                      <p className="text-[9px] text-muted-foreground font-black uppercase tracking-widest">
+                        Calendar
+                      </p>
+                    </div>
+                    <p className="text-[12px] font-bold text-foreground">
+                      Booked!
                     </p>
                   </div>
                 </div>
@@ -327,27 +338,39 @@ const HeroSection = () => {
 
               {/* Floating WhatsApp badge */}
               <motion.div
+                initial={{ opacity: 0, x: -20 }}
                 animate={{
-                  y: [0, 10, 0],
+                  opacity: 1,
+                  x: 0,
+                  y: [0, 8, 0],
+                  rotate: [0, 1, 0, -1, 0],
                 }}
                 transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1,
+                  opacity: { duration: 0.5, delay: 1.2 },
+                  x: { duration: 0.5, delay: 1.2 },
+                  y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                  rotate: { duration: 7, repeat: Infinity, ease: "easeInOut" },
                 }}
-                className="absolute -left-6 lg:-left-12 bottom-32 bg-card rounded-2xl p-3 shadow-2xl border border-border hidden sm:block z-30">
+                className="absolute -left-2 lg:-left-12 bottom-18 bg-white/90 backdrop-blur-xl rounded-[1.25rem] p-2 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)] border border-white/50 hidden sm:block z-30">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#25D366] flex items-center justify-center shadow-lg">
+                  <div className="w-9 h-9 rounded-lg bg-[#25D366] flex items-center justify-center shadow-lg shadow-green-500/10">
                     <svg
                       viewBox="0 0 24 24"
-                      className="w-6 h-6 text-white fill-current">
+                      className="w-5 h-5 text-white fill-current">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
                     </svg>
                   </div>
-                  <span className="text-xs font-bold tracking-tight">
-                    WhatsApp Active
-                  </span>
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
+                      <p className="text-[9px] text-muted-foreground font-black uppercase tracking-widest">
+                        Active Now
+                      </p>
+                    </div>
+                    <p className="text-[12px] font-bold text-foreground">
+                      In Sync
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             </div>
@@ -357,16 +380,36 @@ const HeroSection = () => {
 
       {/* Scroll indicator */}
       <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden lg:block">
-        <div className="w-7 h-11 rounded-full border-2 border-primary/20 flex justify-center pt-2">
-          <motion.div
-            animate={{ height: [4, 8, 4] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-1.5 bg-primary/40 rounded-full"
-          />
-        </div>
+        <button
+          onClick={() =>
+            document
+              .getElementById("problem-section")
+              ?.scrollIntoView({ behavior: "smooth" })
+          }
+          className="group flex flex-col items-center gap-3 cursor-pointer">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/50 group-hover:text-primary transition-colors">
+            Scroll Down
+          </span>
+          <div className="w-8 h-12 rounded-full border-2 border-primary/20 group-hover:border-primary/50 flex justify-center pt-2 transition-colors shadow-sm group-hover:shadow-primary/10">
+            <motion.div
+              animate={{
+                y: [0, 16, 0],
+                opacity: [1, 0.5, 1],
+                scaleY: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="w-1.5 h-2 bg-primary/40 rounded-full"
+            />
+          </div>
+        </button>
       </motion.div>
     </section>
   );

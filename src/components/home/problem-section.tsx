@@ -48,7 +48,9 @@ const containerVariants = {
 
 export default function ProblemSection() {
   return (
-    <section className="relative py-20 overflow-hidden bg-background">
+    <section
+      id="problem-section"
+      className="relative py-20 overflow-hidden bg-popover/90">
       {/* Background decoration with subtle animated blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
