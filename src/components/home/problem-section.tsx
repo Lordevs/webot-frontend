@@ -46,19 +46,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
-const ProblemSection = () => {
+export default function ProblemSection() {
   return (
     <section className="relative py-20 overflow-hidden bg-background">
       {/* Background decoration with subtle animated blobs */}
@@ -199,6 +187,4 @@ const ProblemSection = () => {
       </div>
     </section>
   );
-};
-
-export default ProblemSection;
+}
