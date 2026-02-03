@@ -3,11 +3,13 @@
 import { motion } from "framer-motion";
 import { Twitter, Linkedin, ArrowUpRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
+import { ROUTES } from "@/constants/routes";
 
 const footerLinks = {
   legal: [
-    { name: "Privacy Policy", href: "#" },
-    { name: "Terms of Service", href: "#" },
+    { name: "Privacy Policy", href: ROUTES.PRIVACY_POLICY },
+    { name: "Terms of Service", href: ROUTES.TERMS_OF_SERVICE },
   ],
 };
 
@@ -132,13 +134,13 @@ const LinkGroup = ({
     </h4>
     <nav className="flex flex-col gap-4">
       {links.map((link, idx) => (
-        <a
+        <Link
           key={idx}
           href={link.href}
           className="group flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300">
           {link.name}
           <ArrowUpRight className="ml-1 w-3 h-3 opacity-0 group-hover:opacity-100 -translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
-        </a>
+        </Link>
       ))}
     </nav>
   </motion.div>
