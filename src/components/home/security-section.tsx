@@ -91,7 +91,7 @@ export default function SecuritySection() {
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative order-2 lg:order-1">
+            className="relative order-2 lg:order-1 hidden lg:block">
             <Card className="relative overflow-hidden bg-white/5 dark:bg-black/20 backdrop-blur-2xl border-white/20 rounded-[4rem] p-12 lg:p-20 shadow-[0_32px_128px_-16px_rgba(0,0,0,0.3)] group">
               <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-transparent opacity-30" />
 
