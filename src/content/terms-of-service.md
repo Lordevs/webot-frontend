@@ -4,6 +4,8 @@
 
 Welcome to **Webot**. These Terms of Service ("Terms") govern your use of the Webot website located at [https://webot.com](https://webot.com) and our automated WhatsApp scheduling service (collectively, the "Service").
 
+_Note: These terms are maintained to establish user trust and define the framework for future paid plans._
+
 By accessing or using our Service, you agree to be bound by these Terms. If you do not agree to these Terms, please do not use the Service.
 
 ---

@@ -4,6 +4,8 @@
 
 At **Webot**, accessible from [https://webot.com](https://webot.com), one of our main priorities is the privacy of our visitors and users. This Privacy Policy document contains types of information that is collected and recorded by Webot and how we use it.
 
+_Note: This policy is maintained as a transparency requirement for WhatsApp Business API approval._
+
 If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at **hello@webot.com**.
 
 ---
