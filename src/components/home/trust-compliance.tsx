@@ -50,7 +50,7 @@ export default function TrustCompliance() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-16 lg:mb-20 space-y-4">
+        <div className="max-w-3xl mx-auto text-center mb-20 space-y-6">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -69,14 +69,14 @@ export default function TrustCompliance() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl lg:text-5xl font-bold tracking-tighter text-foreground">
+            className="text-4xl lg:text-5xl font-bold tracking-tighter text-foreground leading-[1.1]">
             Built for trust,{" "}
             <span className="text-primary italic">engineered for privacy.</span>
           </motion.h2>
         </div>
 
         {/* Sophisticated Single Row Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 max-w-7xl mx-auto">
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
           {compliancePoints.map((point, index) => (
             <motion.div
               key={index}
