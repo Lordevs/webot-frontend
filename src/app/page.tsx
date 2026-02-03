@@ -9,6 +9,7 @@ import FutureAutomationEcosystem from "@/components/home/future-automation-ecosy
 import CTASection from "@/components/home/cta-section";
 import SimplePricing from "@/components/home/simple-pricing";
 import TrustCompliance from "@/components/home/trust-compliance";
+import ContactUsSection from "@/components/home/contact-us-section";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <SecuritySection />
       <SimplePricing />
       <CTASection />
+      <ContactUsSection />
     </main>
   );
 }
