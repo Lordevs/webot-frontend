@@ -8,8 +8,8 @@ import { ROUTES } from "@/constants/routes";
 
 const footerLinks = {
   legal: [
-    { name: "Privacy Policy", href: ROUTES.PRIVACY_POLICY },
-    { name: "Terms of Service", href: ROUTES.TERMS_OF_SERVICE },
+    { name: "Privacy Policy", href: ROUTES.APP.PRIVACY_POLICY },
+    { name: "Terms of Service", href: ROUTES.APP.TERMS_OF_SERVICE },
   ],
 };
 
