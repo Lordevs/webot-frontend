@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import {
+  Stethoscope,
   Briefcase,
-  Users,
-  TrendingUp,
-  UserCheck,
+  Home,
   Sparkles,
+  Layers,
   ArrowUpRight,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,40 +15,33 @@ import { cn } from "@/lib/utils";
 
 const useCases = [
   {
+    icon: Stethoscope,
+    title: "Clinics & Doctors",
+    description:
+      "Manage patient appointments and follow-ups without a receptionist.",
+  },
+  {
     icon: Briefcase,
-    title: "Freelancers & Consultants",
+    title: "Consultants & Coaches",
     description:
-      "Book client calls without the email back-and-forth. Let clients message you directly.",
-    gradient: "from-orange-500 to-amber-500",
-    bgGradient: "from-orange-500/5 to-amber-500/5",
-    shadow: "shadow-orange-500/10",
+      "Book discovery calls and coaching sessions instantly via WhatsApp.",
   },
   {
-    icon: Users,
-    title: "Founders & Remote Teams",
+    icon: Home,
+    title: "Real Estate Agents",
     description:
-      "Coordinate internal and external meetings fast. Perfect for async-first teams.",
-    gradient: "from-blue-500 to-cyan-500",
-    bgGradient: "from-blue-500/5 to-cyan-500/5",
-    shadow: "shadow-blue-500/10",
+      "Schedule property viewings and client meetings while on the move.",
   },
   {
-    icon: TrendingUp,
-    title: "Sales & Client Success",
-    description:
-      "Instant call scheduling from chat conversations. Close deals faster.",
-    gradient: "from-emerald-500 to-teal-500",
-    bgGradient: "from-emerald-500/5 to-teal-500/5",
-    shadow: "shadow-emerald-500/10",
+    icon: Sparkles,
+    title: "Salons & Services",
+    description: "Automate chair bookings and service appointments 24/7.",
   },
   {
-    icon: UserCheck,
-    title: "Recruiters & HR",
+    icon: Layers,
+    title: "Agencies",
     description:
-      "Schedule interviews in seconds. Candidates love the simple experience.",
-    gradient: "from-violet-500 to-purple-500",
-    bgGradient: "from-violet-500/5 to-purple-500/5",
-    shadow: "shadow-violet-500/10",
+      "Coordinate client kick-offs and reviews across your whole team.",
   },
 ];
 
@@ -115,8 +108,8 @@ const UseCases = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Whether you're a solo professional or part of a growing team,
-            ScheduleBot adapts to your workflow seamlessly.
+            Whether you're a solo professional or part of a growing team, Webot
+            adapts to your workflow seamlessly.
           </motion.p>
         </div>
 
@@ -125,35 +118,23 @@ const UseCases = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
           {useCases.map((useCase, index) => (
             <motion.div key={index}>
               <Card className="group h-full relative py-0 overflow-hidden bg-card/40 backdrop-blur-md border-border/50 hover:border-primary/20 transition-all duration-500 rounded-[2.5rem] hover:shadow-2xl hover:shadow-primary/5">
-                <CardContent className="p-8 relative z-10">
-                  <div
-                    className={cn(
-                      "absolute inset-0 bg-linear-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-700",
-                      useCase.bgGradient,
-                    )}
-                  />
-
+                <CardContent className="p-8 relative z-10 flex flex-col h-full">
                   <div className="relative mb-8 pt-2">
-                    <div
-                      className={cn(
-                        "w-14 h-14 rounded-2xl bg-linear-to-br flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110",
-                        useCase.gradient,
-                        useCase.shadow,
-                      )}>
-                      <useCase.icon className="w-7 h-7" />
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+                      <useCase.icon className="w-6 h-6" />
                     </div>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-4 flex-1 flex flex-col">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors duration-300">
+                      <h3 className="text-lg font-bold tracking-tight text-foreground transition-colors duration-300">
                         {useCase.title}
                       </h3>
-                      <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-40 -translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500" />
+                      <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-40 -translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500 text-primary" />
                     </div>
                     <p className="text-muted-foreground text-sm leading-relaxed font-medium">
                       {useCase.description}
