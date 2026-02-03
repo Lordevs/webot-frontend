@@ -1,15 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Calendar,
-  Heart,
-  Twitter,
-  Linkedin,
-  Github,
-  Instagram,
-  ArrowUpRight,
-} from "lucide-react";
+import { Twitter, Linkedin, ArrowUpRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 const footerLinks = {
