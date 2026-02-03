@@ -7,9 +7,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function CTASection() {
   return (
-    <section
-      id="cta"
-      className="relative py-12 lg:py-24 overflow-hidden bg-popover/70">
+    <section id="cta" className="relative py-20 overflow-hidden bg-popover/70">
       {/* Background Accent */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] opacity-20" />
@@ -22,7 +20,7 @@ export default function CTASection() {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="relative overflow-hidden bg-card/40 backdrop-blur-xl border border-border/50 rounded-[2rem] lg:rounded-[3.5rem] p-8 lg:p-14 shadow-2xl">
+            className="relative overflow-hidden bg-card/40 backdrop-blur-xl border border-border/50 rounded-4xl lg:rounded-[3.5rem] p-8 lg:p-14 shadow-2xl">
             {/* Soft Gradient Decorative Backgrounds */}
             <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl -mr-40 -mt-40 opacity-40" />
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-secondary/10 rounded-full blur-3xl -ml-40 -mb-40 opacity-40" />
