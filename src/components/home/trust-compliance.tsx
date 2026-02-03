@@ -42,7 +42,7 @@ const compliancePoints = [
 
 export default function TrustCompliance() {
   return (
-    <section className="relative py-20 overflow-hidden bg-background/50">
+    <section className="relative py-20 overflow-hidden bg-popover/50">
       {/* Background Decorative Architecture */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[600px] bg-primary/5 blur-[120px] rounded-full opacity-30" />
