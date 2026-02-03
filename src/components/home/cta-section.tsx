@@ -39,12 +39,14 @@ const CTASection = () => {
               {/* Title */}
               <div className="space-y-6">
                 <h2 className="text-4xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
-                  Ready to automate your <br className="hidden md:block" />
-                  <span className="text-primary italic">entire calendar?</span>
+                  Start Automating <br className="hidden md:block" />
+                  <span className="text-primary italic">
+                    WhatsApp Appointments Today
+                  </span>
                 </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto font-medium">
-                  Join hundreds of professionals who have simplified their day
-                  with WhatsApp scheduling. Free while in early access.
+                  Join the exclusive list of professionals streamlining their
+                  scheduling with Webot. 100% free while in early access.
                 </p>
               </div>
 
@@ -53,14 +55,14 @@ const CTASection = () => {
                 <Button
                   size="lg"
                   className="h-14 px-10 rounded-2xl text-base font-bold shadow-xl shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all group">
-                  Get Started Now
+                  Get Early Access
                   <ArrowRight className="ml-2 w-4 h-4 translate-x-0 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button
                   variant="outline"
                   size="lg"
                   className="h-14 px-10 rounded-2xl text-base font-bold bg-background/50 backdrop-blur-sm border-border/50 hover:bg-muted/50 transition-all">
-                  View Case Studies
+                  Request Demo
                 </Button>
               </div>
 
@@ -83,13 +85,6 @@ const CTASection = () => {
               </div>
             </div>
           </motion.div>
-
-          {/* Bottom Fine Print */}
-          <div className="mt-12 text-center opacity-40">
-            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground">
-              Built for <span className="text-primary">efficiency</span> first
-            </p>
-          </div>
         </div>
       </div>
     </section>
