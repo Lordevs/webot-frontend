@@ -19,7 +19,7 @@ export function LegalContent({ content }: LegalContentProps) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-8 tracking-tight">
-              Privacy Policy for Webot
+              {content.split("\n")[0].replace("# ", "")}
             </motion.h1>
 
             <motion.div
