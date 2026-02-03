@@ -1,13 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  MessageCircle,
-  ClipboardCheck,
-  ThumbsUp,
-  CalendarCheck,
-  Sparkles,
-} from "lucide-react";
+import { Calendar, CalendarCheck, Sparkles, MessageCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -26,34 +20,27 @@ const steps = [
   {
     number: "01",
     icon: WhatsAppIcon,
-    title: "Message on WhatsApp",
-    description: '"Schedule a meeting tomorrow at 3 PM"',
+    title: "Customer sends a message",
+    description: "Start a conversation on WhatsApp to book an appointment.",
     color: "#25D366",
     gradient: "from-[#25D366]/20 to-transparent",
   },
   {
     number: "02",
-    icon: ClipboardCheck,
-    title: "Bot confirms details",
-    description: "Date, time, duration, and attendees sync instantly.",
-    color: "#10B981", // More refined emerald
-    gradient: "from-[#10B981]/20 to-transparent",
+    icon: Calendar,
+    title: "Webot checks availability",
+    description:
+      "Real-time sync with Google Calendar to find the perfect slot.",
+    color: "#4285F4",
+    gradient: "from-[#4285F4]/20 to-transparent",
   },
   {
     number: "03",
-    icon: ThumbsUp,
-    title: "You approve",
-    description: "Confirm with a single tap. You're always in control.",
-    color: "#F59E0B", // More refined amber
-    gradient: "from-[#F59E0B]/20 to-transparent",
-  },
-  {
-    number: "04",
     icon: CalendarCheck,
-    title: "Meeting booked",
-    description: "Calendar event + Google Meet link sent to everyone.",
-    color: "#4285F4",
-    gradient: "from-[#4285F4]/20 to-transparent",
+    title: "Confirmed automatically",
+    description: "Instant confirmation and invites sent to both parties.",
+    color: "#10B981",
+    gradient: "from-[#10B981]/20 to-transparent",
   },
 ];
 
@@ -111,7 +98,7 @@ const HowItWorks = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.1]">
-            Four simple steps to <br className="hidden md:block" />
+            Three simple steps to <br className="hidden md:block" />
             <span className="text-primary italic">complete automation</span>
           </motion.h2>
 
@@ -121,8 +108,8 @@ const HowItWorks = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg text-muted-foreground leading-relaxed font-medium">
-            We designed ScheduleBot to be invisible. No new apps to learn, just
-            your favorite chat interface powered by advanced AI.
+            We designed Webot to be invisible. No new apps to learn, just your
+            favorite chat interface powered by advanced AI.
           </motion.p>
         </div>
 
@@ -131,7 +118,7 @@ const HowItWorks = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="relative grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+          className="relative grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {/* Connecting Line - Desktop */}
           <div className="hidden lg:block absolute top-18 left-[10%] right-[10%] h-[2px] pointer-events-none overflow-visible">
             <svg
