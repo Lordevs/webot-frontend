@@ -22,7 +22,7 @@ export default function ContactUsSection() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-20 space-y-6">
+        <div className="max-w-3xl mx-auto text-center mb-20 space-y-6 hidden lg:block">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}

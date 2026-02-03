@@ -174,7 +174,7 @@ export default function SolutionSection() {
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative">
+            className="relative hidden lg:block">
             <Card className="relative overflow-hidden bg-card/30 backdrop-blur-2xl border-white/20 rounded-[3rem] p-1 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)]">
               <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-secondary/5" />
               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
