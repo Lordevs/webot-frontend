@@ -1,13 +1,7 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import {
-  Calendar,
-  CheckCircle,
-  Globe,
-  LayoutDashboard,
-  Sparkles,
-} from "lucide-react";
+import { Calendar, LayoutDashboard, Sparkles } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -24,7 +18,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 const mvpFeatures = [
   {
     icon: WhatsAppIcon,
-    title: "WhatsApp Appointment Booking",
+    title: "WhatsApp Automation",
     description: "Launch your own scheduling bot on WhatsApp in minutes.",
   },
   {
@@ -33,17 +27,7 @@ const mvpFeatures = [
     description:
       "Automated real-time synchronization between chat and calendar.",
   },
-  {
-    icon: CheckCircle,
-    title: "Auto Confirmations",
-    description: "Instant booking confirmations sent directly via WhatsApp.",
-  },
-  {
-    icon: Globe,
-    title: "Time Zone Handling",
-    description:
-      "Intelligent time zone detection for global clients and teams.",
-  },
+
   {
     icon: LayoutDashboard,
     title: "Admin Dashboard",
@@ -131,7 +115,7 @@ export default function MVPScope() {
           className="relative grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {mvpFeatures.map((feature, index) => (
             <motion.div key={index} variants={itemVariants}>
-              <Card className="h-full relative overflow-hidden bg-card/40 backdrop-blur-lg border border-border/50 rounded-[2.5rem] group hover:border-primary/30 transition-all duration-300">
+              <Card className="h-full gap-0 py-0 relative overflow-hidden bg-card/40 backdrop-blur-lg border border-border/50 rounded-[2.5rem] group hover:border-primary/30 transition-all duration-300">
                 <CardHeader className="p-8 pb-4 relative z-10">
                   <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500">
                     <feature.icon className="w-6 h-6" />

@@ -9,10 +9,11 @@ import {
   Cpu,
   Lock,
   Sparkles,
+  CheckCircle,
+  Globe,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 
 const modules = [
   {
@@ -48,6 +49,19 @@ const modules = [
     title: "Custom AI Workflows",
     description:
       "Build unique automation logic tailored to your specific business processes and needs.",
+    status: "Coming Soon",
+  },
+  {
+    icon: CheckCircle,
+    title: "Auto Confirmations",
+    description: "Instant booking confirmations sent directly via WhatsApp.",
+    status: "Coming Soon",
+  },
+  {
+    icon: Globe,
+    title: "Time Zone Handling",
+    description:
+      "Intelligent time zone detection for global clients and teams.",
     status: "Coming Soon",
   },
 ];
