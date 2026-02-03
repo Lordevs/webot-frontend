@@ -1,6 +1,4 @@
 "use client";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import NumberFlow from "@number-flow/react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,71 +10,48 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Sparkles, ArrowRight, Check, Star, Zap, Shield } from "lucide-react";
+import { Sparkles, ArrowRight, Check, Star, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const plans = [
   {
-    id: "hobby",
-    name: "Hobby",
+    id: "starter",
+    name: "Starter",
     icon: Star,
-    price: {
-      monthly: "Free forever",
-      yearly: "Free forever",
-    },
+    price: "Free during beta",
     description:
-      "The perfect starting place for your web app or personal project.",
+      "Experience the power of Webot without any costs while we're in beta.",
     features: [
-      "50 API calls / month",
-      "60 second checks",
-      "Single-user account",
-      "5 monitors",
-      "Basic email support",
+      "WhatsApp Appointment Booking",
+      "Google Calendar Sync",
+      "Auto Confirmations",
+      "Personalized Bot Name",
+      "Community Support",
     ],
-    cta: "Get started for free",
+    cta: "Join the Beta",
+    popular: true,
   },
   {
     id: "pro",
     name: "Pro",
     icon: Zap,
-    price: {
-      monthly: 90,
-      yearly: 75,
-    },
-    description: "Everything you need to build and scale your business.",
+    price: "Coming Soon",
+    description:
+      "Advanced automation features for growing businesses and teams.",
     features: [
-      "Unlimited API calls",
-      "30 second checks",
-      "Multi-user account",
-      "10 monitors",
-      "Priority email support",
+      "Multiple AI Workflows",
+      "Bulk Message Updates",
+      "Advanced Analytics",
+      "Priority API Access",
+      "Dedicated Account Support",
     ],
-    cta: "Subscribe to Pro",
-    popular: true,
-  },
-  {
-    id: "enterprise",
-    name: "Enterprise",
-    icon: Shield,
-    price: {
-      monthly: "Get in touch for pricing",
-      yearly: "Get in touch for pricing",
-    },
-    description: "Critical security, performance, observability and support.",
-    features: [
-      "You can DDOS our API.",
-      "Nano-second checks.",
-      "Invite your extended family.",
-      "Unlimited monitors.",
-      "We'll sit on your desk.",
-    ],
-    cta: "Contact us",
+    cta: "Get Notified",
+    comingSoon: true,
   },
 ];
 
 export default function SimplePricing() {
-  const [frequency, setFrequency] = useState<string>("monthly");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -113,163 +88,121 @@ export default function SimplePricing() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto font-medium pt-4">
-              Simple, transparent pricing that scales with your business. No
-              hidden fees, no surprises.
+              Simple, transparent pricing to get you started. Focus on your
+              growth while we handle the scheduling.
             </motion.p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.2 }}>
-            <Tabs
-              defaultValue={frequency}
-              onValueChange={setFrequency}
-              className="bg-muted/30 inline-block rounded-full p-1 shadow-sm">
-              <TabsList className="bg-transparent">
-                <TabsTrigger
-                  value="monthly"
-                  className="data-[state=active]:bg-background rounded-full transition-all duration-300 data-[state=active]:shadow-sm">
-                  Monthly
-                </TabsTrigger>
-                <TabsTrigger
-                  value="yearly"
-                  className="data-[state=active]:bg-background rounded-full transition-all duration-300 data-[state=active]:shadow-sm">
-                  Yearly
-                  <Badge
-                    variant="secondary"
-                    className="bg-primary/10 text-primary hover:bg-primary/15 ml-2">
-                    20% off
-                  </Badge>
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </motion.div>
-
-          <div className="mt-8 grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="mt-8 grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
             {plans.map((plan, index) => (
               <motion.div
                 key={plan.id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
                 whileHover={{ y: -5 }}
                 className="flex">
                 <Card
                   className={cn(
-                    "bg-card relative h-full w-full text-left transition-all duration-300 hover:shadow-lg",
+                    "bg-card relative h-full w-full text-left transition-all duration-300 hover:shadow-lg rounded-[2.5rem] p-4",
                     plan.popular
                       ? "ring-primary/50 dark:shadow-primary/10 shadow-md ring-2"
-                      : "hover:border-primary/30",
+                      : "hover:border-primary/30 border-dashed",
                     plan.popular &&
-                      "from-primary/3 bg-linear-to-b to-transparent",
+                      "from-primary/5 bg-linear-to-b to-transparent",
+                    plan.comingSoon && "opacity-80 cursor-not-allowed",
                   )}>
-                  {plan.popular && (
+                  {(plan.popular || plan.comingSoon) && (
                     <div className="absolute -top-3 right-0 left-0 mx-auto w-fit">
-                      <Badge className="bg-primary text-primary-foreground rounded-full px-4 py-1 shadow-sm">
-                        <Sparkles className="mr-1 h-3.5 w-3.5" />
-                        Popular
+                      <Badge
+                        className={cn(
+                          "rounded-full px-4 py-1 shadow-sm font-black text-[10px] tracking-widest uppercase",
+                          plan.popular
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground border border-muted-foreground/20",
+                        )}>
+                        {plan.popular && (
+                          <Sparkles className="mr-1 h-3.5 w-3.5" />
+                        )}
+                        {plan.popular ? "Active Beta" : "Roadmap"}
                       </Badge>
                     </div>
                   )}
-                  <CardHeader className={cn("pb-4", plan.popular && "pt-8")}>
+                  <CardHeader
+                    className={cn(
+                      "pb-4",
+                      (plan.popular || plan.comingSoon) && "pt-8",
+                    )}>
                     <div className="flex items-center gap-2">
                       <div
                         className={cn(
-                          "flex h-8 w-8 items-center justify-center rounded-full",
+                          "flex h-10 w-10 items-center justify-center rounded-2xl",
                           plan.popular
-                            ? "bg-primary/10 text-primary"
-                            : "bg-secondary text-foreground",
+                            ? "bg-primary/20 text-primary"
+                            : "bg-muted text-muted-foreground",
                         )}>
-                        <plan.icon className="h-4 w-4" />
+                        <plan.icon className="h-5 w-5" />
                       </div>
                       <CardTitle
                         className={cn(
-                          "text-xl font-bold",
-                          plan.popular && "text-primary",
+                          "text-2xl font-bold tracking-tight",
+                          plan.popular && "text-primary text-3xl",
                         )}>
                         {plan.name}
                       </CardTitle>
                     </div>
-                    <CardDescription className="mt-3 space-y-2">
-                      <p className="text-sm">{plan.description}</p>
-                      <div className="pt-2">
-                        {typeof plan.price[
-                          frequency as keyof typeof plan.price
-                        ] === "number" ? (
-                          <div className="flex items-baseline">
-                            <NumberFlow
-                              className={cn(
-                                "text-3xl font-bold",
-                                plan.popular
-                                  ? "text-primary"
-                                  : "text-foreground",
-                              )}
-                              format={{
-                                style: "currency",
-                                currency: "USD",
-                                maximumFractionDigits: 0,
-                              }}
-                              value={
-                                plan.price[
-                                  frequency as keyof typeof plan.price
-                                ] as number
-                              }
-                            />
-                            <span className="text-muted-foreground ml-1 text-sm">
-                              /month, billed {frequency}
-                            </span>
-                          </div>
-                        ) : (
-                          <span
-                            className={cn(
-                              "text-2xl font-bold",
-                              plan.popular ? "text-primary" : "text-foreground",
-                            )}>
-                            {plan.price[frequency as keyof typeof plan.price]}
-                          </span>
-                        )}
+                    <CardDescription className="mt-4 space-y-4">
+                      <p className="text-sm font-medium leading-relaxed">
+                        {plan.description}
+                      </p>
+                      <div className="pt-4">
+                        <span
+                          className={cn(
+                            "text-2xl font-black tracking-tight",
+                            plan.popular
+                              ? "text-foreground"
+                              : "text-muted-foreground/70",
+                          )}>
+                          {plan.price}
+                        </span>
                       </div>
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="grid gap-3 pb-6">
+                  <CardContent className="grid gap-4 pb-8 flex-1">
                     {plan.features.map((feature, index) => (
-                      <motion.div
+                      <div
                         key={index}
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{
-                          duration: 0.3,
-                          delay: 0.5 + index * 0.05,
-                        }}
-                        className="flex items-center gap-2 text-sm">
+                        className="flex items-center gap-3 text-sm">
                         <div
                           className={cn(
-                            "flex h-5 w-5 items-center justify-center rounded-full",
+                            "flex h-5 w-5 items-center justify-center rounded-full shrink-0",
                             plan.popular
-                              ? "bg-primary/10 text-primary"
-                              : "bg-secondary text-secondary-foreground",
+                              ? "bg-primary/20 text-primary"
+                              : "bg-muted text-muted-foreground/40",
                           )}>
                           <Check className="h-3.5 w-3.5" />
                         </div>
                         <span
-                          className={
+                          className={cn(
+                            "font-medium",
                             plan.popular
                               ? "text-foreground"
-                              : "text-muted-foreground"
-                          }>
+                              : "text-muted-foreground",
+                          )}>
                           {feature}
                         </span>
-                      </motion.div>
+                      </div>
                     ))}
                   </CardContent>
                   <CardFooter>
                     <Button
+                      disabled={plan.comingSoon}
                       variant={plan.popular ? "default" : "outline"}
                       className={cn(
-                        "w-full font-medium transition-all duration-300",
+                        "w-full h-12 rounded-2xl font-bold transition-all duration-300",
                         plan.popular
-                          ? "bg-primary hover:bg-primary/90 hover:shadow-primary/20 hover:shadow-md"
+                          ? "bg-primary hover:bg-primary/90 hover:shadow-primary/20 hover:shadow-lg"
                           : "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
                       )}>
                       {plan.cta}
@@ -278,13 +211,10 @@ export default function SimplePricing() {
                   </CardFooter>
 
                   {/* Subtle gradient effects */}
-                  {plan.popular ? (
+                  {plan.popular && (
                     <>
-                      <div className="from-primary/5 pointer-events-none absolute right-0 bottom-0 left-0 h-1/2 rounded-b-lg bg-linear-to-t to-transparent" />
-                      <div className="border-primary/20 pointer-events-none absolute inset-0 rounded-lg border" />
+                      <div className="from-primary/5 pointer-events-none absolute right-0 bottom-0 left-0 h-1/2 rounded-[2.5rem] bg-linear-to-t to-transparent" />
                     </>
-                  ) : (
-                    <div className="hover:border-primary/10 pointer-events-none absolute inset-0 rounded-lg border border-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
                   )}
                 </Card>
               </motion.div>
