@@ -1,29 +1,55 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import { Check, Clock, Sparkles, Plus, ArrowRight } from "lucide-react";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+  Calendar,
+  CheckCircle,
+  Globe,
+  LayoutDashboard,
+  Sparkles,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
-const included = [
-  "Google Calendar integration",
-  "WhatsApp scheduling chat-bot",
-  "Single or multiple user support",
-  "Automated Google Meet links",
-  "Instant confirmation booking",
-];
+const WhatsAppIcon = ({ className }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={cn("w-6 h-6", className)}>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
+  </svg>
+);
 
-const comingSoon = [
-  "Custom availability windows",
-  "Shared team calendars",
-  "Direct CRM integrations",
-  "Advanced admin dashboard",
+const mvpFeatures = [
+  {
+    icon: WhatsAppIcon,
+    title: "WhatsApp Appointment Booking",
+    description: "Launch your own scheduling bot on WhatsApp in minutes.",
+  },
+  {
+    icon: Calendar,
+    title: "Google Calendar Sync (2-way)",
+    description:
+      "Automated real-time synchronization between chat and calendar.",
+  },
+  {
+    icon: CheckCircle,
+    title: "Auto Confirmations",
+    description: "Instant booking confirmations sent directly via WhatsApp.",
+  },
+  {
+    icon: Globe,
+    title: "Time Zone Handling",
+    description:
+      "Intelligent time zone detection for global clients and teams.",
+  },
+  {
+    icon: LayoutDashboard,
+    title: "Admin Dashboard",
+    description:
+      "Simple control panel to manage your connections and settings.",
+  },
 ];
 
 const containerVariants: Variants = {
@@ -31,7 +57,7 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.1,
     },
   },
 };
@@ -70,7 +96,7 @@ const MVPScope = () => {
               variant="outline"
               className="px-5 py-2 rounded-full border-primary/20 text-primary bg-primary/5 font-black text-[10px] tracking-[0.2em] uppercase">
               <Sparkles className="w-3.5 h-3.5 mr-2" />
-              Feature Set
+              Core Capabilities
             </Badge>
           </motion.div>
 
@@ -79,9 +105,11 @@ const MVPScope = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
-            What the{" "}
-            <span className="text-primary italic font-bold">MVP supports</span>
+            className="text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+            Everything you need <br />
+            <span className="text-primary italic font-bold">
+              to automate now
+            </span>
           </motion.h2>
 
           <motion.p
@@ -90,8 +118,8 @@ const MVPScope = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto font-medium">
-            We're doubling down on core efficiency. Here's what's ready for you
-            right now and what's currently in development.
+            We've concentrated on the essential tools to get you up and running
+            instantly. Professional scheduling has never been this simple.
           </motion.p>
         </div>
 
@@ -100,116 +128,39 @@ const MVPScope = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
-          {/* Included Features */}
-          <motion.div variants={itemVariants}>
-            <Card className="h-full relative overflow-hidden bg-card/60 backdrop-blur-xl border-2 border-primary/20 rounded-[3rem] shadow-2xl shadow-primary/5 group">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-primary/10 rounded-full blur-[60px] -mr-16 -mt-16 group-hover:bg-primary/20 transition-colors duration-700" />
-
-              <CardHeader className="p-8 pb-4 relative z-10">
-                <div className="flex items-center gap-5 mb-4">
-                  <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-[0_8px_16px_-4px_rgba(var(--primary),0.4)] group-hover:scale-110 transition-transform duration-500">
-                    <Check className="w-7 h-7 text-primary-foreground" />
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {mvpFeatures.map((feature, index) => (
+            <motion.div key={index} variants={itemVariants}>
+              <Card className="h-full relative overflow-hidden bg-card/40 backdrop-blur-lg border border-border/50 rounded-[2.5rem] group hover:border-primary/30 transition-all duration-300">
+                <CardHeader className="p-8 pb-4 relative z-10">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                    <feature.icon className="w-6 h-6" />
                   </div>
-                  <div>
-                    <CardTitle className="text-2xl font-black tracking-tight">
-                      Included
-                    </CardTitle>
-                    <CardDescription className="text-xs font-bold uppercase tracking-widest text-primary/80">
-                      Available now
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-
-              <CardContent className="p-8 pt-4 relative z-10">
-                <ul className="space-y-4">
-                  {included.map((item, index) => (
-                    <motion.li
-                      key={index}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + index * 0.1 }}
-                      className="flex items-center gap-4 group/item">
-                      <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover/item:bg-primary group-hover/item:scale-110 transition-all duration-300">
-                        <Check className="w-3.5 h-3.5 text-primary group-hover/item:text-white transition-colors duration-300" />
-                      </div>
-                      <span className="font-bold text-base tracking-tight text-foreground/90">
-                        {item}
-                      </span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Coming Soon Features */}
-          <motion.div variants={itemVariants}>
-            <Card className="h-full relative overflow-hidden bg-card/40 backdrop-blur-lg border border-border/50 rounded-[3rem] shadow-xl group">
-              <CardHeader className="p-8 pb-4 relative z-10">
-                <div className="flex items-center gap-5 mb-4">
-                  <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center border border-border/50 group-hover:scale-110 group-hover:bg-muted/80 transition-all duration-500">
-                    <Clock className="w-7 h-7 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-2xl font-black tracking-tight">
-                      Coming Soon
-                    </CardTitle>
-                    <CardDescription className="text-xs font-bold uppercase tracking-widest">
-                      On the roadmap
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-
-              <CardContent className="p-8 pt-4 relative z-10">
-                <ul className="space-y-4">
-                  {comingSoon.map((item, index) => (
-                    <motion.li
-                      key={index}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + index * 0.1 }}
-                      className="flex items-center gap-4 group/item grayscale group-hover:grayscale-0 transition-all duration-500">
-                      <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0 border border-border/50 group-hover/item:border-primary/30 transition-all duration-300">
-                        <Plus className="w-3.5 h-3.5 text-muted-foreground group-hover/item:text-primary transition-colors duration-300" />
-                      </div>
-                      <span className="font-semibold text-base tracking-tight text-muted-foreground group-hover/item:text-foreground transition-colors duration-300">
-                        {item}
-                      </span>
-                    </motion.li>
-                  ))}
-                </ul>
-
-                {/* Feature Request */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
-                  className="mt-12 pt-8 border-t border-border/50">
-                  <p className="text-sm font-bold text-muted-foreground group/cta cursor-pointer inline-flex items-center gap-2">
-                    Have a feature request?
-                    <span className="text-primary hover:underline flex items-center gap-1 transition-all">
-                      Let us know{" "}
-                      <ArrowRight className="w-4 h-4 translate-x-0 group-hover/cta:translate-x-1 transition-transform" />
-                    </span>
+                  <CardTitle className="text-xl font-bold tracking-tight">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-8 pt-0 relative z-10">
+                  <p className="text-muted-foreground text-sm font-medium leading-relaxed">
+                    {feature.description}
                   </p>
-                </motion.div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </motion.div>
 
-        {/* Bottom micro-copy */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-16 text-center text-xs font-black uppercase tracking-[0.3em] text-muted-foreground/60">
-          Building for the{" "}
-          <span className="text-primary">future of productivity</span>
-        </motion.p>
+        {/* Bottom Note */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-16 text-center">
+          <p className="text-sm font-bold text-muted-foreground/80 max-w-md mx-auto italic">
+            Note: Designed for businesses, freelancers, and service providers.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

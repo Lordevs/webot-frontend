@@ -15,9 +15,9 @@ export default function Home() {
       <ProblemSection />
       <SolutionSection />
       <HowItWorks />
+      <MVPScope />
       <UseCases />
       <SecuritySection />
-      <MVPScope />
       <SimplePricing />
       <CTASection />
     </main>

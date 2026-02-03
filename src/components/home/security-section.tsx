@@ -73,9 +73,7 @@ const itemVariants = {
 
 const SecuritySection = () => {
   return (
-    <section
-      id="security"
-      className="relative py-20 overflow-hidden bg-popover/70">
+    <section id="security" className="relative py-20 overflow-hidden ">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div

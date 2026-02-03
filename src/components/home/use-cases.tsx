@@ -78,7 +78,7 @@ const UseCases = () => {
   return (
     <section
       id="use-cases"
-      className="relative py-20 overflow-hidden bg-background">
+      className="relative py-20 overflow-hidden bg-popover/70">
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
