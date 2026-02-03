@@ -1,38 +1,39 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Repeat, AlertCircle, Clock, ArrowRight } from "lucide-react";
+import { Users, Repeat, AlertCircle, Clock, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const problems = [
   {
-    icon: Mail,
-    title: "Endless email threads",
-    description: "Just to find a time that works for everyone",
-    stat: "12+",
-    statLabel: "avg emails per meeting",
-  },
-  {
-    icon: Repeat,
-    title: "Constant app switching",
-    description: "Between WhatsApp, Gmail, and Calendar",
-    stat: "5x",
-    statLabel: "daily context switches",
+    icon: Clock,
+    title: "Manual wasting time",
+    description: "Endless back-and-forth messages just to find a single slot.",
+    stat: "15min",
+    statLabel: "per appointment lost",
   },
   {
     icon: AlertCircle,
-    title: "Missed meetings",
-    description: "Due to miscommunication and confusion",
-    stat: "23%",
-    statLabel: "meetings rescheduled",
+    title: "Missed messages = lost bookings",
+    description: "Every delayed response is an opportunity for a competitor.",
+    stat: "40%",
+    statLabel: "leads lost to delays",
   },
   {
-    icon: Clock,
-    title: "Time-wasting follow-ups",
-    description: "Manual reminders every single day",
-    stat: "2hrs",
-    statLabel: "lost weekly",
+    icon: Repeat,
+    title: "Time zone confusion",
+    description: "Calculating offsets manually leads to No-Shows and errors.",
+    stat: "24/7",
+    statLabel: "automated conversion",
+  },
+  {
+    icon: Users,
+    title: "Human dependency",
+    description:
+      "Your business stops when you or your assistants aren't online.",
+    stat: "100%",
+    statLabel: "human-free booking",
   },
 ];
 
@@ -97,8 +98,8 @@ export default function ProblemSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.15]">
-            Scheduling meetings is still <br className="hidden md:block" />
-            <span className="text-destructive">slow and manual</span>
+            Appointment Scheduling <br className="hidden md:block" />
+            <span className="text-destructive">Shouldn’t Be Manual</span>
           </motion.h2>
 
           <motion.p
@@ -178,7 +179,7 @@ export default function ProblemSection() {
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
             </span>
             <p className="text-muted-foreground font-semibold text-sm lg:text-base">
-              We built ScheduleBot as a{" "}
+              We built Webot as a{" "}
               <span className="text-foreground font-bold italic tracking-tight">
                 workflow fix
               </span>
