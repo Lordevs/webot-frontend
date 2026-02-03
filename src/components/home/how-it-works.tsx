@@ -22,8 +22,6 @@ const steps = [
     icon: WhatsAppIcon,
     title: "Customer sends a message",
     description: "Start a conversation on WhatsApp to book an appointment.",
-    color: "#25D366",
-    gradient: "from-[#25D366]/20 to-transparent",
   },
   {
     number: "02",
@@ -31,16 +29,12 @@ const steps = [
     title: "Webot checks availability",
     description:
       "Real-time sync with Google Calendar to find the perfect slot.",
-    color: "#4285F4",
-    gradient: "from-[#4285F4]/20 to-transparent",
   },
   {
     number: "03",
     icon: CalendarCheck,
     title: "Confirmed automatically",
     description: "Instant confirmation and invites sent to both parties.",
-    color: "#10B981",
-    gradient: "from-[#10B981]/20 to-transparent",
   },
 ];
 
@@ -172,12 +166,7 @@ const HowItWorks = () => {
                 <CardContent className="p-8 pb-10 flex-1 flex flex-col items-center text-center">
                   {/* Step Number Badge */}
                   <div className="mb-8 w-16 h-16 rounded-3xl relative flex items-center justify-center overflow-hidden">
-                    <div
-                      className={cn(
-                        "absolute inset-0 bg-linear-to-br opacity-20",
-                        step.gradient,
-                      )}
-                    />
+                    <div className="absolute inset-0 bg-primary/10" />
                     <div className="relative w-12 h-12 rounded-xl bg-background border border-border/50 shadow-sm flex items-center justify-center text-primary font-black text-lg group-hover:scale-110 transition-transform duration-500">
                       {step.number}
                     </div>
@@ -185,12 +174,7 @@ const HowItWorks = () => {
 
                   {/* Icon Container */}
                   <div className="mb-6 relative">
-                    <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500"
-                      style={{
-                        backgroundColor: `${step.color}15`,
-                        color: step.color,
-                      }}>
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
                       <step.icon className="w-7 h-7 group-hover:rotate-12 transition-transform duration-500" />
                     </div>
                   </div>
@@ -207,10 +191,7 @@ const HowItWorks = () => {
                 </CardContent>
 
                 {/* Visual Bottom Accent */}
-                <div
-                  className="h-1.5 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ backgroundColor: step.color }}
-                />
+                <div className="h-1.5 w-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </Card>
 
               {/* Connector for Tablet - Vertical */}
