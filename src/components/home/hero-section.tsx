@@ -178,8 +178,10 @@ export default function HeroSection() {
                 <div className="bg-card rounded-[2.5rem] overflow-hidden border border-white/5 shadow-inner">
                   {/* WhatsApp header */}
                   <div className="bg-[#075E54] px-4 py-4 flex items-center gap-3 pt-10">
-                    <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
-                      <Calendar className="w-5 h-5 text-white" />
+                    <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <span className="text-primary-foreground font-bold italic">
+                        W
+                      </span>
                     </div>
                     <div className="flex-1">
                       <p className="text-white font-bold text-sm leading-tight">
