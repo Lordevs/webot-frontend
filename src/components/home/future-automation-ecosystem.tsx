@@ -130,7 +130,7 @@ const FutureAutomationEcosystem = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          className="relative grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {modules.map((module, index) => (
             <motion.div key={index} variants={itemVariants}>
               <Card className="h-full gap-0 py-0 relative overflow-hidden bg-muted/10 backdrop-blur-sm border-dashed border-muted-foreground/30 rounded-[2.5rem] group opacity-90 hover:opacity-100 transition-all duration-500">

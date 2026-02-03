@@ -118,7 +118,7 @@ const UseCases = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+          className="relative grid sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {useCases.map((useCase, index) => (
             <motion.div key={index}>
               <Card className="group h-full relative py-0 overflow-hidden bg-card/40 backdrop-blur-md border-border/50 hover:border-primary/20 transition-all duration-500 rounded-[2.5rem] hover:shadow-2xl hover:shadow-primary/5">
