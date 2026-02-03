@@ -86,30 +86,33 @@ export default function SimplePricing() {
   if (!mounted) return null;
 
   return (
-    <section
-      id="pricing"
-      className="relative py-20 overflow-hidden bg-popover/70">
+    <section id="pricing" className="relative py-20 overflow-hidden">
       <div className="container mx-auto px-4 text-center">
         <div className="flex flex-col items-center justify-center gap-8">
           <div className="flex flex-col items-center space-y-2">
             <Badge
               variant="outline"
-              className="border-primary/20 bg-primary/5 mb-4 rounded-full px-4 py-1 text-sm font-medium">
-              <Sparkles className="text-primary mr-1 h-3.5 w-3.5 animate-pulse" />
+              className="px-5 py-2 rounded-full border-primary/20 text-primary bg-primary/5 font-black text-[10px] tracking-[0.2em] uppercase mb-4">
+              <Sparkles className="w-3.5 h-3.5 mr-2" />
               Pricing Plans
             </Badge>
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="from-foreground to-foreground/30 bg-linear-to-b bg-clip-text text-4xl font-bold text-transparent sm:text-5xl">
-              Pick the perfect plan for your needs
-            </motion.h1>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+              Pick the perfect plan <br />
+              <span className="text-primary italic font-bold">
+                for your needs
+              </span>
+            </motion.h2>
             <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-muted-foreground max-w-md pt-2 text-lg">
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto font-medium pt-4">
               Simple, transparent pricing that scales with your business. No
               hidden fees, no surprises.
             </motion.p>

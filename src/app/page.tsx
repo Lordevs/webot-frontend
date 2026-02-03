@@ -5,6 +5,7 @@ import HowItWorks from "@/components/home/how-it-works";
 import UseCases from "@/components/home/use-cases";
 import SecuritySection from "@/components/home/security-section";
 import MVPScope from "@/components/home/mvp-scope";
+import FutureAutomationEcosystem from "@/components/home/future-automation-ecosystem";
 import CTASection from "@/components/home/cta-section";
 import SimplePricing from "@/components/home/simple-pricing";
 
@@ -16,6 +17,7 @@ export default function Home() {
       <SolutionSection />
       <HowItWorks />
       <MVPScope />
+      <FutureAutomationEcosystem />
       <UseCases />
       <SecuritySection />
       <SimplePricing />

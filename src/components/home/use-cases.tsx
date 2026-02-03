@@ -62,23 +62,9 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
 const UseCases = () => {
   return (
-    <section
-      id="use-cases"
-      className="relative py-20 overflow-hidden bg-popover/70">
+    <section id="use-cases" className="relative py-20 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
