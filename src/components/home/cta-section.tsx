@@ -44,7 +44,7 @@ const CTASection = () => {
                 </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto font-medium">
                   Join hundreds of professionals who have simplified their day
-                  with WhatsApp scheduling. Free while we're in beta.
+                  with WhatsApp scheduling. Free while in early access.
                 </p>
               </div>
 
@@ -66,18 +66,20 @@ const CTASection = () => {
 
               {/* Trust Features */}
               <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 pt-10 border-t border-border/30">
-                {["1-Minute Setup", "Secure OAuth 2.0", "Free Beta Access"].map(
-                  (feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Check className="w-3 h-3 text-primary" />
-                      </div>
-                      <span className="text-sm font-bold text-muted-foreground/80 lowercase tracking-tight first-letter:uppercase">
-                        {feature}
-                      </span>
+                {[
+                  "1-Minute Setup",
+                  "Secure OAuth 2.0",
+                  "Priority Early Access",
+                ].map((feature, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-primary" />
                     </div>
-                  ),
-                )}
+                    <span className="text-sm font-bold text-muted-foreground/80 lowercase tracking-tight first-letter:uppercase">
+                      {feature}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>

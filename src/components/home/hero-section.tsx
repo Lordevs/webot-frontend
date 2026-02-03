@@ -79,16 +79,15 @@ const HeroSection = () => {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
               <span className="text-[12px] font-bold text-primary uppercase tracking-widest">
-                Now in Beta — Limited Access
+                Priority Early Access — Limited Capacity
               </span>
             </motion.div>
 
             {/* Headline */}
             <motion.h1
               variants={fadeInUp}
-              className="text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-bold leading-[1.1] tracking-tight">
-              Schedule Meetings{" "}
-              <span className="text-gradient-primary">Directly From</span>{" "}
+              className="text-4xl sm:text-5xl lg:text-[3.2rem] xl:text-6xl font-bold leading-[1.1] tracking-tight">
+              Automate Appointment Scheduling on{" "}
               <span className="relative inline-block text-primary">
                 WhatsApp
                 <svg
@@ -102,18 +101,18 @@ const HeroSection = () => {
                     strokeLinecap="round"
                   />
                 </svg>
-              </span>
+              </span>{" "}
+              — Instantly
             </motion.h1>
 
             {/* Sub-headline */}
             <motion.p
               variants={fadeInUp}
               className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium">
-              Automatically book Google Calendar meetings by chatting on
-              WhatsApp.
+              Webot connects WhatsApp with Google Calendar to book, reschedule,
+              and manage appointments automatically —{" "}
               <span className="text-foreground font-semibold">
-                {" "}
-                No emails. No back-and-forth.
+                no manual coordination.
               </span>
             </motion.p>
 
@@ -124,7 +123,7 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 className="group shadow-glow rounded-full bg-linear-to-tl from-primary to-secondary-foreground">
-                Connect WhatsApp
+                Get Early Access
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button
@@ -132,7 +131,7 @@ const HeroSection = () => {
                 size="lg"
                 className="rounded-full"
                 onClick={scrollToHowItWorks}>
-                View how it works
+                Book a Demo
               </Button>
             </motion.div>
 
@@ -184,7 +183,7 @@ const HeroSection = () => {
                     </div>
                     <div className="flex-1">
                       <p className="text-white font-bold text-sm leading-tight">
-                        ScheduleBot
+                        Webot
                       </p>
                       <p className="text-white/70 text-[10px] flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#25D366]" />{" "}
