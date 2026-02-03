@@ -8,6 +8,7 @@ import MVPScope from "@/components/home/mvp-scope";
 import FutureAutomationEcosystem from "@/components/home/future-automation-ecosystem";
 import CTASection from "@/components/home/cta-section";
 import SimplePricing from "@/components/home/simple-pricing";
+import TrustCompliance from "@/components/home/trust-compliance";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <MVPScope />
       <FutureAutomationEcosystem />
       <UseCases />
+      <TrustCompliance />
       <SecuritySection />
       <SimplePricing />
       <CTASection />
