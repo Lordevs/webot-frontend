@@ -74,7 +74,7 @@ const itemVariants: Variants = {
   },
 };
 
-const MVPScope = () => {
+export default function MVPScope() {
   return (
     <section
       id="mvp-scope"
@@ -164,6 +164,4 @@ const MVPScope = () => {
       </div>
     </section>
   );
-};
-
-export default MVPScope;
+}

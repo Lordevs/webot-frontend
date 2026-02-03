@@ -70,7 +70,7 @@ const itemVariants = {
   },
 };
 
-const SolutionSection = () => {
+export default function SolutionSection() {
   return (
     <section
       id="solution"
@@ -308,7 +308,7 @@ const SolutionSection = () => {
       </div>
     </section>
   );
-};
+}
 
 // Sub-components for better organization
 
@@ -366,5 +366,3 @@ const FloatingSnippet = ({
     </p>
   </motion.div>
 );
-
-export default SolutionSection;

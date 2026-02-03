@@ -59,19 +59,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, x: 20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
-const SecuritySection = () => {
+export default function SecuritySection() {
   return (
     <section
       id="security"
@@ -289,7 +277,7 @@ const SecuritySection = () => {
       </div>
     </section>
   );
-};
+}
 
 // Sub-component for floating nodes
 const FloatingNode = ({
@@ -311,5 +299,3 @@ const FloatingNode = ({
     {icon}
   </motion.div>
 );
-
-export default SecuritySection;

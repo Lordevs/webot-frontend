@@ -74,7 +74,7 @@ const itemVariants: Variants = {
   },
 };
 
-const FutureAutomationEcosystem = () => {
+export default function FutureAutomationEcosystem() {
   return (
     <section
       id="ecosystem"
@@ -180,7 +180,7 @@ const FutureAutomationEcosystem = () => {
       </div>
     </section>
   );
-};
+}
 
 const PlusIcon = ({ className }: { className?: string }) => (
   <svg
@@ -195,5 +195,3 @@ const PlusIcon = ({ className }: { className?: string }) => (
     <line x1="5" y1="12" x2="19" y2="12"></line>
   </svg>
 );
-
-export default FutureAutomationEcosystem;

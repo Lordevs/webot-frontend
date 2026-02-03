@@ -55,7 +55,7 @@ const containerVariants = {
   },
 };
 
-const UseCases = () => {
+export default function UseCases() {
   return (
     <section id="use-cases" className="relative py-20 overflow-hidden">
       {/* Background decoration */}
@@ -162,6 +162,4 @@ const UseCases = () => {
       </div>
     </section>
   );
-};
-
-export default UseCases;
+}

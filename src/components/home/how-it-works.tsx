@@ -60,7 +60,7 @@ const itemVariants = {
   },
 };
 
-const HowItWorks = () => {
+export default function HowItWorks() {
   return (
     <section
       id="how-it-works"
@@ -229,6 +229,4 @@ const HowItWorks = () => {
       </div>
     </section>
   );
-};
-
-export default HowItWorks;
+}

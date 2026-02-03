@@ -5,7 +5,7 @@ import { ArrowRight, Zap, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-const CTASection = () => {
+export default function CTASection() {
   return (
     <section id="cta" className="relative py-20 overflow-hidden bg-popover/70">
       {/* Background Accent */}
@@ -14,18 +14,18 @@ const CTASection = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.98, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="relative overflow-hidden bg-card/40 backdrop-blur-xl border border-border/50 rounded-[3rem] p-12 lg:p-20 text-center shadow-2xl">
+            className="relative overflow-hidden bg-card/40 backdrop-blur-xl border border-border/50 rounded-[3rem] p-10 lg:p-14 text-center shadow-2xl">
             {/* Soft Gradient Decorative Backgrounds */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -mr-20 -mt-20 opacity-50" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/10 rounded-full blur-3xl -ml-20 -mb-20 opacity-50" />
 
-            <div className="relative z-10 space-y-10">
+            <div className="relative z-10 space-y-8">
               {/* Badge */}
               <div className="flex justify-center">
                 <Badge
@@ -40,11 +40,11 @@ const CTASection = () => {
               <div className="space-y-6">
                 <h2 className="text-4xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
                   Start Automating <br className="hidden md:block" />
-                  <span className="text-primary italic">
+                  <span className="text-primary italic font-bold">
                     WhatsApp Appointments Today
                   </span>
                 </h2>
-                <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto font-medium">
+                <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto font-medium">
                   Join the exclusive list of professionals streamlining their
                   scheduling with Webot. 100% free while in early access.
                 </p>
@@ -89,6 +89,4 @@ const CTASection = () => {
       </div>
     </section>
   );
-};
-
-export default CTASection;
+}

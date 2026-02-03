@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { cn } from "@/lib/utils";
 
-const HeroSection = () => {
+export default function HeroSection() {
   const scrollToHowItWorks = () => {
     document
       .getElementById("how-it-works")
@@ -412,6 +412,4 @@ const HeroSection = () => {
       </motion.div>
     </section>
   );
-};
-
-export default HeroSection;
+}
