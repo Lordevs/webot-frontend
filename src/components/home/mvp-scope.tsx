@@ -86,7 +86,7 @@ const MVPScope = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 space-y-6">
+        <div className="max-w-3xl mx-auto text-center mb-20 space-y-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -128,7 +128,7 @@ const MVPScope = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          className="relative grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {mvpFeatures.map((feature, index) => (
             <motion.div key={index} variants={itemVariants}>
               <Card className="h-full relative overflow-hidden bg-card/40 backdrop-blur-lg border border-border/50 rounded-[2.5rem] group hover:border-primary/30 transition-all duration-300">
