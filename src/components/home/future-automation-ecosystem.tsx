@@ -106,9 +106,9 @@ const FutureAutomationEcosystem = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
+            className="text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
             Built for More Than <br />
-            <span className="text-muted-foreground italic opacity-50">
+            <span className="text-muted-foreground italic opacity-80">
               Scheduling
             </span>
           </motion.h2>
@@ -133,21 +133,21 @@ const FutureAutomationEcosystem = () => {
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {modules.map((module, index) => (
             <motion.div key={index} variants={itemVariants}>
-              <Card className="h-full relative overflow-hidden bg-muted/5 backdrop-blur-sm border-dashed border-muted-foreground/20 rounded-[2.5rem] group opacity-60 hover:opacity-80 transition-all duration-500">
+              <Card className="h-full gap-0 py-0 relative overflow-hidden bg-muted/10 backdrop-blur-sm border-dashed border-muted-foreground/30 rounded-[2.5rem] group opacity-90 hover:opacity-100 transition-all duration-500">
                 {/* Lock Overlay */}
                 <div className="absolute top-6 right-6 z-20">
-                  <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center border border-muted-foreground/10">
+                  <div className="w-8 h-8 rounded-full bg-background flex items-center justify-center border border-muted-foreground/20">
                     <Lock className="w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                 </div>
 
-                <CardContent className="p-10 flex flex-col items-center text-center space-y-6">
-                  <div className="w-16 h-16 rounded-3xl bg-muted/30 flex items-center justify-center text-muted-foreground group-hover:scale-110 transition-all duration-500">
+                <CardContent className="p-10 flex flex-col items-center text-center space-y-6 flex-1">
+                  <div className="w-16 h-16 rounded-3xl bg-muted/40 flex items-center justify-center text-muted-foreground group-hover:scale-110 transition-all duration-500">
                     <module.icon className="w-8 h-8" />
                   </div>
 
                   <div className="space-y-3">
-                    <h3 className="text-xl font-bold tracking-tight text-foreground/70">
+                    <h3 className="text-xl font-bold tracking-tight text-foreground/90">
                       {module.title}
                     </h3>
                     <p className="text-muted-foreground text-sm font-medium leading-relaxed">
@@ -157,7 +157,7 @@ const FutureAutomationEcosystem = () => {
 
                   <Badge
                     variant="outline"
-                    className="mt-4 border-muted-foreground/30 text-muted-foreground/60 text-[9px] font-black uppercase tracking-widest">
+                    className="mt-auto border-muted-foreground/40 text-muted-foreground/80 text-[11px] font-black uppercase tracking-widest">
                     {module.status}
                   </Badge>
                 </CardContent>
