@@ -13,23 +13,13 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 const footerLinks = {
-  product: [
-    { name: "Features", href: "#" },
-    { name: "How it works", href: "#how-it-works" },
-    { name: "Use Cases", href: "#use-cases" },
-    { name: "Security", href: "#security" },
-  ],
   legal: [
     { name: "Privacy Policy", href: "#" },
     { name: "Terms of Service", href: "#" },
-    { name: "Cookie Policy", href: "#" },
-  ],
-  support: [
-    { name: "Help Center", href: "#" },
-    { name: "Contact Us", href: "#" },
-    { name: "Status", href: "#" },
   ],
 };
+
+const CONTACT_EMAIL = "hello@webot.com";
 
 const Footer = () => {
   return (
@@ -43,18 +33,18 @@ const Footer = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
           {/* Brand Column */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="lg:col-span-6 space-y-6">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-                <Calendar className="w-5 h-5 text-primary-foreground" />
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                <span className="text-primary-foreground font-bold italic">
+                  W
+                </span>
               </div>
-              <span className="font-bold text-2xl tracking-tighter">
-                ScheduleBot
-              </span>
+              <span className="font-bold text-2xl tracking-tighter">Webot</span>
             </motion.div>
 
             <motion.p
@@ -62,37 +52,47 @@ const Footer = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-muted-foreground text-sm font-medium leading-relaxed max-w-xs">
+              className="text-muted-foreground text-sm font-medium leading-relaxed max-w-sm">
               The AI-powered scheduling engine that works where you do. Automate
-              your life through the power of WhatsApp.
+              your business conversations and bookings through the power of
+              WhatsApp.
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="flex items-center gap-4">
-              <SocialIcon icon={Twitter} />
-              <SocialIcon icon={Linkedin} />
-              <SocialIcon icon={Github} />
-              <SocialIcon icon={Instagram} />
+              className="flex flex-col gap-1">
+              <span className="text-[10px] font-black uppercase tracking-widest text-foreground/40">
+                Get in touch
+              </span>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="text-sm font-bold text-foreground hover:text-primary transition-colors">
+                {CONTACT_EMAIL}
+              </a>
             </motion.div>
           </div>
 
           {/* Links Columns */}
-          <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8">
-            <LinkGroup
-              title="Product"
-              links={footerLinks.product}
-              delay={0.3}
-            />
-            <LinkGroup
-              title="Support"
-              links={footerLinks.support}
-              delay={0.4}
-            />
-            <LinkGroup title="Legal" links={footerLinks.legal} delay={0.5} />
+          <div className="lg:col-span-6 flex md:justify-end gap-16">
+            <LinkGroup title="Legal" links={footerLinks.legal} delay={0.3} />
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="space-y-6">
+              <h4 className="text-xs font-black uppercase tracking-[0.2em] text-foreground">
+                Connect
+              </h4>
+              <div className="flex items-center gap-3">
+                <SocialIcon icon={Twitter} />
+                <SocialIcon icon={Linkedin} />
+              </div>
+            </motion.div>
           </div>
         </div>
 
@@ -111,33 +111,9 @@ const Footer = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
-            &copy; 2026 ScheduleBot. Built for the{" "}
-            <span className="text-primary italic">future.</span>
+            className="text-muted-foreground text-[11px] font-bold tracking-[0.2em] uppercase">
+            &copy; {new Date().getFullYear()} Webot. All rights reserved.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-1 text-xs text-muted-foreground font-medium">
-            Built with{" "}
-            <Heart className="w-3 h-3 text-primary fill-primary animate-pulse" />{" "}
-            for better productivity
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-6">
-            <div className="flex items-center gap-2 group cursor-pointer">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors uppercase tracking-widest">
-                Systems Operational
-              </span>
-            </div>
-          </motion.div>
         </div>
       </div>
     </footer>
