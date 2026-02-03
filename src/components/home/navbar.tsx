@@ -9,9 +9,9 @@ export default function Navbar() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href={ROUTES.HOME} className="flex items-center gap-2 group">
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-            <span className="text-primary-foreground font-bold italic">S</span>
+            <span className="text-primary-foreground font-bold italic">W</span>
           </div>
-          <span className="text-xl font-bold tracking-tight">ScheduleBot</span>
+          <span className="text-xl font-bold tracking-tight">Webot</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-1">

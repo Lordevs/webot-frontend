@@ -2,10 +2,8 @@
 
 import { motion } from "framer-motion";
 import {
-  MessageSquare,
-  CalendarCheck,
-  Video,
-  Globe,
+  Calendar,
+  Users,
   CheckCircle,
   Sparkles,
   ArrowRight,
@@ -14,33 +12,39 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
+const WhatsAppIcon = ({ className }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={cn("w-6 h-6", className)}>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
+  </svg>
+);
+
 const features = [
   {
-    icon: MessageSquare,
-    text: "Natural language scheduling",
+    icon: WhatsAppIcon,
+    text: "Book appointments via WhatsApp",
     description:
-      "Just type like you're texting a friend. No rigid commands needed.",
+      "Your clients can schedule meetings just by chatting with your bot.",
   },
   {
-    icon: CalendarCheck,
-    text: "Automatic calendar invites",
-    description: "Events created instantly with all the details you discussed.",
-  },
-  {
-    icon: Video,
-    text: "Google Meet links instantly",
+    icon: Calendar,
+    text: "Auto-sync with Google Calendar",
     description:
-      "Unique video call links are auto-generated for every meeting.",
+      "Every booking is instantly added to your calendar without you lifting a finger.",
   },
   {
-    icon: Globe,
-    text: "Time-zone aware booking",
-    description: "The bot automatically handles time-zone conversions for you.",
+    icon: Sparkles,
+    text: "Smart availability detection",
+    description:
+      "Webot checks your real-time availability to prevent double-bookings.",
   },
   {
     icon: CheckCircle,
-    text: "Confirmation before booking",
-    description: "Nothing ends up on your calendar without your explicit 'OK'.",
+    text: "Instant confirmations & reminders",
+    description:
+      "Both you and your client get instant updates and automated reminders.",
   },
 ];
 
@@ -119,9 +123,9 @@ const SolutionSection = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="text-4xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
-                Turn WhatsApp into your <br />
+                One WhatsApp Bot. <br />
                 <span className="text-primary italic">
-                  scheduling assistant
+                  Zero Scheduling Hassle.
                 </span>
               </motion.h2>
 
@@ -131,8 +135,9 @@ const SolutionSection = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="text-lg text-muted-foreground leading-relaxed font-medium max-w-xl">
-                Our AI understands natural speech. No more rigid commands—just
-                talk to your bot and watch it sync perfectly with your life.
+                Webot handles everything—from the first chat to the final
+                calendar invite. Give your clients the easiest way to book you,
+                on the app they already use.
               </motion.p>
             </div>
 
@@ -157,7 +162,6 @@ const SolutionSection = () => {
                         {feature.description}
                       </p>
                     </div>
-                    <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-40 -translate-x-2 group-hover:translate-x-0 transition-all duration-300 text-primary" />
                   </div>
                 </motion.div>
               ))}
@@ -243,20 +247,25 @@ const SolutionSection = () => {
                     />
                     <PlatformNode
                       className="-bottom-8 -right-8 bg-[#4285F4] shadow-blue-500/30"
-                      icon={<CalendarCheck className="w-6 h-6 text-white" />}
+                      icon={<Calendar className="w-6 h-6 text-white" />}
                       delay={0.5}
                     />
 
-                    {/* Floating Notification Snippets */}
+                    {/* Flow Labels */}
                     <FloatingSnippet
-                      className="top-0 -right-24 bg-white/80 border-[#25D366]/20"
-                      text="Meeting set for tomorrow"
-                      delay={1}
+                      className="-top-15 -left-12 bg-white/90 border-[#25D366]/30 shadow-green-500/10"
+                      text="WhatsApp"
+                      delay={0.2}
                     />
                     <FloatingSnippet
-                      className="bottom-12 -left-28 bg-white/80 border-[#4285F4]/20"
-                      text="Calendar synced"
-                      delay={2}
+                      className="-top-10 -right-4 bg-primary/10 border-primary/20"
+                      text="Webot"
+                      delay={0.4}
+                    />
+                    <FloatingSnippet
+                      className="-bottom-12 -right-12 bg-white/90 border-[#4285F4]/30 shadow-blue-500/10"
+                      text="Google Calendar"
+                      delay={0.6}
                     />
                   </div>
 
