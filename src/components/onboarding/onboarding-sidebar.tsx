@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, LucideIcon } from "lucide-react";
+import { Check, LucideIcon, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Sidebar,
@@ -13,6 +13,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Calendar } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/constants/routes";
 
 interface Step {
   id: number;
@@ -30,6 +33,11 @@ export function OnboardingSidebar({
   steps,
   currentStep,
 }: OnboardingSidebarProps) {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    router.push(ROUTES.AUTH.LOGIN);
+  };
   return (
     <Sidebar
       variant="inset"
@@ -108,15 +116,26 @@ export function OnboardingSidebar({
         </SidebarGroup>
       </SidebarContent>
       <div className="mt-auto p-6 border-t border-border/10">
-        <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/30">
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
-            JD
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-bold text-foreground">John Doe</span>
-            <span className="text-[10px] text-muted-foreground">
-              Setup Mode
-            </span>
+        <Button
+          variant="ghost"
+          onClick={handleLogout}
+          className="w-full mb-4 flex items-center justify-start gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-destructive hover:bg-destructive/10 transition-all duration-200 h-auto">
+          <LogOut className="w-4 h-4 shrink-0" />
+          <span>Logout</span>
+        </Button>
+        <div className="flex items-center flex-row justify-between p-3 rounded-2xl bg-muted/30">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+              JD
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs font-bold text-foreground">
+                John Doe
+              </span>
+              <span className="text-[10px] text-muted-foreground">
+                Setup Mode
+              </span>
+            </div>
           </div>
         </div>
       </div>
