@@ -23,22 +23,26 @@ export const QuickActions = ({ actions, variants }: QuickActionsProps) => (
   <motion.div variants={variants}>
     <div className="grid sm:grid-cols-3 gap-6">
       {actions.map((action, i) => (
-        <Link key={i} href={action.href} className="group">
-          <div className="h-full p-6 rounded-4xl bg-card border border-border/50 shadow-xl shadow-black/2 hover:shadow-2xl hover:border-primary/20 transition-all text-center space-y-4">
+        <Link key={i} href={action.href} className="group relative">
+          <div className="absolute inset-0 bg-primary/5 blur-xl rounded-4xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="relative h-full p-8 rounded-4xl bg-card/60 backdrop-blur-sm border border-border/40 shadow-xl shadow-black/2 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 text-center flex flex-col items-center gap-4">
             <div
               className={cn(
-                "w-12 h-12 rounded-2xl mx-auto flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform",
+                "w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 ring-1 ring-white/10",
                 action.bg,
               )}>
-              <action.icon className={cn("w-6 h-6", action.color)} />
+              <action.icon className={cn("w-8 h-8", action.color)} />
             </div>
-            <div className="space-y-1">
-              <h4 className="text-lg font-bold tracking-tight group-hover:text-primary transition-colors">
+            <div className="space-y-2">
+              <h4 className="text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
                 {action.title}
               </h4>
-              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest opacity-60 leading-none">
+              <p className="text-xs text-muted-foreground/60 font-medium px-4">
                 {action.desc}
               </p>
+            </div>
+            <div className="mt-2 text-primary font-bold text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+              Launch Now →
             </div>
           </div>
         </Link>

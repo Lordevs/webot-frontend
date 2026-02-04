@@ -128,24 +128,33 @@ const DashboardOverview = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="max-w-7xl mx-auto space-y-8 p-4 lg:p-8">
+      className="max-w-7xl mx-auto space-y-10 p-6 lg:p-10 relative">
+      {/* Background Ornament */}
+      <div className="absolute top-0 right-0 -z-10 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 -z-10 w-[300px] h-[300px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
+
       {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-        <motion.div variants={itemVariants} className="space-y-1">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+        <motion.div variants={itemVariants} className="space-y-2">
           <Badge
             variant="outline"
-            className="mb-2 bg-primary/5 border-primary/10 text-primary font-semibold uppercase tracking-widest text-[10px] px-3 py-1">
-            Dashboard Overview
+            className="bg-primary/5 border-primary/20 text-primary font-bold uppercase tracking-[0.2em] text-[10px] px-4 py-1 rounded-full">
+            Platform Alpha
           </Badge>
-          <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-            Welcome back, <span className="text-primary">Felix!</span> 👋
+          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+            Welcome back,{" "}
+            <span className="relative inline-block">
+              Felix
+              <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/10 -z-10" />
+            </span>{" "}
+            👋
           </h1>
-          <p className="text-muted-foreground text-base">
-            Your AI assistant is active and helping{" "}
-            <span className="text-foreground font-semibold italic underline decoration-primary/30 underline-offset-4">
+          <p className="text-muted-foreground text-lg max-w-lg">
+            Your AI assistant is currently helping{" "}
+            <span className="text-foreground font-bold underline decoration-primary/30 underline-offset-8 decoration-4">
               14 customers
             </span>{" "}
-            today.
+            today with a 98% satisfaction rate.
           </p>
         </motion.div>
 
