@@ -8,6 +8,10 @@ export const ROUTES = {
     HOW_IT_WORKS: "#how-it-works",
   },
 
+  ONBOARDING: {
+    ROOT: "/onboarding",
+  },
+
   AUTH: {
     LOGIN: "/login",
     SIGNUP: "/signup",

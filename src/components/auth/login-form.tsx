@@ -17,7 +17,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,7 +140,7 @@ export default function Login() {
               transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}>
-              <Link href="">
+              <Link href={ROUTES.ONBOARDING.ROOT}>
                 <Button className="w-full">Login</Button>
               </Link>
             </motion.div>
