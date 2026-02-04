@@ -22,7 +22,7 @@ const bottomNavItems = [
   { title: "Billing", href: "#", icon: CreditCard }, // Placeholder as it's not in ROUTES yet
   {
     title: "Settings",
-    href: ROUTES.PLATFORM.CALENDAR_SETTINGS,
+    href: ROUTES.PLATFORM.SETTINGS,
     icon: Settings2,
   },
 ];
