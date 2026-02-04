@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ConnectedAccount } from "./connected-account";
 import { WorkingHours } from "./working-hours";
 import { BookingCalendar } from "./booking-calendar";
-import { AdditionalOptions } from "./additional-options";
+import { BotSystemPrompt } from "./bot-system-prompt";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge"; // Added for Badge component
 
@@ -63,8 +63,8 @@ export const CalendarSettings = () => {
           <WorkingHours />
         </div>
 
-        {/* Bottom Section: Additional Options */}
-        <AdditionalOptions />
+        {/* Bottom Section: Bot System Prompt */}
+        <BotSystemPrompt />
       </div>
 
       {/* Mobile Sticky Save Button (Optional) */}
