@@ -24,16 +24,6 @@ export const CalendarSettings = () => {
             Configure your availability and synchronization preferences.
           </p>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}>
-          <Button className="h-14 px-10 rounded-2xl font-black shadow-2xl shadow-primary/20 flex items-center gap-3 text-lg hover:scale-[1.02] active:scale-[0.98] transition-all">
-            <Save className="w-5 h-5" />
-            Save Protocol
-          </Button>
-        </motion.div>
       </div>
 
       <div className="space-y-8">
