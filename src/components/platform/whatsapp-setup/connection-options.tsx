@@ -9,13 +9,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  CheckCircle2,
-  Smartphone,
-  MessageCircle,
-  RefreshCw,
-  Link2,
-} from "lucide-react";
+import { CheckCircle2, RefreshCw, Link2 } from "lucide-react";
+import { WhatsAppIcon } from "@/components/common/icons";
 import { cn } from "@/lib/utils";
 
 interface ConnectionOptionsProps {
@@ -29,7 +24,7 @@ export const ConnectionOptions = ({ isConnected }: ConnectionOptionsProps) => (
       className={cn(
         "group border-2 transition-all duration-500 rounded-[2.5rem] overflow-hidden",
         isConnected
-          ? "border-primary bg-primary/2"
+          ? "border-primary bg-primary/5 shadow-xl shadow-primary/10"
           : "border-border/40 bg-card/40 backdrop-blur-sm",
       )}>
       <CardHeader className="p-8">
@@ -38,10 +33,10 @@ export const ConnectionOptions = ({ isConnected }: ConnectionOptionsProps) => (
             className={cn(
               "w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-110",
               isConnected
-                ? "bg-primary text-primary-foreground"
+                ? "bg-primary text-background"
                 : "bg-primary/10 text-primary",
             )}>
-            <Smartphone className="w-7 h-7" />
+            <WhatsAppIcon className="w-7 h-7" />
           </div>
           <div className="flex-1 space-y-1">
             <CardTitle className="text-xl font-bold tracking-tight text-foreground">
@@ -52,7 +47,7 @@ export const ConnectionOptions = ({ isConnected }: ConnectionOptionsProps) => (
             </CardDescription>
           </div>
           {isConnected && (
-            <Badge className="bg-primary hover:bg-primary shadow-lg shadow-primary/20 rounded-full px-3 py-1 font-bold text-[10px] uppercase tracking-widest">
+            <Badge className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 rounded-full px-3 py-1 font-bold text-[10px] uppercase tracking-widest">
               Active
             </Badge>
           )}
@@ -93,8 +88,8 @@ export const ConnectionOptions = ({ isConnected }: ConnectionOptionsProps) => (
     <Card className="group border-border/40 bg-card/40 backdrop-blur-sm rounded-[2.5rem] overflow-hidden opacity-80 filter grayscale-[0.5] hover:grayscale-0 transition-all duration-500">
       <CardHeader className="p-8">
         <div className="flex items-start gap-5">
-          <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
-            <MessageCircle className="w-7 h-7 text-muted-foreground" />
+          <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
+            <WhatsAppIcon className="w-7 h-7 text-primary/40" />
           </div>
           <div className="flex-1 space-y-1">
             <CardTitle className="text-xl font-bold tracking-tight text-muted-foreground/80 group-hover:text-foreground/80 transition-colors">

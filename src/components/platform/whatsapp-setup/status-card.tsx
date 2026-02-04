@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Phone, Clock, MessageCircle, CheckCircle2 } from "lucide-react";
+import { WhatsAppIcon } from "@/components/common/icons";
 import { cn } from "@/lib/utils";
 
 interface StatusCardProps {
@@ -29,7 +30,7 @@ export const StatusCard = ({
     <div
       className={cn(
         "h-1.5 w-full",
-        isConnected ? "bg-emerald-500" : "bg-amber-500",
+        isConnected ? "bg-primary" : "bg-primary/30",
       )}
     />
     <CardHeader className="p-8 pb-6">
@@ -38,14 +39,11 @@ export const StatusCard = ({
           <div
             className={cn(
               "w-16 h-16 rounded-[1.8rem] flex items-center justify-center transition-transform duration-500 group-hover:scale-110 shadow-lg shadow-black/5 ring-1 ring-white/10",
-              isConnected ? "bg-emerald-500/10" : "bg-amber-500/10",
+              isConnected
+                ? "bg-primary text-background"
+                : "bg-primary/10 text-primary",
             )}>
-            <MessageCircle
-              className={cn(
-                "w-8 h-8",
-                isConnected ? "text-emerald-500" : "text-amber-500",
-              )}
-            />
+            <WhatsAppIcon className="w-8 h-8" />
           </div>
           <div className="space-y-1">
             <CardTitle className="text-2xl font-bold tracking-tight">
@@ -63,13 +61,13 @@ export const StatusCard = ({
           className={cn(
             "px-4 py-1.5 rounded-full font-bold uppercase text-[10px] tracking-widest transition-all",
             isConnected
-              ? "bg-emerald-500/5 text-emerald-600 border-emerald-500/10 shadow-lg shadow-emerald-500/5"
-              : "bg-amber-500/5 text-amber-600 border-amber-500/10 shadow-lg shadow-amber-500/5",
+              ? "bg-primary text-background border-primary shadow-lg shadow-primary/20"
+              : "bg-primary/5 text-primary border-primary/10 shadow-lg shadow-primary/5",
           )}>
           <div
             className={cn(
               "w-2 h-2 rounded-full mr-2",
-              isConnected ? "bg-emerald-500 animate-pulse" : "bg-amber-500",
+              isConnected ? "bg-background animate-pulse" : "bg-primary/40",
             )}
           />
           {isConnected ? "Connected" : "Pending Connection"}
@@ -91,22 +89,22 @@ export const StatusCard = ({
               label: "Last Activity",
               value: connectionInfo.lastMessageReceived,
               icon: Clock,
-              color: "text-amber-500",
-              bg: "bg-amber-500/5",
+              color: "text-primary",
+              bg: "bg-primary/5",
             },
             {
               label: "Messages",
               value: connectionInfo.messagesProcessed,
-              icon: MessageCircle,
-              color: "text-indigo-500",
-              bg: "bg-indigo-500/5",
+              icon: WhatsAppIcon,
+              color: "text-primary",
+              bg: "bg-primary/5",
             },
             {
               label: "Bookings",
               value: connectionInfo.bookingsCreated,
               icon: CheckCircle2,
-              color: "text-emerald-500",
-              bg: "bg-emerald-500/5",
+              color: "text-primary",
+              bg: "bg-primary/5",
             },
           ].map((stat, i) => (
             <div
