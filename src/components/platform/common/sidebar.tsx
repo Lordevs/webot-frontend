@@ -69,8 +69,8 @@ const Sidebar = () => {
         )}>
         {/* Logo */}
         <div className="h-20 border-b border-border/50 flex items-center px-6 gap-3 shrink-0">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-            <Calendar className="w-5 h-5 text-white" />
+          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+            <span className="text-primary-foreground font-bold italic">W</span>
           </div>
           <span className="text-2xl font-black tracking-tighter text-foreground">
             Webot
