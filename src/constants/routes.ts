@@ -8,6 +8,14 @@ export const ROUTES = {
     HOW_IT_WORKS: "#how-it-works",
   },
 
+  PLATFORM: {
+    DASHBOARD: "/dashboard",
+    APPOINTMENTS: "/appointments",
+    AUTOMATIONS: "/automations",
+    CALENDAR_SETTINGS: "/calendar-settings",
+    WHATSAPP_SETUP: "/whatsapp-setup",
+  },
+
   ONBOARDING: {
     ROOT: "/onboarding",
   },
