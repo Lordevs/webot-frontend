@@ -57,10 +57,10 @@ export const CalendarSettings = () => {
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Column: Working Hours */}
-          <WorkingHours />
+          <BookingCalendar />
 
           {/* Right Column: Booking Calendar */}
-          <BookingCalendar />
+          <WorkingHours />
         </div>
 
         {/* Bottom Section: Additional Options */}
