@@ -60,7 +60,7 @@ export default function ProblemSection() {
             scale: [1, 1.1, 1],
           }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 -left-64 w-[600px] h-[600px] bg-destructive/10 rounded-full blur-[120px]"
+          className="absolute top-1/4 -left-64 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]"
         />
         <motion.div
           animate={{
@@ -87,8 +87,8 @@ export default function ProblemSection() {
             className="flex justify-center">
             <Badge
               variant="outline"
-              className="px-4 py-1.5 rounded-full border-destructive/20 text-destructive bg-destructive/5 font-bold text-[10px] tracking-[0.2em] uppercase">
-              The Problem
+              className="px-4 py-1.5 rounded-full border-primary/20 text-primary bg-primary/5 font-bold text-[10px] tracking-[0.2em] uppercase">
+              The Challenge
             </Badge>
           </motion.div>
 
@@ -99,7 +99,9 @@ export default function ProblemSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.15]">
             Appointment Scheduling <br className="hidden md:block" />
-            <span className="text-destructive">Shouldn’t Be Manual</span>
+            <span className="text-primary italic">
+              Doesn’t Have to Be Manual
+            </span>
           </motion.h2>
 
           <motion.p
@@ -122,18 +124,18 @@ export default function ProblemSection() {
           className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {problems.map((problem, index) => (
             <motion.div key={index}>
-              <Card className="group relative h-full bg-card/40 backdrop-blur-sm border-border/50 hover:border-destructive/30 hover:shadow-2xl hover:shadow-destructive/5 transition-all duration-500 overflow-hidden rounded-[2.5rem] py-8">
+              <Card className="group relative h-full bg-card/40 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 overflow-hidden rounded-[2.5rem] py-8">
                 <CardContent className="p-0 px-8 flex flex-col h-full">
                   {/* Icon Container */}
                   <div className="relative mb-8 w-14 h-14">
-                    <div className="absolute inset-0 bg-destructive/20 rounded-[1.25rem] group-hover:rotate-12 transition-transform duration-500 blur-sm group-hover:blur-md" />
-                    <div className="relative w-14 h-14 rounded-[1.25rem] bg-card border border-destructive/10 flex items-center justify-center text-destructive group-hover:scale-110 group-hover:bg-destructive group-hover:text-white transition-all duration-500">
+                    <div className="absolute inset-0 bg-primary/20 rounded-[1.25rem] group-hover:rotate-12 transition-transform duration-500 blur-sm group-hover:blur-md" />
+                    <div className="relative w-14 h-14 rounded-[1.25rem] bg-card border border-primary/10 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500">
                       <problem.icon className="w-7 h-7" />
                     </div>
                   </div>
 
                   <div className="flex-1 space-y-3 mb-10">
-                    <h3 className="text-xl font-bold tracking-tight group-hover:text-destructive transition-colors duration-300">
+                    <h3 className="text-xl font-bold tracking-tight group-hover:text-primary transition-colors duration-300">
                       {problem.title}
                     </h3>
                     <p className="text-muted-foreground text-[15px] leading-relaxed font-medium">
@@ -144,7 +146,7 @@ export default function ProblemSection() {
                   {/* Stat section with improved viz */}
                   <div className="pt-6 border-t border-border/50 relative">
                     <div className="flex items-baseline gap-1">
-                      <span className="text-3xl font-black text-destructive tracking-tighter">
+                      <span className="text-3xl font-black text-primary tracking-tighter">
                         {problem.stat}
                       </span>
                     </div>
@@ -154,13 +156,13 @@ export default function ProblemSection() {
 
                     {/* Subtle arrow on hover */}
                     <div className="absolute right-0 bottom-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500">
-                      <ArrowRight className="w-5 h-5 text-destructive/40" />
+                      <ArrowRight className="w-5 h-5 text-primary/40" />
                     </div>
                   </div>
                 </CardContent>
 
                 {/* Subtle Hover Gradient */}
-                <div className="absolute inset-0 bg-linear-to-br from-destructive/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-br from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
               </Card>
             </motion.div>
           ))}

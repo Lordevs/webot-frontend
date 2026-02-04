@@ -74,18 +74,6 @@ export default function ContactUsSection() {
                 content="hello@webot.com"
                 description="We wrap back within 12 hours."
               />
-              <ContactInfoCard
-                icon={MessageSquare}
-                title="WhatsApp Support"
-                content="+1 (555) 000-WBT"
-                description="Available for priority early access users."
-              />
-              <ContactInfoCard
-                icon={Clock}
-                title="Support Hours"
-                content="9 AM - 6 PM EST"
-                description="Monday to Friday, worldwide support."
-              />
             </div>
 
             <div className="p-8 rounded-[2.5rem] bg-primary/5 border border-primary/10">
