@@ -76,24 +76,24 @@ const DashboardOverview = () => {
 
   const quickActionsData = [
     {
-      title: "Bot Sandbox",
-      desc: "Simulate chat flows",
+      title: "Test Bot",
+      desc: "See how your bot chats",
       icon: MessageCircle,
       color: "text-[#25D366]",
       bg: "bg-emerald-500/5",
       href: ROUTES.PLATFORM.WHATSAPP_SETUP,
     },
     {
-      title: "Rules Engine",
-      desc: "Matrix coordination",
+      title: "Automations",
+      desc: "Manage your workflows",
       icon: Zap,
       color: "text-amber-500",
       bg: "bg-amber-500/5",
       href: ROUTES.PLATFORM.AUTOMATIONS,
     },
     {
-      title: "Temporal Sync",
-      desc: "Availability window",
+      title: "Calendar",
+      desc: "Set your work hours",
       icon: Calendar,
       color: "text-primary",
       bg: "bg-primary/5",
@@ -130,38 +130,43 @@ const DashboardOverview = () => {
       variants={containerVariants}
       className="max-w-7xl mx-auto space-y-8 p-4 lg:p-8">
       {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
         <motion.div variants={itemVariants} className="space-y-1">
           <Badge
             variant="outline"
-            className="mb-2 bg-primary/5 border-primary/10 text-primary font-bold uppercase tracking-widest text-[10px] px-3 py-1">
-            Enterprise Command Center
+            className="mb-2 bg-primary/5 border-primary/10 text-primary font-semibold uppercase tracking-widest text-[10px] px-3 py-1">
+            Dashboard Overview
           </Badge>
-          <h1 className="text-4xl lg:text-5xl font-black tracking-tight text-foreground">
+          <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
             Welcome back, <span className="text-primary">Felix!</span> 👋
           </h1>
-          <p className="text-muted-foreground text-lg font-medium">
-            Your conversational engine is optimized and handling{" "}
-            <span className="text-foreground font-bold italic">
-              14 active inquiries.
-            </span>
+          <p className="text-muted-foreground text-base">
+            Your AI assistant is active and helping{" "}
+            <span className="text-foreground font-semibold italic underline decoration-primary/30 underline-offset-4">
+              14 customers
+            </span>{" "}
+            today.
           </p>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
+        <motion.div variants={itemVariants} className="flex items-center gap-3">
           <Button
             variant="outline"
-            className="h-12 px-6 rounded-xl font-bold bg-background border-border/50 shadow-sm transition-all hover:bg-muted"
+            className="h-11 px-5 rounded-xl font-semibold bg-background border-border/50 shadow-sm transition-all hover:bg-muted"
             asChild>
             <Link href={ROUTES.PLATFORM.APPOINTMENTS}>
               <Calendar className="w-4 h-4 mr-2" />
               All Appointments
             </Link>
           </Button>
-          <Button className="h-12 px-6 rounded-xl font-bold shadow-xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 group">
-            <WhatsAppIcon className="w-4 h-4 mr-2" />
-            Launch Sandbox
-            <ArrowRight className="w-3 h-3 ml-2 transition-transform group-hover:translate-x-1" />
+          <Button
+            variant="ghost"
+            className="h-11 px-5 rounded-xl font-semibold text-emerald-600 hover:bg-emerald-50 gap-2"
+            asChild>
+            <Link href={ROUTES.PLATFORM.WHATSAPP_SETUP}>
+              <WhatsAppIcon className="w-4 h-4" />
+              WhatsApp Setup
+            </Link>
           </Button>
         </motion.div>
       </div>
@@ -171,16 +176,16 @@ const DashboardOverview = () => {
         variants={itemVariants}
         className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <IntegrationCard
-          title="WhatsApp Hub"
-          statusText="Linked: +1 (888) WEBOT"
+          title="WhatsApp Status"
+          statusText="Connected"
           statusColor="emerald"
           icon={WhatsAppIcon}
           href={ROUTES.PLATFORM.WHATSAPP_SETUP}
           variants={itemVariants}
         />
         <IntegrationCard
-          title="Main Calendar"
-          statusText="Live Sync: Primary"
+          title="Google Calendar"
+          statusText="Synced"
           statusColor="primary"
           icon={Calendar}
           href={ROUTES.PLATFORM.CALENDAR_SETTINGS}
@@ -191,7 +196,7 @@ const DashboardOverview = () => {
       {/* High-Impact Stat Matrix */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
-          label="Daily Appointments"
+          label="Today's Bookings"
           value={stats.todayAppointments}
           icon={CalendarCheck}
           color="text-primary"
@@ -199,16 +204,15 @@ const DashboardOverview = () => {
           variants={itemVariants}
         />
         <StatCard
-          label="Revenue Momentum"
+          label="Total This Week"
           value="12"
           icon={TrendingUp}
           color="text-amber-500"
           bg="bg-amber-500/5"
-          suffix=" Units"
           variants={itemVariants}
         />
         <StatCard
-          label="Active Network"
+          label="My Customers"
           value={stats.totalCustomers}
           icon={Users}
           color="text-indigo-500"
@@ -216,7 +220,7 @@ const DashboardOverview = () => {
           variants={itemVariants}
         />
         <StatCard
-          label="Bot Precision"
+          label="Closing Rate"
           value={stats.conversionRate}
           icon={Sparkles}
           color="text-emerald-500"

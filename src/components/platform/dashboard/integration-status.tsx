@@ -44,17 +44,17 @@ export const IntegrationCard = ({
       />
     </div>
     <div className="flex-1 space-y-1">
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">
-        Protocol Status
+      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/60">
+        Connection
       </p>
-      <h3 className="text-xl font-black tracking-tight">{title}</h3>
+      <h3 className="text-lg font-bold tracking-tight">{title}</h3>
       <div className="flex items-center gap-2">
         <span
           className={cn(
-            "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase border",
+            "flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase border",
             statusColor === "emerald"
-              ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/10"
-              : "bg-primary/10 text-primary border-primary/10",
+              ? "bg-emerald-500/5 text-emerald-600 border-emerald-500/10"
+              : "bg-primary/5 text-primary border-primary/10",
           )}>
           <div
             className={cn(

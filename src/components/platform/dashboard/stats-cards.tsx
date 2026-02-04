@@ -29,10 +29,10 @@ export const StatCard = ({
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40 leading-none">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/40 leading-none">
               {label}
             </p>
-            <p className="text-3xl font-black tracking-tighter">
+            <p className="text-2xl font-bold tracking-tight">
               {value}
               {suffix || ""}
             </p>

@@ -33,40 +33,40 @@ export const OperationalTimeline = ({
   variants,
 }: OperationalTimelineProps) => (
   <motion.div variants={variants} className="lg:col-span-2">
-    <Card className="h-full border border-border/50 shadow-2xl shadow-black/2 rounded-[3rem] overflow-hidden flex flex-col">
-      <CardHeader className="p-8 pb-4">
+    <Card className="h-full border border-border/50 shadow-2xl shadow-black/2 rounded-[2.5rem] overflow-hidden flex flex-col">
+      <CardHeader className="p-6 pb-2">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <CardTitle className="text-2xl font-black tracking-tight">
-              Today's Protocol
+            <CardTitle className="text-xl font-bold tracking-tight">
+              Today's Schedule
             </CardTitle>
-            <CardDescription className="font-medium">
-              Operational timeline for efficient execution
+            <CardDescription className="font-medium text-xs">
+              Your appointments for today
             </CardDescription>
           </div>
           <Button
             variant="ghost"
-            className="rounded-xl font-bold gap-2"
+            className="h-9 px-3 rounded-xl font-semibold text-xs gap-2"
             asChild>
             <Link href={ROUTES.PLATFORM.APPOINTMENTS}>
-              View Matrix
-              <ArrowRight className="w-4 h-4" />
+              View All
+              <ArrowRight className="w-3 h-3" />
             </Link>
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="p-8 pt-0 flex-1">
-        <div className="space-y-4">
+      <CardContent className="p-6 pt-2 flex-1">
+        <div className="space-y-3">
           {appointments.map((apt) => (
             <div
               key={apt.id}
-              className="group flex items-center justify-between p-4 px-6 rounded-3xl bg-muted/20 border border-transparent hover:border-border transition-all duration-300">
-              <div className="flex items-center gap-5">
+              className="group flex items-center justify-between p-3 px-4 rounded-2xl bg-muted/20 border border-transparent hover:border-border transition-all duration-300">
+              <div className="flex items-center gap-4">
                 <div
                   className={cn(
-                    "w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-black ring-4 ring-offset-2 ring-transparent transition-all",
+                    "w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold ring-2 ring-offset-2 ring-transparent transition-all",
                     apt.status === "completed"
-                      ? "bg-muted text-muted-foreground opacity-50 capitalize shadow-inner"
+                      ? "bg-muted text-muted-foreground opacity-50 shadow-inner"
                       : "bg-primary/10 text-primary shadow-lg shadow-primary/5 ring-primary/5",
                   )}>
                   {apt.customer
@@ -74,22 +74,22 @@ export const OperationalTimeline = ({
                     .map((n) => n[0])
                     .join("")}
                 </div>
-                <div className="space-y-0.5">
+                <div className="space-y-0">
                   <p
                     className={cn(
-                      "font-black tracking-tight text-lg",
+                      "font-bold tracking-tight text-base",
                       apt.status === "completed"
                         ? "text-muted-foreground/60"
                         : "text-foreground",
                     )}>
                     {apt.customer}
                   </p>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest opacity-40">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest opacity-40">
                       {apt.type}
                     </span>
-                    <span className="w-1 h-1 rounded-full bg-muted-foreground opacity-20" />
-                    <span className="text-xs font-black text-muted-foreground/60">
+                    <span className="w-0.5 h-0.5 rounded-full bg-muted-foreground opacity-20" />
+                    <span className="text-[10px] font-semibold text-muted-foreground/60">
                       {apt.time}
                     </span>
                   </div>
@@ -98,12 +98,12 @@ export const OperationalTimeline = ({
               <Badge
                 variant="outline"
                 className={cn(
-                  "rounded-xl px-4 py-1.5 font-black uppercase text-[9px] tracking-widest transition-all",
+                  "rounded-lg px-3 py-1 font-semibold uppercase text-[8px] tracking-widest transition-all",
                   apt.status === "completed"
                     ? "bg-muted text-muted-foreground/40 border-transparent"
                     : "bg-emerald-500/10 text-emerald-600 border-emerald-500/10",
                 )}>
-                {apt.status === "completed" ? "Synchronized" : "Upcoming"}
+                {apt.status === "completed" ? "Done" : "Upcoming"}
               </Badge>
             </div>
           ))}
