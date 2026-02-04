@@ -7,7 +7,7 @@ import SecuritySection from "@/components/home/security-section";
 import MVPScope from "@/components/home/mvp-scope";
 import FutureAutomationEcosystem from "@/components/home/future-automation-ecosystem";
 import CTASection from "@/components/home/cta-section";
-import SimplePricing from "@/components/home/simple-pricing";
+import SimplePricing from "@/components/common/simple-pricing";
 import TrustCompliance from "@/components/home/trust-compliance";
 import ContactUsSection from "@/components/home/contact-us-section";
 
