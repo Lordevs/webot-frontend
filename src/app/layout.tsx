@@ -9,9 +9,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "ScheduleBot",
-  description:
-    "ScheduleBot is a platform that helps you schedule your meetings",
+  title: "Webot",
+  description: "Webot is a platform that helps you schedule your meetings",
 };
 
 export default function RootLayout({
