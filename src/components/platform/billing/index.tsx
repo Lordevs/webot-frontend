@@ -4,7 +4,6 @@ import { motion, Variants } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { UsageStats } from "./usage-stats";
 import SimplePricing from "@/components/common/simple-pricing";
-import { InvoiceHistory } from "./invoice-history";
 import { CreditCard, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -61,15 +60,6 @@ const BillingOverview = () => {
             commitment levels.
           </p>
         </motion.div>
-
-        <motion.div variants={itemVariants}>
-          <Button
-            variant="outline"
-            className="h-14 px-8 rounded-2xl font-black gap-3 border-border/40 bg-card/60 backdrop-blur-sm shadow-xl shadow-black/2 hover:scale-[1.02] transition-all">
-            <CreditCard className="w-5 h-5 text-primary" />
-            Payment Methods
-          </Button>
-        </motion.div>
       </div>
 
       {/* Resource Utilization (Usage Stats) */}
@@ -84,11 +74,6 @@ const BillingOverview = () => {
       <div className="-mt-16">
         <SimplePricing />
       </div>
-
-      {/* Transaction Records (Invoice History) */}
-      <motion.div variants={itemVariants}>
-        <InvoiceHistory />
-      </motion.div>
     </motion.div>
   );
 };
