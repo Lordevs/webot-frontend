@@ -1,5 +1,11 @@
 import { ROUTES } from "@/constants/routes";
-import { LayoutDashboard, Calendar, Settings2, Bot, Zap } from "lucide-react";
+import {
+  LayoutDashboard,
+  Calendar,
+  Settings2,
+  Bot,
+  CalendarRange,
+} from "lucide-react";
 import { WhatsAppIcon } from "@/components/common/icons";
 
 export const SIDEBAR_ITEMS = [
@@ -16,7 +22,7 @@ export const SIDEBAR_ITEMS = [
   {
     title: "Calendar Settings",
     href: ROUTES.PLATFORM.CALENDAR_SETTINGS,
-    icon: Settings2,
+    icon: CalendarRange,
   },
   {
     title: "Appointments",
