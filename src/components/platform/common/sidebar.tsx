@@ -166,22 +166,6 @@ const Sidebar = () => {
           </div>
         </div>
       </aside>
-
-      <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(var(--primary-rgb), 0.1);
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(var(--primary-rgb), 0.2);
-        }
-      `}</style>
     </>
   );
 };
