@@ -25,7 +25,7 @@ export const SIDEBAR_ITEMS = [
     icon: Bot,
     children: [
       {
-        title: "Calendar Settings",
+        title: "Google Calendar",
         href: ROUTES.PLATFORM.CALENDAR_SETTINGS,
         icon: CalendarRange,
       },
