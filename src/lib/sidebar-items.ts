@@ -21,20 +21,21 @@ export const SIDEBAR_ITEMS = [
     icon: WhatsAppIcon,
   },
   {
-    title: "Calendar Settings",
-    href: ROUTES.PLATFORM.CALENDAR_SETTINGS,
-    icon: CalendarRange,
-  },
-  {
-    title: "Appointments",
-    href: ROUTES.PLATFORM.APPOINTMENTS,
-    icon: Calendar,
-  },
-  {
-    title: "Automations",
-    href: ROUTES.PLATFORM.AUTOMATIONS,
+    title: "My Bot",
     icon: Bot,
-    isComingSoon: true,
+    children: [
+      {
+        title: "Calendar Settings",
+        href: ROUTES.PLATFORM.CALENDAR_SETTINGS,
+        icon: CalendarRange,
+      },
+      {
+        title: "Automations",
+        href: ROUTES.PLATFORM.AUTOMATIONS,
+        icon: Bot,
+        isComingSoon: true,
+      },
+    ],
   },
 ];
 

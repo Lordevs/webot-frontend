@@ -2,12 +2,108 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, HelpCircle, User, Menu, X } from "lucide-react";
+import { LogOut, HelpCircle, User, Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { SIDEBAR_ITEMS, BOTTOM_NAV_ITEMS } from "@/lib/sidebar-items";
 import { ROUTES } from "@/constants/routes";
+import { motion, AnimatePresence } from "framer-motion";
+
+const SidebarItemWithChildren = ({
+  item,
+  pathname,
+  setMobileOpen,
+}: {
+  item: any;
+  pathname: string;
+  setMobileOpen: (open: boolean) => void;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const isActiveParent = item.children?.some(
+    (child: any) => pathname === child.href,
+  );
+
+  // Auto-open if child is active
+  if (isActiveParent && !isOpen) setIsOpen(true);
+
+  return (
+    <div className="mb-1">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          "w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-200 group hover:bg-muted hover:text-foreground",
+          isActiveParent
+            ? "text-foreground bg-muted/50"
+            : "text-muted-foreground",
+        )}>
+        <item.icon
+          className={cn(
+            "w-5 h-5 shrink-0 transition-transform group-hover:scale-110",
+            isActiveParent ? "text-primary" : "text-muted-foreground/60",
+          )}
+        />
+        <span className="flex-1 text-left">{item.title}</span>
+        <ChevronDown
+          className={cn(
+            "w-4 h-4 transition-transform duration-200",
+            isOpen && "rotate-180",
+          )}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden">
+            <div className="pl-4 pt-1 space-y-1">
+              {item.children.map((child: any) => {
+                const isChildActive = pathname === child.href;
+                return (
+                  <Link
+                    key={child.href}
+                    href={child.isComingSoon ? "#" : child.href}
+                    onClick={(e) => {
+                      if (child.isComingSoon) e.preventDefault();
+                      setMobileOpen(false);
+                    }}
+                    className={cn(
+                      "flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 border-l-2 ml-4",
+                      isChildActive
+                        ? "border-primary text-primary bg-primary/5"
+                        : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                      child.isComingSoon && "opacity-50 cursor-not-allowed",
+                    )}>
+                    {child.icon && (
+                      <child.icon
+                        className={cn(
+                          "w-4 h-4 shrink-0 transition-transform group-hover:scale-110",
+                          isChildActive
+                            ? "text-primary"
+                            : "text-muted-foreground/60",
+                        )}
+                      />
+                    )}
+                    <span className="flex-1">{child.title}</span>
+                    {child.isComingSoon && (
+                      <span className="text-[8px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
+                        Soon
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -66,7 +162,19 @@ const Sidebar = () => {
               Core Protocol
             </span>
           </div>
-          {SIDEBAR_ITEMS.map((item) => {
+
+          {SIDEBAR_ITEMS.map((item: any) => {
+            if (item.children) {
+              return (
+                <SidebarItemWithChildren
+                  key={item.title}
+                  item={item}
+                  pathname={pathname}
+                  setMobileOpen={setMobileOpen}
+                />
+              );
+            }
+
             const isActive = pathname === item.href && !item.isComingSoon;
             const isDisabled = item.isComingSoon;
             return (
@@ -78,7 +186,7 @@ const Sidebar = () => {
                   setMobileOpen(false);
                 }}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-200 group",
+                  "flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-200 group mb-1",
                   isActive
                     ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20 scale-[1.02]"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground",
