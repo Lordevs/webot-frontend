@@ -25,7 +25,7 @@ export const StatCard = ({
   variants,
 }: StatProps) => (
   <motion.div variants={variants}>
-    <Card className="group border border-border/40 bg-card/60 backdrop-blur-sm shadow-xl shadow-black/2 rounded-4xl overflow-hidden hover:border-primary/20 hover:shadow-primary/5 transition-all duration-500">
+    <Card className="group gap-0 py-0 border border-border/40 bg-card/60 backdrop-blur-sm shadow-xl shadow-black/2 rounded-4xl overflow-hidden hover:border-primary/20 hover:shadow-primary/5 transition-all duration-500">
       <CardContent className="p-7 relative">
         {/* Subtle Background Pattern */}
         <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:scale-125 transition-transform duration-700">

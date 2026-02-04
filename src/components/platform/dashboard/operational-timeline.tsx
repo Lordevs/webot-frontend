@@ -33,7 +33,7 @@ export const OperationalTimeline = ({
   variants,
 }: OperationalTimelineProps) => (
   <motion.div variants={variants} className="lg:col-span-2">
-    <Card className="h-full border border-border/40 bg-card/60 backdrop-blur-sm shadow-xl shadow-black/2 rounded-4xl overflow-hidden flex flex-col">
+    <Card className="h-full py-0 gap-0 border border-border/40 bg-card/60 backdrop-blur-sm shadow-xl shadow-black/2 rounded-4xl overflow-hidden flex flex-col">
       <CardHeader className="p-8 pb-4 border-b border-border/10">
         <div className="flex items-center justify-between">
           <div className="space-y-1">

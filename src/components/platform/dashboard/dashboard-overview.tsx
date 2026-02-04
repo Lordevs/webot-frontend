@@ -128,7 +128,7 @@ const DashboardOverview = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="max-w-7xl mx-auto space-y-10 p-6 lg:p-10 relative">
+      className="max-w-screen-2xl mx-auto space-y-10 p-4 lg:p-8 relative">
       {/* Background Ornament */}
       <div className="absolute top-0 right-0 -z-10 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 -z-10 w-[300px] h-[300px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
@@ -240,7 +240,7 @@ const DashboardOverview = () => {
       </div>
 
       {/* Strategic Content Layout */}
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-6">
         <NextAppointmentCard
           appointment={nextAppointmentData}
           variants={itemVariants}
