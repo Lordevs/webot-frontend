@@ -15,6 +15,7 @@ export const ROUTES = {
     CALENDAR_SETTINGS: "/calendar-settings",
     WHATSAPP_SETUP: "/whatsapp-setup",
     SETTINGS: "/settings",
+    BILLING: "/billing",
   },
 
   ONBOARDING: {

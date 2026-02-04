@@ -5,6 +5,7 @@ import {
   Settings2,
   Bot,
   CalendarRange,
+  CreditCard,
 } from "lucide-react";
 import { WhatsAppIcon } from "@/components/common/icons";
 
@@ -33,5 +34,19 @@ export const SIDEBAR_ITEMS = [
     title: "Automations",
     href: ROUTES.PLATFORM.AUTOMATIONS,
     icon: Bot,
+    isComingSoon: true,
+  },
+];
+
+export const BOTTOM_NAV_ITEMS = [
+  {
+    title: "Billing",
+    href: ROUTES.PLATFORM.BILLING,
+    icon: CreditCard,
+  },
+  {
+    title: "Settings",
+    href: ROUTES.PLATFORM.SETTINGS,
+    icon: Settings2,
   },
 ];

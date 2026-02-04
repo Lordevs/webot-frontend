@@ -2,30 +2,12 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  Calendar,
-  Settings2,
-  LogOut,
-  HelpCircle,
-  CreditCard,
-  User,
-  Menu,
-  X,
-} from "lucide-react";
+import { LogOut, HelpCircle, User, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { SIDEBAR_ITEMS } from "@/lib/sidebar-items";
+import { SIDEBAR_ITEMS, BOTTOM_NAV_ITEMS } from "@/lib/sidebar-items";
 import { ROUTES } from "@/constants/routes";
-
-const bottomNavItems = [
-  { title: "Billing", href: "#", icon: CreditCard }, // Placeholder as it's not in ROUTES yet
-  {
-    title: "Settings",
-    href: ROUTES.PLATFORM.SETTINGS,
-    icon: Settings2,
-  },
-];
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -85,17 +67,22 @@ const Sidebar = () => {
             </span>
           </div>
           {SIDEBAR_ITEMS.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === item.href && !item.isComingSoon;
+            const isDisabled = item.isComingSoon;
             return (
               <Link
                 key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
+                href={isDisabled ? "#" : item.href}
+                onClick={(e) => {
+                  if (isDisabled) e.preventDefault();
+                  setMobileOpen(false);
+                }}
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-200 group",
                   isActive
                     ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20 scale-[1.02]"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  isDisabled && "opacity-40 cursor-not-allowed",
                 )}>
                 <item.icon
                   className={cn(
@@ -104,6 +91,11 @@ const Sidebar = () => {
                   )}
                 />
                 <span className="flex-1">{item.title}</span>
+                {item.isComingSoon && (
+                  <span className="text-[8px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
+                    Soon
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -112,7 +104,7 @@ const Sidebar = () => {
         {/* Footer Area */}
         <div className="p-4 border-t border-border/50 space-y-6">
           <div className="space-y-1">
-            {bottomNavItems.map((item) => {
+            {BOTTOM_NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
