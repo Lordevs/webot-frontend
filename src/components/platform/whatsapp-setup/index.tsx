@@ -79,9 +79,9 @@ const WhatsAppSetupOverview = () => {
       </motion.div>
 
       {/* Deployment Modes */}
-      <motion.div variants={itemVariants}>
+      {/* <motion.div variants={itemVariants}>
         <ConnectionOptions isConnected={isConnected} />
-      </motion.div>
+      </motion.div> */}
 
       {/* Flow Engineering */}
       <motion.div variants={itemVariants}>
