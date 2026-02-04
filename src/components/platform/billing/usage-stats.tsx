@@ -1,7 +1,8 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircle, Calendar, Users } from "lucide-react";
+import { WhatsAppIcon } from "@/components/common/icons";
+import { Calendar, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const UsageStats = () => {
