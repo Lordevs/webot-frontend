@@ -68,7 +68,7 @@ export const AppointmentDetails = ({
                     {appointment.customer}
                   </DialogTitle>
                   <DialogDescription className="text-base font-medium text-muted-foreground/70">
-                    Intelligence Report & Metadata
+                    Appointment Information
                   </DialogDescription>
                 </div>
               </div>
@@ -81,7 +81,7 @@ export const AppointmentDetails = ({
               <div className="flex items-center gap-2 text-muted-foreground/60">
                 <Calendar className="w-4 h-4 text-primary" />
                 <span className="text-[10px] font-black uppercase tracking-widest text-primary/60">
-                  Session Date
+                  Date
                 </span>
               </div>
               <p className="text-lg font-black tracking-tight">
@@ -92,7 +92,7 @@ export const AppointmentDetails = ({
               <div className="flex items-center gap-2 text-muted-foreground/60">
                 <Clock className="w-4 h-4 text-primary" />
                 <span className="text-[10px] font-black uppercase tracking-widest text-primary/60">
-                  Start Time
+                  Time
                 </span>
               </div>
               <p className="text-lg font-black tracking-tight">
@@ -104,7 +104,7 @@ export const AppointmentDetails = ({
           <div className="space-y-6">
             <div className="space-y-3">
               <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 px-1">
-                Session Data
+                Booking Details
               </h4>
               <div className="grid gap-3">
                 <div className="flex items-center justify-between p-4 bg-muted/20 rounded-2xl border border-transparent hover:border-border/50 transition-all">
@@ -132,9 +132,7 @@ export const AppointmentDetails = ({
                 <div className="flex items-center justify-between p-4 bg-muted/20 rounded-2xl border border-transparent hover:border-border/50 transition-all">
                   <div className="flex items-center gap-3">
                     <WhatsAppIcon className="w-4 h-4 text-[#25D366]" />
-                    <span className="text-sm font-bold opacity-60">
-                      Source Protocol
-                    </span>
+                    <span className="text-sm font-bold opacity-60">Source</span>
                   </div>
                   <span className="text-sm font-black text-[#25D366] uppercase tracking-widest">
                     WhatsApp Business
@@ -147,7 +145,7 @@ export const AppointmentDetails = ({
               <div className="pt-4 flex flex-col gap-3">
                 <Button className="h-14 px-8 rounded-2xl font-black shadow-xl shadow-primary/20 flex items-center justify-center gap-3 text-lg transition-transform hover:scale-[1.02] active:scale-[0.98]">
                   <Video className="w-6 h-6" />
-                  Initiate Video Bridge
+                  Join Google Meet
                 </Button>
                 <div className="flex items-center gap-2 justify-center text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">
                   <Shield className="w-3 h-3" />

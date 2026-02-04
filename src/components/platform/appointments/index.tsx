@@ -113,18 +113,18 @@ const AppointmentsOverview = () => {
         <Badge
           variant="outline"
           className="bg-primary/5 border-primary/20 text-primary font-bold uppercase tracking-[0.2em] text-[10px] px-4 py-1 rounded-full">
-          Session Matrix
+          Overview
         </Badge>
         <h1 className="text-4xl lg:text-5xl font-black tracking-tight text-foreground">
-          Command{" "}
+          My{" "}
           <span className="text-primary relative inline-block">
             Appointments
             <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/10 -z-10" />
           </span>
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl leading-relaxed font-medium">
-          Monitor your operational queue and active sessions. Seamlessly
-          transition between customer protocols and strategic syncs.
+          View and manage all your scheduled meetings in one place. Keep track
+          of your upcoming calls and historical bookings.
         </p>
       </motion.div>
 

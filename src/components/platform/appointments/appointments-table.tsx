@@ -114,10 +114,10 @@ export const AppointmentsTable = ({
                   Customer
                 </TableHead>
                 <TableHead className="py-5 font-black uppercase tracking-widest text-[10px] text-muted-foreground/60">
-                  Schedule
+                  Date & Time
                 </TableHead>
                 <TableHead className="py-5 font-black uppercase tracking-widest text-[10px] text-muted-foreground/60">
-                  Length
+                  Duration
                 </TableHead>
                 <TableHead className="py-5 font-black uppercase tracking-widest text-[10px] text-muted-foreground/60">
                   Status
@@ -170,7 +170,7 @@ export const AppointmentsTable = ({
                   <TableCell>
                     <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
                       <WhatsAppIcon className="w-3.5 h-3.5" />
-                      Protocol
+                      WhatsApp
                     </div>
                   </TableCell>
                   <TableCell>
@@ -190,7 +190,7 @@ export const AppointmentsTable = ({
                           onClick={() => onViewDetails(apt)}
                           className="py-3 px-4 font-bold text-sm focus:bg-primary focus:text-background cursor-pointer gap-3">
                           <Eye className="w-4 h-4" />
-                          View Intelligence
+                          View Details
                         </DropdownMenuItem>
                         {apt.status === "confirmed" && (
                           <>
@@ -200,7 +200,7 @@ export const AppointmentsTable = ({
                             </DropdownMenuItem>
                             <DropdownMenuItem className="py-3 px-4 font-bold text-sm text-destructive focus:bg-destructive focus:text-background cursor-pointer gap-3">
                               <X className="w-4 h-4" />
-                              Abandone Session
+                              Cancel Booking
                             </DropdownMenuItem>
                           </>
                         )}
@@ -222,10 +222,10 @@ export const AppointmentsTable = ({
               <CalendarDays className="w-10 h-10 text-muted-foreground/20" />
             </div>
             <h3 className="text-xl font-bold text-foreground">
-              No sessions found
+              No appointments found
             </h3>
             <p className="text-muted-foreground font-medium mt-1">
-              Refine your search parameters.
+              Try adjusting your search filters.
             </p>
           </motion.div>
         )}

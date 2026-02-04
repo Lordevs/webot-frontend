@@ -19,14 +19,14 @@ export const AppointmentsStats = ({
 }: AppointmentsStatsProps) => {
   const stats = [
     {
-      label: "Total Sessions",
+      label: "Total Bookings",
       value: total,
       icon: CalendarDays,
       color: "text-primary",
       bg: "bg-primary/10",
     },
     {
-      label: "Upcoming Flow",
+      label: "Upcoming",
       value: upcoming,
       icon: Clock,
       color: "text-emerald-500",
