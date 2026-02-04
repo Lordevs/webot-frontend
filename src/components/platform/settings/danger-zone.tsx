@@ -25,7 +25,6 @@ export const DangerZone = () => {
               <Shield className="w-6 h-6 text-destructive" />
             </div>
             <div>
-              ``
               <CardTitle className="text-xl font-black tracking-tight text-destructive">
                 Danger Protocol
               </CardTitle>
@@ -36,22 +35,6 @@ export const DangerZone = () => {
           </div>
         </CardHeader>
         <CardContent className="p-8 pt-6 space-y-4">
-          <div className="flex items-center justify-between p-4 bg-background/50 backdrop-blur-md rounded-2xl border border-border/50">
-            <div>
-              <p className="font-bold text-foreground">Global Sign Out</p>
-              <p className="text-xs text-muted-foreground font-medium mt-0.5">
-                Terminate all active sessions across devices.
-              </p>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2 h-9 border-border/50 hover:bg-background shadow-xs font-bold">
-              <LogOut className="w-4 h-4" />
-              Log Out All
-            </Button>
-          </div>
-
           <div className="flex items-center justify-between p-4 bg-background/50 backdrop-blur-md rounded-2xl border border-border/50">
             <div>
               <p className="font-bold text-destructive">Delete Account</p>

@@ -3,11 +3,9 @@
 import { motion, Variants } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Save, Settings2 } from "lucide-react";
+import { Save } from "lucide-react";
 import { ProfileSettings } from "./profile-settings";
 import { BusinessInfo } from "./business-info";
-import { NotificationPrefs } from "./notification-prefs";
-import { TimezoneSettings } from "./timezone-settings";
 import { DangerZone } from "./danger-zone";
 
 const SettingsOverview = () => {
@@ -75,11 +73,6 @@ const SettingsOverview = () => {
       <div className="grid gap-8">
         <ProfileSettings />
         <BusinessInfo />
-
-        <div className="grid md:grid-cols-2 gap-8">
-          <NotificationPrefs />
-          <TimezoneSettings />
-        </div>
 
         <DangerZone />
       </div>

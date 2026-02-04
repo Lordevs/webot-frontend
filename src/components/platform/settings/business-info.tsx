@@ -16,12 +16,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
 export const BusinessInfo = () => {
   const [businessName, setBusinessName] = useState("John's Consulting");
+  const [description, setDescription] = useState(
+    "We provide expert consulting services to help businesses grow and succeed.",
+  );
 
   return (
     <motion.div
@@ -49,13 +53,30 @@ export const BusinessInfo = () => {
             <Label
               htmlFor="businessName"
               className="text-xs font-bold uppercase tracking-wider text-muted-foreground/80">
-              Organization Name
+              Organization Name <span className="text-destructive">*</span>
             </Label>
             <Input
               id="businessName"
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
               className="h-12 rounded-xl border-border/50 bg-muted/20 focus:bg-background transition-all font-medium from-font"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label
+              htmlFor="description"
+              className="text-xs font-bold uppercase tracking-wider text-muted-foreground/80">
+              Description <span className="text-destructive">*</span>
+            </Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="min-h-[120px] rounded-xl border-border/50 bg-muted/20 focus:bg-background transition-all font-medium resize-none p-4"
+              placeholder="Tell us about your business..."
+              required
             />
           </div>
 
@@ -63,9 +84,9 @@ export const BusinessInfo = () => {
             <Label
               htmlFor="industry"
               className="text-xs font-bold uppercase tracking-wider text-muted-foreground/80">
-              Sector / Industry
+              Sector / Industry <span className="text-destructive">*</span>
             </Label>
-            <Select defaultValue="consulting">
+            <Select defaultValue="consulting" required>
               <SelectTrigger className="h-12 rounded-xl border-border/50 bg-muted/20 focus:bg-background transition-all font-medium">
                 <SelectValue />
               </SelectTrigger>
