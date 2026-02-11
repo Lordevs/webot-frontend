@@ -14,6 +14,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { OnboardingSidebar } from "./onboarding-sidebar";
 import { WhatsAppStep } from "./whatsapp-step";
 import { CalendarStep } from "./calendar-step";
+import { ProfileProvider } from "@/contexts/profile-context";
 
 const steps = [
   {
@@ -65,7 +66,8 @@ export function OnboardingContainer() {
   };
 
   return (
-    <SidebarProvider>
+    <ProfileProvider>
+      <SidebarProvider>
       <div className="flex h-screen w-full bg-background overflow-hidden">
         <OnboardingSidebar steps={steps} currentStep={currentStep} />
 
@@ -173,5 +175,6 @@ export function OnboardingContainer() {
         </SidebarInset>
       </div>
     </SidebarProvider>
+    </ProfileProvider>
   );
 }

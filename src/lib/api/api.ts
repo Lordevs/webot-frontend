@@ -67,7 +67,7 @@ export class ApiClient {
 
     // Get token from cookies via shared storage utility
     const token = getAuthTokens().accessToken;
-    if (token && config.headers) {
+    if (token && config.headers && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

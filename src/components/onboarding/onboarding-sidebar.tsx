@@ -16,6 +16,9 @@ import { Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
+import { useProfile } from "@/contexts/profile-context";
+import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
 
 interface Step {
   id: number;
@@ -34,6 +37,8 @@ export function OnboardingSidebar({
   currentStep,
 }: OnboardingSidebarProps) {
   const router = useRouter();
+
+  const { profile, loading: profileLoading } = useProfile();
 
   const handleLogout = () => {
     router.push(ROUTES.AUTH.LOGIN);
@@ -123,20 +128,39 @@ export function OnboardingSidebar({
           <LogOut className="w-4 h-4 shrink-0" />
           <span>Logout</span>
         </Button>
-        <div className="flex items-center flex-row justify-between p-3 rounded-2xl bg-muted/30">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
-              JD
+        <div className="flex items-center flex-row p-3 rounded-2xl bg-muted/30 border border-border/50">
+          {profileLoading ? (
+            <>
+              <Skeleton className="w-8 h-8 rounded-full" />
+              <div className="flex flex-col gap-1.5 ml-3">
+                <Skeleton className="h-2 w-16" />
+                <Skeleton className="h-1.5 w-12" />
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-8 h-8 rounded-full bg-linear-to-tr from-primary to-emerald-500 p-0.5 shadow-md">
+                <div className="w-full h-full rounded-full bg-background flex items-center justify-center overflow-hidden border-2 border-background">
+                  <Image
+                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile?.email || "guest"}`}
+                    alt="Avatar"
+                    width={32}
+                    height={32}
+                    unoptimized
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="text-xs font-black text-foreground truncate">
+                  {profile?.email?.split("@")[0] || "User"}
+                </span>
+                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider truncate">
+                  Onboarding Mode
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-foreground">
-                John Doe
-              </span>
-              <span className="text-[10px] text-muted-foreground">
-                Setup Mode
-              </span>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </Sidebar>

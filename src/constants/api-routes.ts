@@ -2,6 +2,7 @@ export const API_ROUTES = {
   AUTH: {
     LOGIN: "/api/users/auth/login/",
     SIGNUP: "/api/users/auth/signup/",
+    LOGOUT: "/api/users/auth/logout/",
     REFRESH_TOKEN: "/api/users/auth/refresh-token/",
     FORGOT_PASSWORD: "/api/users/auth/forgot-password/",
     RESET_PASSWORD: "/api/users/auth/reset-password/",

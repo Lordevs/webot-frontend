@@ -9,18 +9,19 @@ import { useState } from "react";
 import { SIDEBAR_ITEMS, BOTTOM_NAV_ITEMS } from "@/lib/sidebar-items";
 import { ROUTES } from "@/constants/routes";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect } from "react";
-import apiCaller from "@/lib/api/api-caller";
-import { API_ROUTES } from "@/constants/api-routes";
 import { clearAuthCookies } from "@/lib/cookies";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
+import apiCaller from "@/lib/api/api-caller";
+import { API_ROUTES } from "@/constants/api-routes";
+import { useProfile } from "@/contexts/profile-context";
 
 interface SidebarChild {
   title: string;
   href: string;
   icon?: React.ElementType;
   isComingSoon?: boolean;
+  isExternal?: boolean;
 }
 
 interface SidebarItem {
@@ -28,12 +29,8 @@ interface SidebarItem {
   href: string;
   icon: React.ElementType;
   isComingSoon?: boolean;
+  isExternal?: boolean;
   children?: SidebarChild[];
-}
-
-interface UserProfile {
-  id: string;
-  email: string;
 }
 
 const SidebarItemWithChildren = ({
@@ -134,27 +131,18 @@ const SidebarItemWithChildren = ({
 const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [profileLoading, setProfileLoading] = useState(true);
+  const { profile, loading: profileLoading } = useProfile();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await apiCaller<UserProfile>(API_ROUTES.AUTH.PROFILE_ME, "GET");
-        setProfile(res.data);
-      } catch (error) {
-        console.error("Sidebar: Failed to fetch profile:", error);
-      } finally {
-        setProfileLoading(false);
-      }
-    };
-    fetchProfile();
-  }, []);
-
-  const handleLogout = () => {
-    clearAuthCookies();
-    router.push(ROUTES.AUTH.LOGIN);
+  const handleLogout = async () => {
+    try {
+      await apiCaller(API_ROUTES.AUTH.LOGOUT, "POST");
+    } catch (error) {
+      console.error("Sidebar: Logout API failed:", error);
+    } finally {
+      clearAuthCookies();
+      router.push(ROUTES.AUTH.LOGIN);
+    }
   };
 
   return (
@@ -219,13 +207,16 @@ const Sidebar = () => {
 
             const isActive = pathname === item.href && !item.isComingSoon;
             const isDisabled = item.isComingSoon;
+            const isExternal = item.isExternal;
             return (
               <Link
                 key={item.href}
                 href={isDisabled ? "#" : item.href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
                 onClick={(e) => {
                   if (isDisabled) e.preventDefault();
-                  setMobileOpen(false);
+                  if (!isExternal) setMobileOpen(false);
                 }}
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-200 group mb-1",
@@ -256,10 +247,14 @@ const Sidebar = () => {
           <div className="space-y-1">
             {BOTTOM_NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href;
+              const isExternal = (item as SidebarItem).isExternal;
+
               return (
                 <Link
                   key={item.title}
                   href={item.href}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
                   className={cn(
                     "flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200",
                     isActive
@@ -275,7 +270,7 @@ const Sidebar = () => {
             <Button
               variant="ghost"
               onClick={handleLogout}
-              className="w-full mt-2 flex items-center justify-start gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-destructive hover:bg-destructive/10 transition-all duration-200 h-auto">
+              className="w-full mt-2 flex items-center justify-start gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-accent transition-all duration-200 h-auto">
               <LogOut className="w-4 h-4 shrink-0" />
               <span>Logout</span>
             </Button>

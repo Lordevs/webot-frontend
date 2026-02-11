@@ -7,12 +7,9 @@ import {
   TrendingUp,
   Users,
   Sparkles,
-  Zap,
   Loader2,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ROUTES } from "@/constants/routes";
 import { WhatsAppIcon } from "@/components/common/icons";
@@ -28,7 +25,7 @@ import { SchedulePreview } from "./schedule-preview";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 
-interface UserProfile {
+interface DashboardProfile {
   id: string;
   email: string;
   phone_number: string | null;
@@ -50,11 +47,11 @@ interface BackendMeeting {
   status: "pending" | "confirmed" | "cancelled" | "failed";
 }
 
-const DashboardOverview = () => {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [meetings, setMeetings] = useState<BackendMeeting[]>([]);
+export default function DashboardOverview() {
   const searchParams = useSearchParams();
+  const [profile, setProfile] = useState<DashboardProfile | null>(null);
+  const [meetings, setMeetings] = useState<BackendMeeting[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const status = searchParams.get("status");
@@ -67,10 +64,12 @@ const DashboardOverview = () => {
 
     const fetchData = async () => {
       try {
+        // Fetch dashboard-specific profile data (includes meeting_stats and is_google_connected)
         const [profileRes, meetingsRes] = await Promise.all([
-          apiCaller<UserProfile>(API_ROUTES.AUTH.PROFILE_ME, "GET"),
+          apiCaller<DashboardProfile>(API_ROUTES.AUTH.PROFILE_ME, "GET"),
           apiCaller<BackendMeeting[]>(API_ROUTES.MEETINGS.LIST, "GET"),
         ]);
+        
         setProfile(profileRes.data);
         setMeetings(meetingsRes.data);
       } catch (error) {
@@ -175,27 +174,6 @@ const DashboardOverview = () => {
             Your AI agent is active and monitoring your schedule.
           </p>
         </motion.div>
-
-        <motion.div variants={itemVariants} className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            className="h-11 px-5 rounded-xl font-bold bg-background border-border shadow-sm transition-all hover:bg-muted"
-            asChild>
-            <Link href={ROUTES.PLATFORM.APPOINTMENTS}>
-              <Calendar className="w-4 h-4 mr-2" />
-              All Appointments
-            </Link>
-          </Button>
-          <Button
-            variant="default"
-            className="h-11 px-5 rounded-xl font-bold gap-2"
-            asChild>
-            <Link href={ROUTES.PLATFORM.SETTINGS}>
-              <Zap className="w-4 h-4 shadow-sm" />
-              Manage Settings
-            </Link>
-          </Button>
-        </motion.div>
       </div>
 
       {/* Integration Status Layer */}
@@ -274,6 +252,4 @@ const DashboardOverview = () => {
       </div>
     </motion.div>
   );
-};
-
-export default DashboardOverview;
+}
