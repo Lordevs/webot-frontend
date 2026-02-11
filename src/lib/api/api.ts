@@ -50,7 +50,6 @@ export class ApiClient {
       API_ROUTES.AUTH.SIGNUP,
       API_ROUTES.AUTH.FORGOT_PASSWORD,
       API_ROUTES.AUTH.GOOGLE_AUTH_INIT,
-      API_ROUTES.GOOGLE_CALENDAR.CONNECT,
       API_ROUTES.GOOGLE_CALENDAR.CALLBACK,
     ].filter(Boolean) as string[];
     // Check if it's a public endpoint (starts with "public/")

@@ -1,18 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ExternalLink, LucideIcon } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface IntegrationCardProps {
   title: string;
   statusText: string;
   statusColor: string;
-  icon: any; // WhatsAppIcon or LucideIcon
+  icon: React.ComponentType<{ className?: string }>;
   href: string;
-  variants: any;
+  variants: Variants;
 }
 
 export const IntegrationCard = ({
@@ -34,12 +34,12 @@ export const IntegrationCard = ({
         "w-16 h-16 rounded-[1.8rem] flex items-center justify-center shrink-0 border group-hover:scale-110 transition-transform",
         statusColor === "emerald"
           ? "bg-emerald-500/10 border-emerald-500/10"
-          : "bg-primary/10 border-primary/10",
+          : "bg-red-500/10 border-red-500/10",
       )}>
       <Icon
         className={cn(
           "w-8 h-8",
-          statusColor === "emerald" ? "text-emerald-500" : "text-primary",
+          statusColor === "emerald" ? "text-emerald-500" : "text-red-500",
         )}
       />
     </div>
@@ -54,19 +54,19 @@ export const IntegrationCard = ({
             "flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase border",
             statusColor === "emerald"
               ? "bg-emerald-500/5 text-emerald-600 border-emerald-500/10"
-              : "bg-primary/5 text-primary border-primary/10",
+              : "bg-red-500/5 text-red-600 border-red-500/10",
           )}>
           <div
             className={cn(
               "w-1.5 h-1.5 rounded-full animate-pulse",
-              statusColor === "emerald" ? "bg-emerald-500" : "bg-primary",
+              statusColor === "emerald" ? "bg-emerald-500" : "bg-red-500",
             )}
           />
           {statusText}
         </span>
       </div>
     </div>
-    <Button
+    {/* <Button
       variant="ghost"
       size="icon"
       className="rounded-full transition-colors"
@@ -79,6 +79,6 @@ export const IntegrationCard = ({
           )}
         />
       </Link>
-    </Button>
+    </Button> */}
   </motion.div>
 );

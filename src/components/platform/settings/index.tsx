@@ -4,7 +4,6 @@ import { motion, Variants } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { ConnectivitySettings } from "./connectivity-settings";
 import { SecuritySettings } from "./security-settings";
-import { DangerZone } from "./danger-zone";
 
 const SettingsOverview = () => {
   const containerVariants: Variants = {
@@ -63,7 +62,6 @@ const SettingsOverview = () => {
       <div className="grid gap-10">
         <ConnectivitySettings />
         <SecuritySettings />
-        <DangerZone />
       </div>
     </motion.div>
   );

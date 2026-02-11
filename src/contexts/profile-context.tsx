@@ -10,6 +10,7 @@ export interface UserProfile {
   username: string;
   phone_number: string | null;
   is_phone_verified: boolean;
+  is_google_connected: boolean;
   timezone: string;
 }
 

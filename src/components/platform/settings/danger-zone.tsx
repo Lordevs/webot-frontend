@@ -8,8 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Shield, LogOut, Trash2 } from "lucide-react";
+import { Shield, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const DangerZone = () => {

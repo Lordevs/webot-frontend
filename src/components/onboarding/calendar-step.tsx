@@ -10,8 +10,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { getApiBaseUrl } from "@/lib/api/config";
 import { API_ROUTES } from "@/constants/api-routes";
+import apiCaller from "@/lib/api/api-caller";
+import { toast } from "sonner";
 
 interface CalendarStepProps {
   connected: boolean;
@@ -28,10 +29,18 @@ export function CalendarStep({ connected, onConnect }: CalendarStepProps) {
     }
   }, [connected, onConnect]);
 
-  const handleConnect = () => {
+  const handleConnect = async () => {
     setIsLoading(true);
-    const authUrl = `${getApiBaseUrl()}${API_ROUTES.GOOGLE_CALENDAR.CONNECT}`;
-    window.location.href = authUrl;
+    try {
+      const res = await apiCaller<{ url: string }>(API_ROUTES.GOOGLE_CALENDAR.CONNECT, "GET");
+      window.location.href = res.data.url;
+    } catch (error) {
+      console.error("Failed to initiate Google Calendar connection:", error);
+      toast.error("Failed to connect", {
+        description: "Could not initiate Google Calendar connection. Please try again.",
+      });
+      setIsLoading(false);
+    }
   };
 
   return (

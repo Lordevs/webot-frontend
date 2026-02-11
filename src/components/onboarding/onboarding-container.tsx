@@ -14,7 +14,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { OnboardingSidebar } from "./onboarding-sidebar";
 import { WhatsAppStep } from "./whatsapp-step";
 import { CalendarStep } from "./calendar-step";
-import { ProfileProvider } from "@/contexts/profile-context";
+import { ProfileProvider, useProfile } from "@/contexts/profile-context";
 
 const steps = [
   {
@@ -31,12 +31,40 @@ const steps = [
   },
 ];
 
-export function OnboardingContainer() {
+function OnboardingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { profile, loading: profileLoading } = useProfile();
+  
   const [currentStep, setCurrentStep] = useState(1);
   const [whatsappConnected, setWhatsappConnected] = useState(false);
   const [calendarConnected, setCalendarConnected] = useState(false);
+  const [initialized, setInitialized] = useState(false);
+
+  // Initialize state from profile when it loads
+  useEffect(() => {
+    if (!profileLoading && profile && !initialized) {
+      Promise.resolve().then(() => {
+        setWhatsappConnected(profile.is_phone_verified);
+        setCalendarConnected(profile.is_google_connected);
+        
+        // Redirect if both are complete
+        if (profile.is_phone_verified && profile.is_google_connected) {
+          router.push("/dashboard");
+          return;
+        }
+        
+        // Set initial step based on completion
+        if (profile.is_phone_verified && !profile.is_google_connected) {
+          setCurrentStep(2);
+        } else {
+          setCurrentStep(1);
+        }
+        
+        setInitialized(true);
+      });
+    }
+  }, [profile, profileLoading, initialized, router]);
 
   useEffect(() => {
     const status = searchParams.get("status");
@@ -65,9 +93,20 @@ export function OnboardingContainer() {
     }
   };
 
+  // Show loading while checking profile
+  if (profileLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-sm text-muted-foreground font-medium">Loading your profile...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <ProfileProvider>
-      <SidebarProvider>
+    <SidebarProvider>
       <div className="flex h-screen w-full bg-background overflow-hidden">
         <OnboardingSidebar steps={steps} currentStep={currentStep} />
 
@@ -175,6 +214,13 @@ export function OnboardingContainer() {
         </SidebarInset>
       </div>
     </SidebarProvider>
+  );
+}
+
+export function OnboardingContainer() {
+  return (
+    <ProfileProvider>
+      <OnboardingContent />
     </ProfileProvider>
   );
 }

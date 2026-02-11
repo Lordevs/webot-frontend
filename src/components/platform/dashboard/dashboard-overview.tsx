@@ -157,11 +157,6 @@ export default function DashboardOverview() {
       {/* Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
         <motion.div variants={itemVariants} className="space-y-2">
-          <Badge
-            variant="outline"
-            className="bg-primary/5 border-primary/20 text-primary font-bold uppercase tracking-[0.2em] text-[10px] px-4 py-1 rounded-full">
-            Platform Alpha
-          </Badge>
           <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             Welcome back,{" "}
             <span className="relative inline-block text-primary italic">
@@ -185,7 +180,7 @@ export default function DashboardOverview() {
           statusText={
             profile?.is_phone_verified ? "Verified" : "Action Required"
           }
-          statusColor={profile?.is_phone_verified ? "emerald" : "amber"}
+          statusColor={profile?.is_phone_verified ? "emerald" : "red"}
           icon={WhatsAppIcon}
           href={ROUTES.PLATFORM.SETTINGS}
           variants={itemVariants}
@@ -195,7 +190,7 @@ export default function DashboardOverview() {
           statusText={
             profile?.is_google_connected ? "Connected" : "Not Synced"
           }
-          statusColor={profile?.is_google_connected ? "emerald" : "amber"}
+          statusColor={profile?.is_google_connected ? "emerald" : "red"}
           icon={Calendar}
           href={ROUTES.PLATFORM.SETTINGS}
           variants={itemVariants}

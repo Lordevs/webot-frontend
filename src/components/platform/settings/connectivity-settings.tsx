@@ -17,7 +17,7 @@ import {
   AlertCircle,
   RefreshCw,
   Link2,
-  Unlink2
+  Unlink
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { WhatsAppIcon } from "@/components/common/icons";
@@ -25,6 +25,7 @@ import apiCaller from "@/lib/api/api-caller";
 import { API_ROUTES } from "@/constants/api-routes";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { ConfirmPopover } from "@/components/ui/confirm-popover";
 
 interface UserProfile {
   phone_number: string | null;
@@ -103,7 +104,6 @@ export const ConnectivitySettings = () => {
   };
 
   const handleDisconnectGoogle = async () => {
-    if (!confirm("Are you sure you want to disconnect your Google Calendar? Webot will no longer be able to schedule meetings.")) return;
     try {
       await apiCaller(API_ROUTES.GOOGLE_CALENDAR.DISCONNECT, "POST");
       toast.success("Google Calendar disconnected.");
@@ -177,13 +177,24 @@ export const ConnectivitySettings = () => {
                     className="h-12 rounded-xl border-border/50 bg-muted/20 focus:bg-background transition-all font-medium"
                   />
                   {!otpMode && (
-                    <Button 
-                        onClick={handleUpdatePhone}
+                    <ConfirmPopover
+                      title={profile?.phone_number ? "Update Phone Number?" : "Connect WhatsApp?"}
+                      description={
+                        profile?.phone_number
+                          ? "You'll receive a verification code on your new WhatsApp number."
+                          : "You'll receive a verification code to confirm your WhatsApp number."
+                      }
+                      confirmText={profile?.phone_number ? "Update" : "Connect"}
+                      onConfirm={handleUpdatePhone}
+                      disabled={updating || (newPhone === profile?.phone_number && profile?.is_phone_verified)}
+                    >
+                      <Button 
                         disabled={updating || (newPhone === profile?.phone_number && profile?.is_phone_verified)}
                         className="h-12 px-6 rounded-xl font-bold"
-                    >
-                      {updating ? <RefreshCw className="w-4 h-4 animate-spin" /> : (profile?.phone_number ? "Update" : "Connect")}
-                    </Button>
+                      >
+                        {updating ? <RefreshCw className="w-4 h-4 animate-spin" /> : (profile?.phone_number ? "Update" : "Connect")}
+                      </Button>
+                    </ConfirmPopover>
                   )}
                 </div>
               </div>
@@ -279,14 +290,21 @@ export const ConnectivitySettings = () => {
             
             <div className="w-full md:w-auto">
               {profile?.is_google_connected ? (
-                <Button 
-                    variant="outline" 
-                    onClick={handleDisconnectGoogle}
-                    className="h-12 px-8 rounded-xl font-bold border-red-500/20 text-red-500 hover:bg-red-500/5 gap-2 w-full md:w-auto"
+                <ConfirmPopover
+                  title="Disconnect Google Calendar?"
+                  description="Webot will no longer be able to schedule meetings or create Google Meet links. You can reconnect anytime."
+                  confirmText="Disconnect"
+                  variant="destructive"
+                  onConfirm={handleDisconnectGoogle}
                 >
-                  <Unlink2 className="w-4 h-4" />
-                  Disconnect Calendar
-                </Button>
+                  <Button 
+                    variant="outline" 
+                    className="h-12 px-8 rounded-xl font-bold border-red-500/20 text-red-500 hover:bg-red-500/5 gap-2 w-full md:w-auto"
+                  >
+                    <Unlink className="w-4 h-4" />
+                    Disconnect Calendar
+                  </Button>
+                </ConfirmPopover>
               ) : (
                 <Button 
                     onClick={handleIdelGoogleConnect}
