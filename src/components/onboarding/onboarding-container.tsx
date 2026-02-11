@@ -1,60 +1,54 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar,
   MessageCircle,
-  Building2,
-  TestTube,
   ArrowRight,
   ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { OnboardingSidebar } from "./onboarding-sidebar";
-import { CalendarStep } from "./calendar-step";
 import { WhatsAppStep } from "./whatsapp-step";
-import { BusinessStep } from "./business-step";
-import { TestBookingStep } from "./test-booking-step";
+import { CalendarStep } from "./calendar-step";
 
 const steps = [
   {
     id: 1,
-    title: "Calendar Sync",
-    icon: Calendar,
-    description: "Link your availability",
+    title: "WhatsApp Bot",
+    icon: MessageCircle,
+    description: "Activate your AI assistant",
   },
   {
     id: 2,
-    title: "WhatsApp Bot",
-    icon: MessageCircle,
-    description: "Active your AI assistant",
-  },
-  {
-    id: 3,
-    title: "Business Profile",
-    icon: Building2,
-    description: "Set your preferences",
-  },
-  {
-    id: 4,
-    title: "Live Preview",
-    icon: TestTube,
-    description: "Test the booking flow",
+    title: "Calendar Sync",
+    icon: Calendar,
+    description: "Link your availability",
   },
 ];
 
 export function OnboardingContainer() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
-  const [calendarConnected, setCalendarConnected] = useState(false);
   const [whatsappConnected, setWhatsappConnected] = useState(false);
-  const [testCompleted, setTestCompleted] = useState(false);
+  const [calendarConnected, setCalendarConnected] = useState(false);
+
+  useEffect(() => {
+    const status = searchParams.get("status");
+    const provider = searchParams.get("provider");
+
+    if (status === "success" && provider === "google" && !calendarConnected) {
+      setCalendarConnected(true);
+      setCurrentStep(2);
+    }
+  }, [searchParams, calendarConnected]);
 
   const handleNext = () => {
-    if (currentStep < 4) {
+    if (currentStep < 2) {
       setCurrentStep(currentStep + 1);
     } else {
       router.push("/dashboard");
@@ -120,22 +114,23 @@ export function OnboardingContainer() {
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     className="h-full">
                     {currentStep === 1 && (
-                      <CalendarStep
-                        connected={calendarConnected}
-                        onConnect={() => setCalendarConnected(true)}
+                      <WhatsAppStep
+                        connected={whatsappConnected}
+                        onConnect={() => {
+                          setWhatsappConnected(true);
+                          // Auto-advance after a short delay so user can see success state
+                          setTimeout(handleNext, 1500);
+                        }}
                       />
                     )}
                     {currentStep === 2 && (
-                      <WhatsAppStep
-                        connected={whatsappConnected}
-                        onConnect={() => setWhatsappConnected(true)}
-                      />
-                    )}
-                    {currentStep === 3 && <BusinessStep />}
-                    {currentStep === 4 && (
-                      <TestBookingStep
-                        completed={testCompleted}
-                        onComplete={() => setTestCompleted(true)}
+                      <CalendarStep
+                        connected={calendarConnected}
+                        onConnect={() => {
+                          setCalendarConnected(true);
+                          // Auto-advance/Complete after a short delay
+                          setTimeout(handleNext, 1500);
+                        }}
                       />
                     )}
                   </motion.div>
@@ -154,19 +149,18 @@ export function OnboardingContainer() {
 
                 <div className="flex items-center gap-3">
                   <p className="text-xs font-medium text-muted-foreground mr-2">
-                    {currentStep === 4
+                    {currentStep === 2
                       ? "Final step"
                       : "Next: " + steps[currentStep]?.title}
                   </p>
                   <Button
                     onClick={handleNext}
                     disabled={
-                      (currentStep === 1 && !calendarConnected) ||
-                      (currentStep === 2 && !whatsappConnected) ||
-                      (currentStep === 4 && !testCompleted)
+                      (currentStep === 1 && !whatsappConnected) ||
+                      (currentStep === 2 && !calendarConnected)
                     }
                     className="h-12 px-8 gap-2 font-bold shadow-lg shadow-primary/20 rounded-xl group">
-                    {currentStep === 4 ? "Complete Setup" : "Continue"}
+                    {currentStep === 2 ? "Complete Setup" : "Continue"}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </div>

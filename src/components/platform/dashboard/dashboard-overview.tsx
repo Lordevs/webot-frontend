@@ -3,7 +3,6 @@
 import { motion, Variants } from "framer-motion";
 import {
   Calendar,
-  ArrowRight,
   CalendarCheck,
   TrendingUp,
   Users,
@@ -16,6 +15,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ROUTES } from "@/constants/routes";
 import { WhatsAppIcon } from "@/components/common/icons";
+import { useState, useEffect } from "react";
+import apiCaller from "@/lib/api/api-caller";
+import { API_ROUTES } from "@/constants/api-routes";
 
 // Sub-components
 import { StatCard } from "./stats-cards";
@@ -24,55 +26,75 @@ import { NextAppointmentCard } from "./next-appointment";
 import { OperationalTimeline } from "./operational-timeline";
 import { QuickActions } from "./quick-actions";
 
+interface UserProfile {
+  id: number;
+  email: string;
+  full_name?: string;
+  total_customers?: number;
+  conversion_rate?: number;
+}
+
+interface BackendMeeting {
+  id: number;
+  summary: string;
+  start_time: string;
+  end_time: string;
+  meet_link?: string;
+  status: "pending" | "confirmed" | "cancelled" | "failed";
+}
+
 const DashboardOverview = () => {
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [meetings, setMeetings] = useState<BackendMeeting[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [profileRes, meetingsRes] = await Promise.all([
+          apiCaller<UserProfile>(API_ROUTES.AUTH.PROFILE_ME, "GET"),
+          apiCaller<BackendMeeting[]>(API_ROUTES.MEETINGS.LIST, "GET"),
+        ]);
+        setProfile(profileRes.data);
+        setMeetings(meetingsRes.data);
+      } catch (error) {
+        console.error("Failed to fetch dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const nextApt = meetings.find(m => m.status === 'confirmed' && new Date(m.start_time) > new Date()) || null;
+
+  const nextAppointmentData = nextApt ? {
+    title: nextApt.summary,
+    customer: "Guest", // Need to handle customer name from backend if available
+    time: new Date(nextApt.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    date: new Date(nextApt.start_time).toLocaleDateString() === new Date().toLocaleDateString() ? "Today" : new Date(nextApt.start_time).toLocaleDateString(),
+    duration: `${Math.round((new Date(nextApt.end_time).getTime() - new Date(nextApt.start_time).getTime()) / 60000)} min`,
+    meetLink: nextApt.meet_link,
+    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${nextApt.id}`,
+  } : null;
+
+  const todayAppointments = meetings
+    .filter(m => new Date(m.start_time).toLocaleDateString() === new Date().toLocaleDateString())
+    .map(m => ({
+      id: m.id,
+      customer: "Guest",
+      time: new Date(m.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      status: m.status === 'confirmed' ? 'upcoming' : m.status,
+      type: "Meeting",
+    }));
+
   // Mock data - replace with real data
   const stats = {
-    todayAppointments: 4,
-    weekAppointments: 12,
-    totalCustomers: 48,
-    conversionRate: 87,
+    todayAppointments: todayAppointments.length,
+    weekAppointments: meetings.length,
+    totalCustomers: profile?.total_customers || 0,
+    conversionRate: profile?.conversion_rate || 0,
   };
-
-  const nextAppointmentData = {
-    title: "Executive Strategy Sync",
-    customer: "Sarah Johnson",
-    time: "2:00 PM",
-    date: "Today",
-    duration: "45 min",
-    meetLink: "https://meet.google.com/abc-defg-hij",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-  };
-
-  const recentAppointments = [
-    {
-      id: 1,
-      customer: "Mike Wilson",
-      time: "10:00 AM",
-      status: "completed",
-      type: "Demo",
-    },
-    {
-      id: 2,
-      customer: "Emma Davis",
-      time: "11:30 AM",
-      status: "completed",
-      type: "Follow up",
-    },
-    {
-      id: 3,
-      customer: "Sarah Johnson",
-      time: "2:00 PM",
-      status: "upcoming",
-      type: "Consultation",
-    },
-    {
-      id: 4,
-      customer: "John Smith",
-      time: "4:00 PM",
-      status: "upcoming",
-      type: "Onboarding",
-    },
-  ];
 
   const quickActionsData = [
     {
@@ -144,7 +166,7 @@ const DashboardOverview = () => {
           <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             Welcome back,{" "}
             <span className="relative inline-block">
-              Felix
+              {profile?.full_name?.split(" ")[0] || "there"}
               <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/10 -z-10" />
             </span>{" "}
             👋
@@ -241,12 +263,14 @@ const DashboardOverview = () => {
 
       {/* Strategic Content Layout */}
       <div className="grid lg:grid-cols-3 gap-6">
-        <NextAppointmentCard
-          appointment={nextAppointmentData}
-          variants={itemVariants}
-        />
+        {nextAppointmentData && (
+          <NextAppointmentCard
+            appointment={nextAppointmentData}
+            variants={itemVariants}
+          />
+        )}
         <OperationalTimeline
-          appointments={recentAppointments}
+          appointments={todayAppointments}
           variants={itemVariants}
         />
       </div>

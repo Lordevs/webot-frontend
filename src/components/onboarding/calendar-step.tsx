@@ -1,24 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Calendar,
   CheckCircle2,
-  Globe,
   Loader2,
   Link2,
   Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { getApiBaseUrl } from "@/lib/api/config";
+import { API_ROUTES } from "@/constants/api-routes";
 
 interface CalendarStepProps {
   connected: boolean;
@@ -28,12 +21,17 @@ interface CalendarStepProps {
 export function CalendarStep({ connected, onConnect }: CalendarStepProps) {
   const [isLoading, setIsLoading] = useState(false);
 
+  // Trigger onConnect when the parent state updates from URL params
+  useEffect(() => {
+    if (connected) {
+      onConnect();
+    }
+  }, [connected, onConnect]);
+
   const handleConnect = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      onConnect();
-    }, 1200);
+    const authUrl = `${getApiBaseUrl()}${API_ROUTES.GOOGLE_CALENDAR.CONNECT}`;
+    window.location.href = authUrl;
   };
 
   return (
@@ -124,29 +122,6 @@ export function CalendarStep({ connected, onConnect }: CalendarStepProps) {
               </div>
             </div>
 
-            <div className="space-y-6 pt-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Label className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60 flex items-center gap-2">
-                    <Globe className="w-4 h-4" /> Global Timezone
-                  </Label>
-                  <p className="text-xs text-muted-foreground">
-                    Ensures bookings are accurate across borders.
-                  </p>
-                </div>
-                <Select defaultValue="utc-5">
-                  <SelectTrigger className="w-64 h-12 bg-card border-border/50 rounded-xl font-medium">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-xl">
-                    <SelectItem value="utc-8">Pacific Time (UTC-8)</SelectItem>
-                    <SelectItem value="utc-5">Eastern Time (UTC-5)</SelectItem>
-                    <SelectItem value="utc+0">UTC</SelectItem>
-                    <SelectItem value="utc+5.5">India (UTC+5:30)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
           </div>
         ) : (
           <div className="animate-in zoom-in-95 fade-in duration-500 py-10">

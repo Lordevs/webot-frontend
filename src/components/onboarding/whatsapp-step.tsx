@@ -6,13 +6,16 @@ import {
   CheckCircle2,
   Loader2,
   Sparkles,
-  Zap,
   ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { WhatsAppIcon } from "../common/icons";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import apiCaller from "@/lib/api/api-caller";
+import { API_ROUTES } from "@/constants/api-routes";
 
 interface WhatsAppStepProps {
   connected: boolean;
@@ -21,13 +24,59 @@ interface WhatsAppStepProps {
 
 export function WhatsAppStep({ connected, onConnect }: WhatsAppStepProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [step, setStep] = useState<"input" | "verify">("input");
 
-  const handleConnect = () => {
+  const handleSendCode = async () => {
+    if (!phoneNumber) {
+      toast.error("Please enter a phone number");
+      return;
+    }
+
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      await apiCaller(API_ROUTES.AUTH.PHONE_UPDATE, "POST", {
+        phone_number: phoneNumber,
+      });
+      toast.success("Verification code sent!", {
+        description: "Please check your WhatsApp.",
+      });
+      setStep("verify");
+    } catch (error: any) {
+      console.error("Failed to send code:", error);
+      toast.error("Failed to send code", {
+        description: error.response?.data?.error || "Something went wrong.",
+      });
+    } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    if (!otpCode) {
+      toast.error("Please enter the verification code");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await apiCaller(API_ROUTES.AUTH.PHONE_VERIFY, "POST", {
+        phone_number: phoneNumber,
+        otp_code: otpCode,
+      });
+      toast.success("Phone verified!", {
+        description: "Your WhatsApp is now connected.",
+      });
       onConnect();
-    }, 1800);
+    } catch (error: any) {
+      console.error("Verification failed:", error);
+      toast.error("Verification failed", {
+        description: error.response?.data?.error || "Invalid code.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -50,73 +99,76 @@ export function WhatsAppStep({ connected, onConnect }: WhatsAppStepProps) {
 
       <div className="grid gap-6">
         {!connected ? (
-          <>
-            <div className="grid sm:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-              <button
-                onClick={handleConnect}
-                disabled={isLoading}
-                className={cn(
-                  "group relative p-8 rounded-[2.5rem] border-2 text-left transition-all duration-500",
-                  "bg-card hover:shadow-[0_20px_50px_rgba(var(--primary-rgb),0.1)] hover:-translate-y-1",
-                  isLoading
-                    ? "border-primary shadow-lg"
-                    : "border-border/50 hover:border-primary/50",
-                )}>
-                <div className="absolute top-6 right-6">
-                  <Badge className="bg-emerald-500 hover:bg-emerald-600 text-[10px] font-black uppercase tracking-wider px-3 border-none">
-                    Recommended
-                  </Badge>
-                </div>
+          <div className="grid gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/20 backdrop-blur-md space-y-6">
+              <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center mb-6">
+                <Smartphone className="w-8 h-8 text-primary" />
+              </div>
 
-                <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                  {isLoading ? (
-                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                  ) : (
-                    <Smartphone className="w-8 h-8 text-primary" />
-                  )}
+              {step === "input" ? (
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-lg font-bold">
+                      Phone Number
+                    </Label>
+                    <Input
+                      id="phone"
+                      placeholder="+1 (555) 000-0000"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className="h-14 text-lg bg-background/50 border-border/50 rounded-2xl"
+                    />
+                    <p className="text-xs text-muted-foreground italic">
+                      Include country code (e.g., +1 for USA)
+                    </p>
+                  </div>
+                  <Button
+                    onClick={handleSendCode}
+                    disabled={isLoading}
+                    className="w-full h-14 text-lg font-bold rounded-2xl">
+                    {isLoading ? (
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    ) : (
+                      "Send Verification Code"
+                    )}
+                  </Button>
                 </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-black text-2xl tracking-tight">
-                    Virtual Assistant
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed font-medium">
-                    We provision a dedicated business line instantly. Ideal for
-                    scaling fast.
-                  </p>
+              ) : (
+                <div className="space-y-4 animate-in fade-in slide-in-from-right-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="otp" className="text-lg font-bold">
+                      Verification Code
+                    </Label>
+                    <Input
+                      id="otp"
+                      placeholder="Enter 6-digit code"
+                      value={otpCode}
+                      onChange={(e) => setOtpCode(e.target.value)}
+                      className="h-14 text-2xl tracking-[0.5em] text-center bg-background/50 border-border/50 rounded-2xl"
+                      maxLength={6}
+                    />
+                  </div>
+                  <div className="flex gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => setStep("input")}
+                      disabled={isLoading}
+                      className="h-14 px-6 rounded-2xl border-border/50">
+                      Back
+                    </Button>
+                    <Button
+                      onClick={handleVerifyCode}
+                      disabled={isLoading}
+                      className="flex-1 h-14 text-lg font-bold rounded-2xl">
+                      {isLoading ? (
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      ) : (
+                        "Verify & Connect"
+                      )}
+                    </Button>
+                  </div>
                 </div>
-
-                <div className="mt-8 flex items-center gap-2 text-xs font-bold text-primary italic">
-                  <Zap className="w-3 h-3 fill-current" />
-                  Setup in &lt; 10 seconds
-                </div>
-              </button>
-
-              <button
-                disabled
-                className="p-8 rounded-[2.5rem] border-2 border-dashed border-muted text-left opacity-60 grayscale cursor-not-allowed group transition-all duration-500">
-                <div className="w-16 h-16 rounded-3xl bg-muted flex items-center justify-center mb-6">
-                  <WhatsAppIcon className="w-8 h-8 text-muted-foreground" />
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-black text-2xl tracking-tight text-muted-foreground whitespace-nowrap">
-                    Meta Cloud API
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed font-medium">
-                    Connect your existing company number via official Business
-                    API.
-                  </p>
-                </div>
-
-                <div className="mt-8">
-                  <Badge
-                    variant="secondary"
-                    className="bg-muted text-[10px] font-black uppercase tracking-widest px-3">
-                    Waitlist Active
-                  </Badge>
-                </div>
-              </button>
+              )}
             </div>
 
             <div className="p-8 rounded-3xl bg-muted/30 border border-border/50 flex flex-col sm:flex-row gap-6 items-center">
@@ -131,19 +183,17 @@ export function WhatsAppStep({ connected, onConnect }: WhatsAppStepProps) {
                     />
                   </div>
                 ))}
-                <div className="w-10 h-10 rounded-full border-4 border-background bg-primary flex items-center justify-center text-[10px] font-black text-white">
-                  +2k
-                </div>
               </div>
-              <p className="text-sm font-medium text-muted-foreground leading-relaxed text-center sm:text-left">
-                Join thousands of businesses delegating their{" "}
+              <p className="text-sm font-medium text-muted-foreground leading-relaxed">
+                We&apos;ll send you a verification code via WhatsApp. Make sure
+                your{" "}
                 <span className="text-foreground font-bold italic">
-                  customer coordination
+                  number is active
                 </span>{" "}
-                to Webot's proprietary virtual layer.
+                and ready to receive messages.
               </p>
             </div>
-          </>
+          </div>
         ) : (
           <div className="w-full animate-in zoom-in-95 fade-in duration-700">
             <div className="p-1 rounded-[3rem] bg-linear-to-br from-emerald-500 to-emerald-400 shadow-3xl shadow-emerald-500/20">

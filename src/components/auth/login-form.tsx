@@ -11,36 +11,61 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "../ui/card";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { ROUTES } from "@/constants/routes";
+import apiCaller from "@/lib/api/api-caller";
+import { API_ROUTES } from "@/constants/api-routes";
+import { setAuthCookies } from "@/lib/cookies";
+import { getApiBaseUrl } from "@/lib/api/config";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate login
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success("Welcome back!", {
-        description: "You have successfully logged in.",
+    try {
+      const response = await apiCaller<{
+        session: { access_token: string; refresh_token: string };
+        user: { id: string; email: string; phone_number: string | null };
+      }>(API_ROUTES.AUTH.LOGIN, "POST", {
+        email,
+        password,
       });
-      // router.push(ROUTES.DASHBOARD.ROOT);
-    }, 1000);
+
+      const { session, user } = response.data;
+      setAuthCookies(session.access_token, session.refresh_token);
+
+      toast.success("Welcome back!", {
+        description: `Successfully logged in as ${user.email}`,
+      });
+
+      // Check if user has a phone number, if not, they might need onboarding
+      if (!user.phone_number) {
+        router.push(ROUTES.ONBOARDING.ROOT);
+      } else {
+        router.push(ROUTES.PLATFORM.DASHBOARD);
+      }
+    } catch (error: any) {
+      console.error("Login failed:", error);
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.detail ||
+        "Invalid email or password";
+      toast.error("Login failed", {
+        description: message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleLogin = () => {
-    setIsLoading(true);
-    // Simulate Google Login
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.info("Google Login", {
-        description: "Redirecting to Google...",
-      });
-    }, 800);
+    // Redirect to backend Google Auth
+    window.location.href = `${getApiBaseUrl()}${API_ROUTES.AUTH.GOOGLE_AUTH_INIT}`;
   };
 
   return (
@@ -71,79 +96,80 @@ export default function Login() {
                 to make money.
               </p>
             </motion.div>
-            {/* Email Input */}
-            <motion.div
-              className="space-y-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}>
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-11 h-11 bg-muted/50 border-muted-foreground/10 focus:bg-background transition-all"
-                  required
-                />
-              </div>
-            </motion.div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Email Input */}
+              <motion.div
+                className="space-y-2"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}>
+                <Label htmlFor="email">Email</Label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-11 h-11 bg-muted/50 border-muted-foreground/10 focus:bg-background transition-all"
+                    required
+                  />
+                </div>
+              </motion.div>
 
-            {/* Password Input */}
-            <motion.div
-              className="space-y-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}>
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-11 pr-11 h-11 bg-muted/50 border-muted-foreground/10 focus:bg-background transition-all"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-            </motion.div>
-            {/* Forgot Password */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}>
-              <Link
-                href={ROUTES.AUTH.FORGOT_PASSWORD}
-                className="flex justify-end text-xs text-primary hover:underline font-medium">
-                Forgot password?
-              </Link>
-            </motion.div>
-            {/* Continue Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}>
-              <Link href={ROUTES.ONBOARDING.ROOT}>
-                <Button className="w-full">Login</Button>
-              </Link>
-            </motion.div>
+              {/* Password Input */}
+              <motion.div
+                className="space-y-2"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}>
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-11 pr-11 h-11 bg-muted/50 border-muted-foreground/10 focus:bg-background transition-all"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              </motion.div>
+              {/* Forgot Password */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}>
+                <Link
+                  href={ROUTES.AUTH.FORGOT_PASSWORD}
+                  className="flex justify-end text-xs text-primary hover:underline font-medium">
+                  Forgot password?
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}>
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Logging in..." : "Login"}
+                </Button>
+              </motion.div>
+            </form>
             {/* Divider */}
             <motion.div
               className="relative"
@@ -194,7 +220,7 @@ export default function Login() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 1.0, ease: "easeOut" }}>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 href={ROUTES.AUTH.SIGNUP}
                 className="text-primary font-bold hover:underline transition-all">

@@ -11,6 +11,10 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { ROUTES } from "@/constants/routes";
+import apiCaller from "@/lib/api/api-caller";
+import { API_ROUTES } from "@/constants/api-routes";
+import { setAuthCookies } from "@/lib/cookies";
+import { getApiBaseUrl } from "@/lib/api/config";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -18,32 +22,103 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate signup
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success("Account created!", {
-        description: "Welcome to Juri Bot. Please log in.",
+    try {
+      const response = await apiCaller<{
+        session: { access_token: string; refresh_token: string } | null;
+        user: { id: string; email: string };
+        message: string;
+      }>(API_ROUTES.AUTH.SIGNUP, "POST", {
+        email,
+        password,
+        first_name: name,
       });
-      router.push("/auth");
-    }, 1000);
+
+      const { session, message } = response.data;
+
+      if (session) {
+        setAuthCookies(session.access_token, session.refresh_token);
+        toast.success("Account created!", {
+          description: "Welcome to Webot.",
+        });
+        router.push(ROUTES.ONBOARDING.ROOT);
+      } else {
+        // Verification required
+        setIsSubmitted(true);
+        toast.info("Verification required", {
+          description: message,
+        });
+      }
+    } catch (error: unknown) {
+      console.error("Signup failed:", error);
+      const err = error as { response?: { data?: { error?: string; detail?: string } } };
+      const message =
+        err.response?.data?.error ||
+        err.response?.data?.detail ||
+        "Failed to create account. Email might be already in use.";
+      toast.error("Signup failed", {
+        description: message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleSignup = () => {
-    setIsLoading(true);
-    // Simulate Google Login
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.info("Google Signup", {
-        description: "Redirecting to Google...",
-      });
-    }, 800);
+    window.location.href = `${getApiBaseUrl()}${API_ROUTES.AUTH.GOOGLE_AUTH_INIT}`;
   };
+
+  if (isSubmitted) {
+    return (
+      <motion.div
+        className="flex flex-1 items-center justify-center p-4"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}>
+        <Card className="border-border/70 bg-card/20 w-full max-w-md shadow-[0_10px_26px_#e0e0e0a1] backdrop-blur-lg dark:shadow-none overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-1 bg-primary animate-pulse" />
+          <CardContent className="space-y-6 p-8 text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", damping: 12, delay: 0.2 }}
+              className="mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <Mail className="w-10 h-10 text-primary" />
+            </motion.div>
+            
+            <div className="space-y-2">
+              <h2 className="text-3xl font-bold tracking-tight">Check your email</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                We&apos;ve sent a verification link to <span className="text-foreground font-semibold">{email}</span>. 
+                Please click the link to verify your account.
+              </p>
+            </div>
+
+            <div className="space-y-4 pt-4">
+              <Button 
+                variant="outline" 
+                className="w-full h-12 font-bold rounded-xl"
+                asChild
+              >
+                <Link href={ROUTES.AUTH.LOGIN}>
+                  Back to Login
+                </Link>
+              </Button>
+              <p className="text-xs text-muted-foreground italic">
+                Didn&apos;t receive the email? Check your spam folder.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div

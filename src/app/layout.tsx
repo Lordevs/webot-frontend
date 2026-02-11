@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: "Webot is a platform that helps you schedule your meetings",
 };
 
+import AuthCallbackHandler from "@/components/auth/auth-callback-handler";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,6 +25,7 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} antialiased`}
         suppressHydrationWarning>
+        <AuthCallbackHandler />
         <Toaster richColors />
         {children}
       </body>

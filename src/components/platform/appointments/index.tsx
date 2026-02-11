@@ -1,75 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, Variants } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
+import apiCaller from "@/lib/api/api-caller";
+import { API_ROUTES } from "@/constants/api-routes";
 import { AppointmentsStats } from "./appointments-stats";
 import { AppointmentsTable, Appointment } from "./appointments-table";
 import { AppointmentDetails } from "./appointment-details";
+import { Loader2 } from "lucide-react";
+
+interface BackendMeeting {
+  id: number;
+  summary: string;
+  start_time: string;
+  end_time: string;
+  meet_link?: string;
+  status: "pending" | "confirmed" | "cancelled" | "failed";
+  customer_name?: string;
+  customer_email?: string;
+  duration_minutes?: number;
+  source?: string;
+}
 
 const AppointmentsOverview = () => {
   const [selectedAppointment, setSelectedAppointment] =
     useState<Appointment | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data
-  const appointments: Appointment[] = [
-    {
-      id: 1,
-      customer: "Sarah Johnson",
-      email: "sarah.j@email.com",
-      date: "Feb 3, 2026",
-      time: "10:00 AM",
-      duration: "30 min",
-      status: "confirmed",
-      source: "whatsapp",
-      meetLink: "https://meet.google.com/abc-defg-hij",
-    },
-    {
-      id: 2,
-      customer: "Mike Wilson",
-      email: "mike.w@email.com",
-      date: "Feb 3, 2026",
-      time: "11:30 AM",
-      duration: "30 min",
-      status: "completed",
-      source: "whatsapp",
-      meetLink: "https://meet.google.com/xyz-uvwx-yz",
-    },
-    {
-      id: 3,
-      customer: "Emma Davis",
-      email: "emma.d@email.com",
-      date: "Feb 3, 2026",
-      time: "2:00 PM",
-      duration: "45 min",
-      status: "confirmed",
-      source: "whatsapp",
-      meetLink: "https://meet.google.com/qrs-tuvw-xyz",
-    },
-    {
-      id: 4,
-      customer: "John Smith",
-      email: "john.s@email.com",
-      date: "Feb 4, 2026",
-      time: "9:00 AM",
-      duration: "30 min",
-      status: "confirmed",
-      source: "whatsapp",
-      meetLink: "https://meet.google.com/lmn-opqr-stu",
-    },
-    {
-      id: 5,
-      customer: "Lisa Brown",
-      email: "lisa.b@email.com",
-      date: "Feb 4, 2026",
-      time: "3:00 PM",
-      duration: "60 min",
-      status: "cancelled",
-      source: "whatsapp",
-      meetLink: "",
-    },
-  ];
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await apiCaller<BackendMeeting[]>(API_ROUTES.MEETINGS.LIST, "GET");
+        // Mapping backend fields to frontend Appointment type
+        const mapped: Appointment[] = response.data.map((apt: BackendMeeting) => ({
+          id: apt.id,
+          customer: apt.customer_name || "Guest",
+          email: apt.customer_email || "",
+          date: new Date(apt.start_time).toLocaleDateString(),
+          time: new Date(apt.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          duration: `${apt.duration_minutes || 30} min`,
+          status: (apt.status === "pending" ? "confirmed" : (apt.status === "failed" ? "cancelled" : apt.status)) as Appointment["status"],
+          source: (apt.source as "whatsapp") || "whatsapp",
+          meetLink: apt.meet_link || "",
+        }));
+        setAppointments(mapped);
+      } catch (error) {
+        console.error("Failed to fetch appointments:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchAppointments();
+  }, []);
+
 
   const handleViewDetails = (apt: Appointment) => {
     setSelectedAppointment(apt);
@@ -128,21 +114,30 @@ const AppointmentsOverview = () => {
         </p>
       </motion.div>
 
-      {/* Stats Layer */}
-      <AppointmentsStats
-        total={appointments.length}
-        upcoming={appointments.filter((a) => a.status === "confirmed").length}
-        completed={appointments.filter((a) => a.status === "completed").length}
-        cancelled={appointments.filter((a) => a.status === "cancelled").length}
-      />
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center py-40 gap-4">
+          <Loader2 className="w-10 h-10 text-primary animate-spin" />
+          <p className="text-muted-foreground font-medium animate-pulse">Syncing your appointments...</p>
+        </div>
+      ) : (
+        <>
+          {/* Stats Layer */}
+          <AppointmentsStats
+            total={appointments.length}
+            upcoming={appointments.filter((a) => a.status === "confirmed").length}
+            completed={appointments.filter((a) => a.status === "completed").length}
+            cancelled={appointments.filter((a) => a.status === "cancelled").length}
+          />
 
-      {/* Table Layer */}
-      <motion.div variants={itemVariants}>
-        <AppointmentsTable
-          appointments={appointments}
-          onViewDetails={handleViewDetails}
-        />
-      </motion.div>
+          {/* Table Layer */}
+          <motion.div variants={itemVariants}>
+            <AppointmentsTable
+              appointments={appointments}
+              onViewDetails={handleViewDetails}
+            />
+          </motion.div>
+        </>
+      )}
 
       {/* Intelligence Dialog */}
       <AppointmentDetails
