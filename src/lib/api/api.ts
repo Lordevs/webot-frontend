@@ -123,9 +123,14 @@ export class ApiClient {
     };
 
     // If it's a 401 or 403 error and we haven't retried yet
-    const isAuthError = error.response?.status === 401 && !originalReq._retry;
+    const status = error.response?.status;
+    const isAuthError =
+      (status === 401 || status === 403) && !originalReq._retry;
 
     if (isAuthError) {
+      console.log(
+        `ApiClient: Intercepted ${status} error, attempting refresh...`,
+      );
       // CRITICAL: If the failed request IS the refresh request, do not retry
       // This prevents infinite loops if the refresh token is also invalid
       if (originalReq.url?.includes(API_ROUTES.AUTH.REFRESH_TOKEN)) {

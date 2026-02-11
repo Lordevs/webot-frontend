@@ -10,12 +10,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import apiCaller from "@/lib/api/api-caller";
 import { API_ROUTES } from "@/constants/api-routes";
+import { AxiosError } from "axios";
+import Image from "next/image";
 
 interface WhatsAppStepProps {
   connected: boolean;
@@ -43,10 +44,11 @@ export function WhatsAppStep({ connected, onConnect }: WhatsAppStepProps) {
         description: "Please check your WhatsApp.",
       });
       setStep("verify");
-    } catch (error: any) {
-      console.error("Failed to send code:", error);
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ error?: string }>;
+      console.error("Failed to send code:", axiosError);
       toast.error("Failed to send code", {
-        description: error.response?.data?.error || "Something went wrong.",
+        description: axiosError.response?.data?.error || "Something went wrong.",
       });
     } finally {
       setIsLoading(false);
@@ -69,10 +71,11 @@ export function WhatsAppStep({ connected, onConnect }: WhatsAppStepProps) {
         description: "Your WhatsApp is now connected.",
       });
       onConnect();
-    } catch (error: any) {
-      console.error("Verification failed:", error);
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ error?: string }>;
+      console.error("Verification failed:", axiosError);
       toast.error("Verification failed", {
-        description: error.response?.data?.error || "Invalid code.",
+        description: axiosError.response?.data?.error || "Invalid code.",
       });
     } finally {
       setIsLoading(false);
@@ -177,9 +180,12 @@ export function WhatsAppStep({ connected, onConnect }: WhatsAppStepProps) {
                   <div
                     key={i}
                     className="w-10 h-10 rounded-full border-4 border-background bg-muted flex items-center justify-center overflow-hidden">
-                    <img
+                    <Image
                       src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 10}`}
                       alt="User"
+                      width={40}
+                      height={40}
+                      unoptimized
                     />
                   </div>
                 ))}

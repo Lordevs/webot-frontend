@@ -2,26 +2,52 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, HelpCircle, User, Menu, X, ChevronDown } from "lucide-react";
+import { LogOut, Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { SIDEBAR_ITEMS, BOTTOM_NAV_ITEMS } from "@/lib/sidebar-items";
 import { ROUTES } from "@/constants/routes";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
+import apiCaller from "@/lib/api/api-caller";
+import { API_ROUTES } from "@/constants/api-routes";
+import { clearAuthCookies } from "@/lib/cookies";
+import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
+
+interface SidebarChild {
+  title: string;
+  href: string;
+  icon?: React.ElementType;
+  isComingSoon?: boolean;
+}
+
+interface SidebarItem {
+  title: string;
+  href: string;
+  icon: React.ElementType;
+  isComingSoon?: boolean;
+  children?: SidebarChild[];
+}
+
+interface UserProfile {
+  id: string;
+  email: string;
+}
 
 const SidebarItemWithChildren = ({
   item,
   pathname,
   setMobileOpen,
 }: {
-  item: any;
+  item: SidebarItem;
   pathname: string;
   setMobileOpen: (open: boolean) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isActiveParent = item.children?.some(
-    (child: any) => pathname === child.href,
+    (child: SidebarChild) => pathname === child.href,
   );
 
   // Auto-open if child is active
@@ -61,7 +87,7 @@ const SidebarItemWithChildren = ({
             transition={{ duration: 0.2 }}
             className="overflow-hidden">
             <div className="pl-4 pt-1 space-y-1">
-              {item.children.map((child: any) => {
+              {item.children?.map((child: SidebarChild) => {
                 const isChildActive = pathname === child.href;
                 return (
                   <Link
@@ -108,10 +134,26 @@ const SidebarItemWithChildren = ({
 const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await apiCaller<UserProfile>(API_ROUTES.AUTH.PROFILE_ME, "GET");
+        setProfile(res.data);
+      } catch (error) {
+        console.error("Sidebar: Failed to fetch profile:", error);
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
+
   const handleLogout = () => {
-    // In a real app, clear cookies/session here
+    clearAuthCookies();
     router.push(ROUTES.AUTH.LOGIN);
   };
 
@@ -163,7 +205,7 @@ const Sidebar = () => {
             </span>
           </div>
 
-          {SIDEBAR_ITEMS.map((item: any) => {
+          {SIDEBAR_ITEMS.map((item: SidebarItem) => {
             if (item.children) {
               return (
                 <SidebarItemWithChildren
@@ -230,11 +272,6 @@ const Sidebar = () => {
               );
             })}
 
-            <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-muted-foreground hover:bg-muted hover:text-foreground transition-all duration-200">
-              <HelpCircle className="w-4 h-4 shrink-0" />
-              <span>Support</span>
-            </button>
-
             <Button
               variant="ghost"
               onClick={handleLogout}
@@ -245,23 +282,38 @@ const Sidebar = () => {
 
             {/* User Profile */}
             <div className="flex items-center gap-3 p-3 mt-4 rounded-2xl bg-muted/30 border border-border/50">
-              <div className="w-10 h-10 rounded-full bg-linear-to-tr from-primary to-emerald-500 p-0.5 shadow-md">
-                <div className="w-full h-full rounded-full bg-background flex items-center justify-center overflow-hidden border-2 border-background">
-                  <img
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=John"
-                    alt="Avatar"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-xs font-black text-foreground truncate">
-                  John Doe
-                </span>
-                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider truncate">
-                  Enterprise
-                </span>
-              </div>
+              {profileLoading ? (
+                <>
+                  <Skeleton className="w-10 h-10 rounded-full" />
+                  <div className="flex flex-col gap-1.5 flex-1">
+                    <Skeleton className="h-3 w-20" />
+                    <Skeleton className="h-2 w-16" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="w-10 h-10 rounded-full bg-linear-to-tr from-primary to-emerald-500 p-0.5 shadow-md">
+                    <div className="w-full h-full rounded-full bg-background flex items-center justify-center overflow-hidden border-2 border-background">
+                      <Image
+                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile?.email || "guest"}`}
+                        alt="Avatar"
+                        width={40}
+                        height={40}
+                        unoptimized
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs font-black text-foreground truncate">
+                      {profile?.email?.split("@")[0] || "User"}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider truncate">
+                      {profile?.email || "Guest User"}
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

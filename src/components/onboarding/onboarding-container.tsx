@@ -42,8 +42,11 @@ export function OnboardingContainer() {
     const provider = searchParams.get("provider");
 
     if (status === "success" && provider === "google" && !calendarConnected) {
-      setCalendarConnected(true);
-      setCurrentStep(2);
+      // Use microtask to avoid synchronous cascading render warning
+      Promise.resolve().then(() => {
+        setCalendarConnected(true);
+        setCurrentStep(2);
+      });
     }
   }, [searchParams, calendarConnected]);
 

@@ -2,10 +2,8 @@
 
 import { motion, Variants } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Save } from "lucide-react";
-import { ProfileSettings } from "./profile-settings";
-import { BusinessInfo } from "./business-info";
+import { ConnectivitySettings } from "./connectivity-settings";
+import { SecuritySettings } from "./security-settings";
 import { DangerZone } from "./danger-zone";
 
 const SettingsOverview = () => {
@@ -36,7 +34,7 @@ const SettingsOverview = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="container mx-auto space-y-8 p-4 lg:p-8 relative pb-20">
+      className="max-w-screen-2xl mx-auto space-y-8 p-4 lg:p-8 relative pb-20">
       {/* Background Ornaments */}
       <div className="absolute top-0 left-0 -z-10 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 -z-10 w-[300px] h-[300px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
@@ -57,23 +55,14 @@ const SettingsOverview = () => {
             </span>
           </h1>
           <p className="text-muted-foreground text-lg max-w-lg leading-relaxed font-medium">
-            Manage your personal profile, entity details, and system
-            preferences.
+            Manage your connectivity status, communication channels, and security.
           </p>
-        </motion.div>
-
-        <motion.div variants={itemVariants}>
-          <Button className="h-14 px-8 rounded-2xl font-black gap-3 shadow-xl shadow-primary/20 hover:scale-[1.02] transition-all bg-primary/90 hover:bg-primary">
-            <Save className="w-5 h-5" />
-            Save Changes
-          </Button>
         </motion.div>
       </div>
 
-      <div className="grid gap-8">
-        <ProfileSettings />
-        <BusinessInfo />
-
+      <div className="grid gap-10">
+        <ConnectivitySettings />
+        <SecuritySettings />
         <DangerZone />
       </div>
     </motion.div>

@@ -1,9 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, Video, ArrowRight } from "lucide-react";
+import { Clock, Video, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 
 interface NextAppointmentProps {
   appointment: {
@@ -13,77 +14,92 @@ interface NextAppointmentProps {
     date: string;
     duration: string;
     avatar: string;
+    meetLink?: string;
   };
-  variants: any;
+  variants: Variants;
 }
 
 export const NextAppointmentCard = ({
   appointment,
   variants,
 }: NextAppointmentProps) => (
-  <motion.div variants={variants} className="lg:col-span-1">
-    <div className="h-full relative group">
-      {/* Dynamic Glow Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-primary/30 via-indigo-500/30 to-purple-600/30 blur-[2px] rounded-[3rem] -z-10 group-hover:blur-xs transition-all duration-700" />
-
-      <div className="bg-card/40 backdrop-blur-xl border border-white/10 h-full rounded-[2.8rem] p-8 flex flex-col relative overflow-hidden shadow-2xl shadow-primary/5">
-        {/* Animated Corner Ornament */}
-        <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
-
-        <div className="flex items-center justify-between mb-10">
-          <Badge className="bg-primary text-primary-foreground border-none font-bold text-[10px] uppercase px-4 py-1.5 tracking-widest shadow-lg shadow-primary/20">
-            Next Appointment
-          </Badge>
-          <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md">
-            <Clock className="w-5 h-5 text-primary" />
+  <motion.div variants={variants} className="lg:col-span-1 h-full">
+    <div className="group relative h-full flex flex-col bg-card/40 backdrop-blur-2xl border border-white/10 rounded-4xl overflow-hidden shadow-2xl transition-all duration-500 hover:border-primary/30">
+      {/* Decorative Gradient Overlay */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[60px] -z-10 transition-transform duration-700 group-hover:scale-150" />
+      
+      <div className="flex flex-col h-full p-8">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">
+              Live Priority
+            </span>
           </div>
+          <Badge variant="outline" className="rounded-full bg-white/5 border-white/10 text-[9px] font-bold uppercase tracking-wider px-3 py-1">
+            Confirmed
+          </Badge>
         </div>
 
-        <div className="flex-1 space-y-8">
-          <div className="space-y-3">
-            <h3 className="text-3xl font-bold tracking-tight text-foreground leading-tight">
-              {appointment.title}
-            </h3>
-            <div className="flex items-center gap-3 p-2 pr-4 rounded-2xl bg-white/5 border border-white/5 w-fit">
-              <img
+        <div className="flex-1 space-y-6">
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <h3 className="text-2xl font-bold tracking-tight text-foreground line-clamp-2">
+                {appointment.title}
+              </h3>
+              <p className="text-muted-foreground font-medium text-sm">
+                Meeting with {appointment.customer}
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <Image
                 src={appointment.avatar}
                 alt=""
-                className="w-8 h-8 rounded-full border-2 border-primary/30"
+                width={40}
+                height={40}
+                unoptimized
+                className="rounded-2xl border-2 border-background object-cover bg-muted"
               />
-              <p className="text-muted-foreground font-bold text-sm tracking-tight">
-                with {appointment.customer}
-              </p>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-tighter">Customer</span>
+                <span className="text-sm font-bold">{appointment.customer}</span>
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 rounded-3xl bg-white/5 border border-white/10 flex flex-col gap-1 hover:bg-white/10 transition-colors">
-              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary/60">
-                Date & Time
-              </p>
-              <p className="font-bold text-sm text-foreground">
-                {appointment.date}, {appointment.time}
-              </p>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center gap-3 p-4 rounded-2xl bg-muted/20 border border-white/5 transition-colors group-hover:bg-muted/30">
+              <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Clock className="w-4 h-4 text-primary" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Timing</span>
+                <span className="text-xs font-bold">{appointment.date}, {appointment.time}</span>
+              </div>
             </div>
-            <div className="p-4 rounded-3xl bg-white/5 border border-white/10 flex flex-col gap-1 hover:bg-white/10 transition-colors">
-              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary/60">
-                Duration
-              </p>
-              <p className="font-bold text-sm text-foreground">
-                {appointment.duration}
-              </p>
+            <div className="flex items-center gap-3 p-4 rounded-2xl bg-muted/20 border border-white/5 transition-colors group-hover:bg-muted/30">
+              <div className="w-8 h-8 rounded-xl bg-indigo-500/10 flex items-center justify-center">
+                <Video className="w-4 h-4 text-indigo-400" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Link</span>
+                <span className="text-xs font-bold">G-Meet</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-10 pt-8 border-t border-white/5">
-          <Button className="w-full h-14 rounded-2xl font-bold uppercase tracking-widest shadow-2xl shadow-primary/40 bg-primary hover:bg-primary/90 text-primary-foreground gap-3 transition-all active:scale-95 group/btn">
-            <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center">
-              <Video className="w-4 h-4" />
-            </div>
-            Join Meeting
-            <ArrowRight className="w-4 h-4 ml-auto transition-transform group-hover/btn:translate-x-1" />
-          </Button>
+        <div className="mt-8">
+           <Button 
+            className="w-full h-12 rounded-2xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground group/join shadow-xl shadow-primary/20 transition-all hover:scale-[1.02]"
+            asChild
+           >
+             <a href={appointment.meetLink} target="_blank" rel="noopener noreferrer">
+              Join Virtual Room
+              <ArrowUpRight className="w-4 h-4 ml-2 transition-transform group-hover/join:translate-x-0.5 group-hover/join:-translate-y-0.5" />
+             </a>
+           </Button>
         </div>
       </div>
     </div>

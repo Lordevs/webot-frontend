@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { LucideIcon, TrendingUp } from "lucide-react";
 
 interface StatProps {
@@ -12,7 +12,8 @@ interface StatProps {
   color: string;
   bg: string;
   suffix?: string;
-  variants: any;
+  trend?: string;
+  variants: Variants;
 }
 
 export const StatCard = ({
@@ -22,6 +23,7 @@ export const StatCard = ({
   color,
   bg,
   suffix,
+  trend,
   variants,
 }: StatProps) => (
   <motion.div variants={variants}>
@@ -50,10 +52,12 @@ export const StatCard = ({
                 {value}
                 {suffix || ""}
               </p>
-              <span className="text-[10px] font-bold text-emerald-500 flex items-center bg-emerald-500/10 px-1.5 py-0.5 rounded-md">
-                <TrendingUp className="w-3 h-3 mr-0.5" />
-                +12%
-              </span>
+              {trend && (
+                <span className="text-[10px] font-bold text-emerald-500 flex items-center bg-emerald-500/10 px-1.5 py-0.5 rounded-md">
+                  <TrendingUp className="w-3 h-3 mr-0.5" />
+                  {trend}
+                </span>
+              )}
             </div>
           </div>
         </div>

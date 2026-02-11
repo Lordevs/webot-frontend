@@ -1,28 +1,11 @@
 import { ROUTES } from "@/constants/routes";
-import { LayoutDashboard, Settings2, Bot, CalendarRange } from "lucide-react";
-import { WhatsAppIcon } from "@/components/common/icons";
+import { LayoutDashboard, Settings2 } from "lucide-react";
 
 export const SIDEBAR_ITEMS = [
   {
     title: "Dashboard",
     href: ROUTES.PLATFORM.DASHBOARD,
     icon: LayoutDashboard,
-  },
-  {
-    title: "WhatsApp Setup",
-    href: ROUTES.PLATFORM.WHATSAPP_SETUP,
-    icon: WhatsAppIcon,
-  },
-  {
-    title: "My Bot",
-    icon: Bot,
-    children: [
-      {
-        title: "Google Calendar",
-        href: ROUTES.PLATFORM.CALENDAR_SETTINGS,
-        icon: CalendarRange,
-      },
-    ],
   },
 ];
 

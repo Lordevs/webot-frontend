@@ -15,6 +15,7 @@ import apiCaller from "@/lib/api/api-caller";
 import { API_ROUTES } from "@/constants/api-routes";
 import { setAuthCookies } from "@/lib/cookies";
 import { getApiBaseUrl } from "@/lib/api/config";
+import { AxiosError } from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -49,11 +50,12 @@ export default function Login() {
       } else {
         router.push(ROUTES.PLATFORM.DASHBOARD);
       }
-    } catch (error: any) {
-      console.error("Login failed:", error);
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ error?: string; detail?: string }>;
+      console.error("Login failed:", axiosError);
       const message =
-        error.response?.data?.error ||
-        error.response?.data?.detail ||
+        axiosError.response?.data?.error ||
+        axiosError.response?.data?.detail ||
         "Invalid email or password";
       toast.error("Login failed", {
         description: message,
