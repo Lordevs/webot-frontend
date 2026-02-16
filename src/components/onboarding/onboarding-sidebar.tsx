@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, LucideIcon, LogOut } from "lucide-react";
+import { Check, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Sidebar,
@@ -13,12 +13,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Calendar } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { ROUTES } from "@/constants/routes";
-import { useProfile } from "@/contexts/profile-context";
-import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
+import { LogoutButton } from "@/components/platform/common/logout-button";
+import { UserProfileCard } from "@/components/platform/common/user-profile-card";
 
 interface Step {
   id: number;
@@ -36,13 +32,6 @@ export function OnboardingSidebar({
   steps,
   currentStep,
 }: OnboardingSidebarProps) {
-  const router = useRouter();
-
-  const { profile, loading: profileLoading } = useProfile();
-
-  const handleLogout = () => {
-    router.push(ROUTES.AUTH.LOGIN);
-  };
   return (
     <Sidebar
       variant="inset"
@@ -121,47 +110,8 @@ export function OnboardingSidebar({
         </SidebarGroup>
       </SidebarContent>
       <div className="mt-auto p-6 border-t border-border/10">
-        <Button
-          variant="ghost"
-          onClick={handleLogout}
-          className="w-full mb-4 flex items-center justify-start gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-destructive hover:bg-destructive/10 transition-all duration-200 h-auto">
-          <LogOut className="w-4 h-4 shrink-0" />
-          <span>Logout</span>
-        </Button>
-        <div className="flex items-center flex-row p-3 rounded-2xl bg-muted/30 border border-border/50">
-          {profileLoading ? (
-            <>
-              <Skeleton className="w-8 h-8 rounded-full" />
-              <div className="flex flex-col gap-1.5 ml-3">
-                <Skeleton className="h-2 w-16" />
-                <Skeleton className="h-1.5 w-12" />
-              </div>
-            </>
-          ) : (
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-linear-to-tr from-primary to-emerald-500 p-0.5 shadow-md">
-                <div className="w-full h-full rounded-full bg-background flex items-center justify-center overflow-hidden border-2 border-background">
-                  <Image
-                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile?.email || "guest"}`}
-                    alt="Avatar"
-                    width={32}
-                    height={32}
-                    unoptimized
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-xs font-black text-foreground truncate">
-                  {profile?.email?.split("@")[0] || "User"}
-                </span>
-                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider truncate">
-                  Onboarding Mode
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
+        <LogoutButton className="mb-4" />
+        <UserProfileCard />
       </div>
     </Sidebar>
   );

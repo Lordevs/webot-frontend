@@ -14,7 +14,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { OnboardingSidebar } from "./onboarding-sidebar";
 import { WhatsAppStep } from "./whatsapp-step";
 import { CalendarStep } from "./calendar-step";
-import { ProfileProvider, useProfile } from "@/contexts/profile-context";
+import { useProfile } from "@/hooks/use-profile";
 
 const steps = [
   {
@@ -34,7 +34,7 @@ const steps = [
 function OnboardingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { profile, loading: profileLoading } = useProfile();
+  const { data: profile, isLoading: profileLoading } = useProfile();
   
   const [currentStep, setCurrentStep] = useState(1);
   const [whatsappConnected, setWhatsappConnected] = useState(false);
@@ -219,8 +219,6 @@ function OnboardingContent() {
 
 export function OnboardingContainer() {
   return (
-    <ProfileProvider>
-      <OnboardingContent />
-    </ProfileProvider>
+    <OnboardingContent />
   );
 }

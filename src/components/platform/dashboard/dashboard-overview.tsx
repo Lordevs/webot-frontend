@@ -10,48 +10,26 @@ import {
   Loader2,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ROUTES } from "@/constants/routes";
 import { WhatsAppIcon } from "@/components/common/icons";
-import { useState, useEffect } from "react";
-import apiCaller from "@/lib/api/api-caller";
-import { API_ROUTES } from "@/constants/api-routes";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
 
 // Sub-components
 import { StatCard } from "./stats-cards";
 import { IntegrationCard } from "./integration-status";
 import { NextAppointmentCard } from "./next-appointment";
 import { SchedulePreview } from "./schedule-preview";
-import { toast } from "sonner";
-import { useSearchParams } from "next/navigation";
 
-interface DashboardProfile {
-  id: string;
-  email: string;
-  phone_number: string | null;
-  is_phone_verified: boolean;
-  is_google_connected: boolean;
-  meeting_stats: {
-    today: number;
-    this_week: number;
-    total: number;
-  };
-}
-
-interface BackendMeeting {
-  id: number;
-  summary: string;
-  start_time: string;
-  end_time: string;
-  meet_link?: string;
-  status: "pending" | "confirmed" | "cancelled" | "failed";
-}
+// Hooks
+import { useProfile } from "@/hooks/use-profile";
+import { useMeetings } from "@/hooks/use-meetings";
 
 export default function DashboardOverview() {
   const searchParams = useSearchParams();
-  const [profile, setProfile] = useState<DashboardProfile | null>(null);
-  const [meetings, setMeetings] = useState<BackendMeeting[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: profile, isLoading: profileLoading } = useProfile();
+  const { data: meetings = [], isLoading: meetingsLoading } = useMeetings();
 
   useEffect(() => {
     const status = searchParams.get("status");
@@ -61,25 +39,9 @@ export default function DashboardOverview() {
         description: "Your Google Calendar is now synced with Webot.",
       });
     }
-
-    const fetchData = async () => {
-      try {
-        // Fetch dashboard-specific profile data (includes meeting_stats and is_google_connected)
-        const [profileRes, meetingsRes] = await Promise.all([
-          apiCaller<DashboardProfile>(API_ROUTES.AUTH.PROFILE_ME, "GET"),
-          apiCaller<BackendMeeting[]>(API_ROUTES.MEETINGS.LIST, "GET"),
-        ]);
-        
-        setProfile(profileRes.data);
-        setMeetings(meetingsRes.data);
-      } catch (error) {
-        console.error("Failed to fetch dashboard data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
   }, [searchParams]);
+
+  const loading = profileLoading || meetingsLoading;
 
   const nextApt =
     meetings.find(

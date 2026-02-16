@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -27,71 +27,67 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { ConfirmPopover } from "@/components/ui/confirm-popover";
 
-interface UserProfile {
-  phone_number: string | null;
-  is_phone_verified: boolean;
-  is_google_connected: boolean;
-}
+// Hooks
+import { 
+  useProfile, 
+  useUpdatePhone, 
+  useVerifyPhone, 
+  useDisconnectGoogle,
+  ApiError
+} from "@/hooks/use-profile";
 
 export const ConnectivitySettings = () => {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: profile, isLoading } = useProfile();
+  const updatePhoneMutation = useUpdatePhone();
+  const verifyPhoneMutation = useVerifyPhone();
+  const disconnectGoogleMutation = useDisconnectGoogle();
+
   const [newPhone, setNewPhone] = useState("");
   const [otpMode, setOtpMode] = useState(false);
   const [otpCode, setOtpCode] = useState("");
-  const [updating, setUpdating] = useState(false);
 
-  const fetchProfile = async () => {
-    try {
-      const res = await apiCaller<UserProfile>(API_ROUTES.AUTH.PROFILE_ME, "GET");
-      setProfile(res.data);
-      if (res.data.phone_number) setNewPhone(res.data.phone_number);
-    } catch (error) {
-      console.error("Failed to fetch profile:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const initializedRef = useRef(false);
 
   useEffect(() => {
-    fetchProfile();
-  }, []);
+    if (profile?.phone_number && !initializedRef.current) {
+      const timer = setTimeout(() => {
+        setNewPhone(profile.phone_number!);
+        initializedRef.current = true;
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [profile?.phone_number]);
 
   const handleUpdatePhone = async () => {
     if (!newPhone) return;
-    setUpdating(true);
-    try {
-      await apiCaller(API_ROUTES.AUTH.PHONE_UPDATE, "POST", { phone_number: newPhone });
-      toast.success("Verification code sent!", {
-        description: "Please check your WhatsApp for the 6-digit code."
-      });
-      setOtpMode(true);
-    } catch (error: unknown) {
-      const err = error as { response?: { data?: { error?: string } } };
-      toast.error("Failed to update phone number", {
-        description: err.response?.data?.error || "Please check the number format."
-      });
-    } finally {
-      setUpdating(false);
-    }
+    updatePhoneMutation.mutate(newPhone, {
+      onSuccess: () => {
+        toast.success("Verification code sent!", {
+          description: "Please check your WhatsApp for the 6-digit code."
+        });
+        setOtpMode(true);
+      },
+      onError: (error: ApiError) => {
+        toast.error("Failed to update phone number", {
+          description: error.response?.data?.error || "Please check the number format."
+        });
+      }
+    });
   };
 
   const handleVerifyOtp = async () => {
     if (!otpCode) return;
-    setUpdating(true);
-    try {
-      await apiCaller(API_ROUTES.AUTH.PHONE_VERIFY, "POST", { code: otpCode });
-      toast.success("Phone verified successfully!");
-      setOtpMode(false);
-      fetchProfile();
-    } catch (error: unknown) {
-      const err = error as { response?: { data?: { error?: string } } };
-      toast.error("Invalid verification code", {
-        description: err.response?.data?.error || "Please try again."
-      });
-    } finally {
-      setUpdating(false);
-    }
+    verifyPhoneMutation.mutate(otpCode, {
+      onSuccess: () => {
+        toast.success("Phone verified successfully!");
+        setOtpMode(false);
+      },
+      onError: (error: ApiError) => {
+        toast.error("Invalid verification code", {
+          description: error.response?.data?.error || "Please try again."
+        });
+      }
+    });
   };
 
   const handleResendCode = async () => {
@@ -104,13 +100,14 @@ export const ConnectivitySettings = () => {
   };
 
   const handleDisconnectGoogle = async () => {
-    try {
-      await apiCaller(API_ROUTES.GOOGLE_CALENDAR.DISCONNECT, "POST");
-      toast.success("Google Calendar disconnected.");
-      fetchProfile();
-    } catch {
-      toast.error("Failed to disconnect calendar");
-    }
+    disconnectGoogleMutation.mutate(undefined, {
+      onSuccess: () => {
+        toast.success("Google Calendar disconnected.");
+      },
+      onError: () => {
+        toast.error("Failed to disconnect calendar");
+      }
+    });
   };
 
   const handleIdelGoogleConnect = async () => {
@@ -122,7 +119,9 @@ export const ConnectivitySettings = () => {
     }
   }
 
-  if (loading) return null;
+  if (isLoading) return null;
+
+  const updating = updatePhoneMutation.isPending || verifyPhoneMutation.isPending || disconnectGoogleMutation.isPending;
 
   return (
     <motion.div
@@ -298,6 +297,7 @@ export const ConnectivitySettings = () => {
                   onConfirm={handleDisconnectGoogle}
                 >
                   <Button 
+                    disabled={updating}
                     variant="outline" 
                     className="h-12 px-8 rounded-xl font-bold border-red-500/20 text-red-500 hover:bg-red-500/5 gap-2 w-full md:w-auto"
                   >
@@ -307,6 +307,7 @@ export const ConnectivitySettings = () => {
                 </ConfirmPopover>
               ) : (
                 <Button 
+                    disabled={updating}
                     onClick={handleIdelGoogleConnect}
                     className="h-12 px-8 rounded-xl font-bold gap-2 w-full md:w-auto bg-primary shadow-lg shadow-primary/20"
                 >

@@ -1,20 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { LogOut, Menu, X, ChevronDown } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { SIDEBAR_ITEMS, BOTTOM_NAV_ITEMS } from "@/lib/sidebar-items";
-import { ROUTES } from "@/constants/routes";
 import { motion, AnimatePresence } from "framer-motion";
-import { clearAuthCookies } from "@/lib/cookies";
-import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
-import apiCaller from "@/lib/api/api-caller";
-import { API_ROUTES } from "@/constants/api-routes";
-import { useProfile } from "@/contexts/profile-context";
+import { LogoutButton } from "./logout-button";
+import { UserProfileCard } from "./user-profile-card";
 
 interface SidebarChild {
   title: string;
@@ -42,30 +37,19 @@ const SidebarItemWithChildren = ({
   pathname: string;
   setMobileOpen: (open: boolean) => void;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const isActiveParent = item.children?.some(
-    (child: SidebarChild) => pathname === child.href,
-  );
-
-  // Auto-open if child is active
-  if (isActiveParent && !isOpen) setIsOpen(true);
+  const [isOpen, setIsOpen] = useState(() => {
+    return item.children?.some((child) => pathname === child.href);
+  });
 
   return (
-    <div className="mb-1">
+    <div className="space-y-1">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-200 group hover:bg-muted hover:text-foreground",
-          isActiveParent
-            ? "text-foreground bg-muted/50"
-            : "text-muted-foreground",
+          "w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-200 group",
+          isOpen ? "text-foreground bg-muted/50" : "text-muted-foreground hover:bg-muted hover:text-foreground",
         )}>
-        <item.icon
-          className={cn(
-            "w-5 h-5 shrink-0 transition-transform group-hover:scale-110",
-            isActiveParent ? "text-primary" : "text-muted-foreground/60",
-          )}
-        />
+        <item.icon className="w-5 h-5 shrink-0 text-muted-foreground/60 group-hover:scale-110 transition-transform" />
         <span className="flex-1 text-left">{item.title}</span>
         <ChevronDown
           className={cn(
@@ -75,43 +59,30 @@ const SidebarItemWithChildren = ({
         />
       </button>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             className="overflow-hidden">
-            <div className="pl-4 pt-1 space-y-1">
-              {item.children?.map((child: SidebarChild) => {
+            <div className="pl-12 pr-4 py-1 space-y-1">
+              {item.children?.map((child) => {
                 const isChildActive = pathname === child.href;
                 return (
                   <Link
                     key={child.href}
-                    href={child.isComingSoon ? "#" : child.href}
-                    onClick={(e) => {
-                      if (child.isComingSoon) e.preventDefault();
-                      setMobileOpen(false);
-                    }}
+                    href={child.href}
+                    onClick={() => setMobileOpen(false)}
                     className={cn(
-                      "flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 border-l-2 ml-4",
+                      "flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200",
                       isChildActive
-                        ? "border-primary text-primary bg-primary/5"
-                        : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50",
-                      child.isComingSoon && "opacity-50 cursor-not-allowed",
+                        ? "text-primary bg-primary/5"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground",
                     )}>
-                    {child.icon && (
-                      <child.icon
-                        className={cn(
-                          "w-4 h-4 shrink-0 transition-transform group-hover:scale-110",
-                          isChildActive
-                            ? "text-primary"
-                            : "text-muted-foreground/60",
-                        )}
-                      />
-                    )}
-                    <span className="flex-1">{child.title}</span>
+                    {child.icon && <child.icon className="w-4 h-4" />}
+                    <span>{child.title}</span>
                     {child.isComingSoon && (
                       <span className="text-[8px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
                         Soon
@@ -128,22 +99,10 @@ const SidebarItemWithChildren = ({
   );
 };
 
+
 const Sidebar = () => {
   const pathname = usePathname();
-  const router = useRouter();
-  const { profile, loading: profileLoading } = useProfile();
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleLogout = async () => {
-    try {
-      await apiCaller(API_ROUTES.AUTH.LOGOUT, "POST");
-    } catch (error) {
-      console.error("Sidebar: Logout API failed:", error);
-    } finally {
-      clearAuthCookies();
-      router.push(ROUTES.AUTH.LOGIN);
-    }
-  };
 
   return (
     <>
@@ -267,49 +226,8 @@ const Sidebar = () => {
               );
             })}
 
-            <Button
-              variant="ghost"
-              onClick={handleLogout}
-              className="w-full mt-2 flex items-center justify-start gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-accent transition-all duration-200 h-auto">
-              <LogOut className="w-4 h-4 shrink-0" />
-              <span>Logout</span>
-            </Button>
-
-            {/* User Profile */}
-            <div className="flex items-center gap-3 p-3 mt-4 rounded-2xl bg-muted/30 border border-border/50">
-              {profileLoading ? (
-                <>
-                  <Skeleton className="w-10 h-10 rounded-full" />
-                  <div className="flex flex-col gap-1.5 flex-1">
-                    <Skeleton className="h-3 w-20" />
-                    <Skeleton className="h-2 w-16" />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="w-10 h-10 rounded-full bg-linear-to-tr from-primary to-emerald-500 p-0.5 shadow-md">
-                    <div className="w-full h-full rounded-full bg-background flex items-center justify-center overflow-hidden border-2 border-background">
-                      <Image
-                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile?.email || "guest"}`}
-                        alt="Avatar"
-                        width={40}
-                        height={40}
-                        unoptimized
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-xs font-black text-foreground truncate">
-                      {profile?.email?.split("@")[0] || "User"}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider truncate">
-                      {profile?.email || "Guest User"}
-                    </span>
-                  </div>
-                </>
-              )}
-            </div>
+            <LogoutButton className="mt-2 text-accent" />
+            <UserProfileCard className="mt-4" />
           </div>
         </div>
       </aside>

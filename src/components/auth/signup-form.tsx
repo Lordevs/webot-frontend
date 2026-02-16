@@ -94,8 +94,10 @@ export default function Signup() {
       }
     } catch (error: unknown) {
       console.error("Google auth failed:", error);
+      const axiosError = error as AxiosError<{ error?: string }>;
+      const message = axiosError.response?.data?.error || "An error occurred during Google authentication.";
       toast.error("Google auth failed", {
-        description: "An error occurred during Google authentication.",
+        description: message,
       });
     } finally {
       setIsLoading(false);
@@ -290,7 +292,7 @@ export default function Signup() {
                 onError={() => {
                   toast.error("Google Sign-up failed");
                 }}
-                useOneTap
+                // useOneTap
                 theme="filled_blue"
                 shape="pill"
                 width="100%"

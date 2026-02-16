@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 import AuthCallbackHandler from "@/components/auth/auth-callback-handler";
+import { RootProvider } from "@/components/providers/root-provider";
 
 export default function RootLayout({
   children,
@@ -25,9 +26,11 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} antialiased`}
         suppressHydrationWarning>
-        <AuthCallbackHandler />
-        <Toaster richColors />
-        {children}
+        <RootProvider>
+          <AuthCallbackHandler />
+          <Toaster richColors />
+          {children}
+        </RootProvider>
       </body>
     </html>
   );
