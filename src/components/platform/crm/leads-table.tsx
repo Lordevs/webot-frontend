@@ -1,4 +1,4 @@
-import { Eye, MoreHorizontal, User } from "lucide-react";
+import { Eye, MoreHorizontal } from "lucide-react";
 import { Lead } from "@/types/crm";
 import { mockLeads } from "@/data/mock-data";
 import {
@@ -10,31 +10,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface LeadsTableProps {
   onSelectLead: (lead: Lead) => void;
 }
 
-const stageConfig: Record<
-  string,
-  {
-    label: string;
-    variant: "default" | "secondary" | "outline" | "destructive";
-  }
-> = {
-  new: { label: "New", variant: "default" },
-  engaged: { label: "Engaged", variant: "secondary" },
-  followup: { label: "Follow-up", variant: "outline" },
-  closed: { label: "Closed", variant: "outline" },
-};
-
 export default function LeadsTable({ onSelectLead }: LeadsTableProps) {
   return (
-    <Card className="shadow-none border-border/50">
+    <Card className="shadow-none py-0 gap-0 bg-white border-border/50">
       <CardHeader className="py-4 border-b flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-sm font-semibold tracking-tight">
           Leads Workspace
@@ -57,16 +42,7 @@ export default function LeadsTable({ onSelectLead }: LeadsTableProps) {
                 Active
               </TableHead>
               <TableHead className="px-5 py-3 text-[11px] uppercase tracking-wider">
-                Stage
-              </TableHead>
-              <TableHead className="px-5 py-3 text-[11px] uppercase tracking-wider">
                 Meeting
-              </TableHead>
-              <TableHead className="px-5 py-3 text-[11px] uppercase tracking-wider">
-                Agent
-              </TableHead>
-              <TableHead className="px-5 py-3 text-[11px] uppercase tracking-wider">
-                Score
               </TableHead>
               <TableHead className="px-5 py-3 text-[11px] uppercase tracking-wider"></TableHead>
             </TableRow>
@@ -105,34 +81,9 @@ export default function LeadsTable({ onSelectLead }: LeadsTableProps) {
                   </span>
                 </TableCell>
                 <TableCell className="px-5 py-4">
-                  <Badge
-                    variant={stageConfig[lead.stage].variant}
-                    className="text-[10px] font-bold px-2 py-0">
-                    {stageConfig[lead.stage].label}
-                  </Badge>
-                </TableCell>
-                <TableCell className="px-5 py-4">
                   <span className="text-[11px] font-medium">
                     {lead.nextMeeting || "—"}
                   </span>
-                </TableCell>
-                <TableCell className="px-5 py-4">
-                  <Avatar className="w-6 h-6 border-2 border-background shadow-sm">
-                    <AvatarFallback className="text-[8px] bg-muted font-bold">
-                      {lead.assignedAgent}
-                    </AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <Progress
-                      value={lead.interactionScore}
-                      className="h-1.5 w-16 bg-muted [&>div]:bg-primary"
-                    />
-                    <span className="text-[10px] font-bold text-muted-foreground">
-                      {lead.interactionScore}
-                    </span>
-                  </div>
                 </TableCell>
                 <TableCell className="px-5 py-4 text-right">
                   <Button

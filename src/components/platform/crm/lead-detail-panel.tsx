@@ -3,8 +3,6 @@ import {
   Send,
   Phone,
   Calendar,
-  Tag,
-  Clock,
   CheckCircle,
   RotateCcw,
   MoreHorizontal,
@@ -41,7 +39,7 @@ export default function LeadDetailPanel({
   const [message, setMessage] = useState("");
 
   return (
-    <div className="fixed inset-y-0 right-0 w-[460px] bg-background border-l border-border shadow-2xl z-50 flex flex-col animate-in slide-in-from-right duration-300">
+    <div className="h-full flex flex-col bg-background">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-border">
         <div>

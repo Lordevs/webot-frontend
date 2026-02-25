@@ -9,6 +9,7 @@ import ActivityFeed from "@/components/platform/crm/activity-feed";
 import MeetingTimeline from "@/components/platform/crm/meeting-timeline";
 import LeadDetailPanel from "@/components/platform/crm/lead-detail-panel";
 import QuickControls from "@/components/platform/crm/quick-controls";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 const Index = () => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
@@ -48,18 +49,21 @@ const Index = () => {
       <MeetingTimeline />
 
       {/* Slide-out Panel */}
-      {selectedLead && (
-        <>
-          <div
-            className="fixed inset-0 bg-foreground/10 backdrop-blur-sm z-40"
-            onClick={() => setSelectedLead(null)}
-          />
-          <LeadDetailPanel
-            lead={selectedLead}
-            onClose={() => setSelectedLead(null)}
-          />
-        </>
-      )}
+      <Sheet
+        open={!!selectedLead}
+        onOpenChange={(open) => !open && setSelectedLead(null)}>
+        <SheetContent
+          side="right"
+          showCloseButton={false}
+          className="p-0 w-[460px] sm:max-w-[460px] border-l border-border">
+          {selectedLead && (
+            <LeadDetailPanel
+              lead={selectedLead}
+              onClose={() => setSelectedLead(null)}
+            />
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
