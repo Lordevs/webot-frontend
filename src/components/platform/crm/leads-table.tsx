@@ -19,8 +19,8 @@ interface LeadsTableProps {
 
 export default function LeadsTable({ onSelectLead }: LeadsTableProps) {
   return (
-    <Card className="shadow-none py-0 gap-0 bg-white border-border/50">
-      <CardHeader className="py-4 border-b flex flex-row items-center justify-between space-y-0">
+    <Card className="h-[500px] flex flex-col shadow-none py-0 gap-0 bg-white border-border/50 overflow-hidden">
+      <CardHeader className="py-4 border-b flex flex-row items-center justify-between space-y-0 shrink-0">
         <CardTitle className="text-sm font-semibold tracking-tight">
           Leads Workspace
         </CardTitle>
@@ -28,7 +28,7 @@ export default function LeadsTable({ onSelectLead }: LeadsTableProps) {
           <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
         </Button>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="flex-1 overflow-y-auto custom-scrollbar p-0">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/30">

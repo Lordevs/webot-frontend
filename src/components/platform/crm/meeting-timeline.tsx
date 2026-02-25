@@ -15,7 +15,7 @@ const statusConfig: Record<
 
 export default function MeetingTimeline() {
   return (
-    <Card className="shadow-none border-border/50">
+    <Card className="shadow-none py-0 gap-0 bg-white border-border/50">
       <CardHeader className="py-4 border-b flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-sm font-semibold tracking-tight">
           Today's Schedule

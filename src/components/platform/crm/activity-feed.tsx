@@ -27,7 +27,7 @@ const bgMap: Record<string, string> = {
 
 export default function ActivityFeed() {
   return (
-    <Card className="h-full flex flex-col py-0 gap-0 bg-white shadow-none border-border/50 overflow-hidden">
+    <Card className="h-[500px] flex flex-col py-0 gap-0 bg-white shadow-none border-border/50 overflow-hidden">
       <CardHeader className="py-4 border-b flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-sm font-semibold tracking-tight">
           Activity Feed
