@@ -9,7 +9,12 @@ import ActivityFeed from "@/components/platform/crm/activity-feed";
 import MeetingTimeline from "@/components/platform/crm/meeting-timeline";
 import LeadDetailPanel from "@/components/platform/crm/lead-detail-panel";
 import QuickControls from "@/components/platform/crm/quick-controls";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 const Index = () => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
@@ -56,6 +61,9 @@ const Index = () => {
           side="right"
           showCloseButton={false}
           className="p-0 w-[460px] sm:max-w-[460px] border-l border-border">
+          <SheetHeader className="sr-only">
+            <SheetTitle>Lead Details</SheetTitle>
+          </SheetHeader>
           {selectedLead && (
             <LeadDetailPanel
               lead={selectedLead}

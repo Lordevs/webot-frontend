@@ -1,12 +1,4 @@
-import {
-  X,
-  Send,
-  Phone,
-  Calendar,
-  CheckCircle,
-  RotateCcw,
-  MoreHorizontal,
-} from "lucide-react";
+import { X, Send, Phone, Calendar, CheckCircle, RotateCcw } from "lucide-react";
 import { Lead } from "@/types/crm";
 import { mockConversation } from "@/data/mock-data";
 import { useState } from "react";
@@ -49,9 +41,6 @@ export default function LeadDetailPanel({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
-            <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
-          </Button>
           <Button
             variant="ghost"
             size="icon"
