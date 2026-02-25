@@ -32,7 +32,8 @@ const WLogo = () => (
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className="w-full h-full text-white">
+    className="w-full h-full text-white"
+  >
     <path
       d="M22 10.5V12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C13.5997 2 15.112 2.37894 16.4685 3.0638"
       stroke="currentColor"
@@ -78,7 +79,7 @@ export const ChatPreview = ({
   greetingMessage,
   setGreetingMessage,
 }: ChatPreviewProps) => (
-  <Card className="group border gap-0 py-0 border-border/40 bg-card/60 backdrop-blur-sm shadow-xl shadow-black/2 rounded-4xl overflow-hidden">
+  <Card className="group border gap-0 py-0 border-border/40 bg-card/60 backdrop-blur-sm shadow-xl shadow-black/2 rounded-[2rem] overflow-hidden">
     <CardHeader className="p-8 pb-4">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -114,7 +115,8 @@ export const ChatPreview = ({
             </div>
             <Badge
               variant="secondary"
-              className="bg-background shadow-sm text-primary font-bold px-3 py-1 rounded-lg border-border/50">
+              className="bg-background shadow-sm text-primary font-bold px-3 py-1 rounded-lg border-border/50"
+            >
               Active
             </Badge>
           </div>
@@ -130,7 +132,8 @@ export const ChatPreview = ({
                   <button
                     key={t.label}
                     onClick={() => setGreetingMessage(t.text)}
-                    className="text-[10px] font-bold px-3 py-1.5 rounded-xl bg-background border border-border/50 hover:bg-primary/5 hover:border-primary/30 hover:text-primary transition-all shadow-sm">
+                    className="text-[10px] font-bold px-3 py-1.5 rounded-xl bg-background border border-border/50 hover:bg-primary/5 hover:border-primary/30 hover:text-primary transition-all shadow-sm"
+                  >
                     {t.label}
                   </button>
                 ))}
@@ -140,7 +143,8 @@ export const ChatPreview = ({
             <div className="flex items-center justify-between px-1 pt-2">
               <Label
                 htmlFor="greeting"
-                className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">
+                className="text-xs font-black uppercase tracking-widest text-muted-foreground/60"
+              >
                 Message Content
               </Label>
               <div className="flex gap-1.5">
@@ -150,7 +154,8 @@ export const ChatPreview = ({
                     onClick={() =>
                       setGreetingMessage(greetingMessage + " " + tag)
                     }
-                    className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-muted/50 text-muted-foreground border border-border/50 cursor-pointer hover:bg-primary/10 hover:text-primary hover:border-primary/20 transition-all select-none">
+                    className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-muted/50 text-muted-foreground border border-border/50 cursor-pointer hover:bg-primary/10 hover:text-primary hover:border-primary/20 transition-all select-none"
+                  >
                     {tag}
                   </span>
                 ))}
@@ -158,7 +163,7 @@ export const ChatPreview = ({
             </div>
 
             <div className="relative group/input">
-              <div className="absolute -inset-0.5 bg-linear-to-r from-primary/20 to-indigo-500/20 rounded-2xl blur opacity-0 group-focus-within/input:opacity-100 transition duration-500" />
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-indigo-500/20 rounded-2xl blur opacity-0 group-focus-within/input:opacity-100 transition duration-500" />
               <Textarea
                 id="greeting"
                 value={greetingMessage}
@@ -222,7 +227,8 @@ export const ChatPreview = ({
             <Button
               size="icon"
               variant="ghost"
-              className="w-8 h-8 -ml-1 text-white hover:bg-white/10 rounded-full">
+              className="w-8 h-8 -ml-1 text-white hover:bg-white/10 rounded-full"
+            >
               <ArrowRight className="w-5 h-5 rotate-180" />
             </Button>
 
@@ -243,19 +249,22 @@ export const ChatPreview = ({
               <Button
                 size="icon"
                 variant="ghost"
-                className="w-8 h-8 hover:bg-white/10 rounded-full">
+                className="w-8 h-8 hover:bg-white/10 rounded-full"
+              >
                 <Video className="w-5 h-5" />
               </Button>
               <Button
                 size="icon"
                 variant="ghost"
-                className="w-8 h-8 hover:bg-white/10 rounded-full">
+                className="w-8 h-8 hover:bg-white/10 rounded-full"
+              >
                 <Phone className="w-4 h-4 text-white" />
               </Button>
               <Button
                 size="icon"
                 variant="ghost"
-                className="w-8 h-8 hover:bg-white/10 rounded-full">
+                className="w-8 h-8 hover:bg-white/10 rounded-full"
+              >
                 <MoreVertical className="w-4 h-4" />
               </Button>
             </div>
@@ -302,7 +311,7 @@ export const ChatPreview = ({
               <div className="max-w-[85%] bg-[#dcf8c6] p-2 pl-3 pr-4 rounded-lg rounded-tr-none shadow-sm relative group">
                 <div className="absolute -right-2 top-0 w-0 h-0 border-t-0 border-l-10 border-b-10 border-transparent border-l-[#dcf8c6]" />
                 <p className="text-[13px] leading-relaxed text-gray-900">
-                  I'd like to book a consultation for next Tuesday.
+                  I&apos;d like to book a consultation for next Tuesday.
                 </p>
                 <div className="flex items-center justify-end gap-1 mt-1">
                   <span className="text-[9px] text-gray-500 font-medium">
@@ -349,7 +358,8 @@ export const ChatPreview = ({
             <Button
               size="icon"
               variant="ghost"
-              className="w-8 h-8 text-gray-500 rounded-full hover:bg-black/5">
+              className="w-8 h-8 text-gray-500 rounded-full hover:bg-black/5"
+            >
               <span className="text-xl leading-none font-light">+</span>
             </Button>
             <div className="flex-1 bg-white rounded-full h-9 px-4 flex items-center gap-2 shadow-sm border border-transparent focus-within:border-emerald-500/50 transition-colors">
@@ -361,7 +371,8 @@ export const ChatPreview = ({
                 viewBox="0 0 24 24"
                 width="18"
                 height="18"
-                fill="currentColor">
+                fill="currentColor"
+              >
                 <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"></path>
                 <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"></path>
               </svg>

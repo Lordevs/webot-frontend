@@ -8,17 +8,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Clock, MessageCircle, CheckCircle2 } from "lucide-react";
+import { Phone, Hash } from "lucide-react";
 import { WhatsAppIcon } from "@/components/common/icons";
 import { cn } from "@/lib/utils";
 
 interface StatusCardProps {
   isConnected: boolean;
   connectionInfo: {
-    phoneNumber: string;
-    lastMessageReceived: string;
-    messagesProcessed: number;
-    bookingsCreated: number;
+    phoneNumber: string; // phone_number_id from Meta
+    wabaId: string; // waba_id from Meta
   };
 }
 
@@ -30,7 +28,7 @@ export const StatusCard = ({
     <div
       className={cn(
         "h-1.5 w-full",
-        isConnected ? "bg-primary" : "bg-primary/30",
+        isConnected ? "bg-emerald-500" : "bg-primary/30",
       )}
     />
     <CardHeader className="p-8 pb-6">
@@ -40,9 +38,10 @@ export const StatusCard = ({
             className={cn(
               "w-16 h-16 rounded-[1.8rem] flex items-center justify-center transition-transform duration-500 group-hover:scale-110 shadow-lg shadow-black/5 ring-1 ring-white/10",
               isConnected
-                ? "bg-primary text-background"
+                ? "bg-emerald-500 text-white"
                 : "bg-primary/10 text-primary",
-            )}>
+            )}
+          >
             <WhatsAppIcon className="w-8 h-8" />
           </div>
           <div className="space-y-1">
@@ -61,68 +60,69 @@ export const StatusCard = ({
           className={cn(
             "px-4 py-1.5 rounded-full font-bold uppercase text-[10px] tracking-widest transition-all",
             isConnected
-              ? "bg-primary text-background border-primary shadow-lg shadow-primary/20"
-              : "bg-primary/5 text-primary border-primary/10 shadow-lg shadow-primary/5",
-          )}>
+              ? "bg-emerald-500 text-white border-emerald-500 shadow-lg shadow-emerald-500/20"
+              : "bg-primary/5 text-primary border-primary/10",
+          )}
+        >
           <div
             className={cn(
               "w-2 h-2 rounded-full mr-2",
-              isConnected ? "bg-background animate-pulse" : "bg-primary/40",
+              isConnected ? "bg-white animate-pulse" : "bg-primary/40",
             )}
           />
           {isConnected ? "Connected" : "Pending Connection"}
         </Badge>
       </div>
     </CardHeader>
-    <CardContent className="p-8 pt-0">
-      {isConnected && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    {isConnected && (
+      <CardContent className="p-8 pt-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
             {
-              label: "Phone Number",
+              label: "Phone Number ID",
               value: connectionInfo.phoneNumber,
               icon: Phone,
-              color: "text-primary",
-              bg: "bg-primary/5",
             },
             {
-              label: "Last Activity",
-              value: connectionInfo.lastMessageReceived,
-              icon: Clock,
-              color: "text-primary",
-              bg: "bg-primary/5",
-            },
-            {
-              label: "Messages",
-              value: connectionInfo.messagesProcessed,
-              icon: WhatsAppIcon,
-              color: "text-primary",
-              bg: "bg-primary/5",
-            },
-            {
-              label: "Bookings",
-              value: connectionInfo.bookingsCreated,
-              icon: CheckCircle2,
-              color: "text-primary",
-              bg: "bg-primary/5",
+              label: "WABA ID",
+              value: connectionInfo.wabaId,
+              icon: Hash,
             },
           ].map((stat, i) => (
             <div
               key={i}
-              className="p-5 rounded-3xl bg-muted/20 border border-transparent hover:border-border/50 hover:bg-muted/30 transition-all group/stat">
+              className="p-5 rounded-3xl bg-muted/20 border border-transparent hover:border-border/50 hover:bg-muted/30 transition-all group/stat"
+            >
               <div className="flex items-center gap-3 text-muted-foreground/60 mb-2">
-                <stat.icon className={cn("w-4 h-4", stat.color)} />
+                <stat.icon className="w-4 h-4 text-emerald-500" />
                 <span className="text-[10px] font-bold uppercase tracking-widest">
                   {stat.label}
                 </span>
               </div>
-              <p className="text-lg font-bold tracking-tight text-foreground group-hover/stat:text-primary transition-colors">
+              <p className="text-sm font-bold tracking-tight text-foreground group-hover/stat:text-emerald-600 transition-colors truncate">
                 {stat.value}
               </p>
             </div>
           ))}
         </div>
-      )}
-    </CardContent>
+
+        {/* Success Banner */}
+        <div className="mt-4 p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+            <WhatsAppIcon className="w-4 h-4 text-emerald-600" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+              Ready to receive messages
+            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Customers can now message your WhatsApp Business number and your
+              AI bot will respond automatically.
+            </p>
+          </div>
+        </div>
+      </CardContent>
+    )}
   </Card>
 );

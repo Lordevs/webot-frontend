@@ -23,4 +23,9 @@ export const API_ROUTES = {
     RETRIEVE: (id: string | number) => `/api/meetings/${id}/`,
     DELETE: (id: string | number) => `/api/meetings/${id}/`,
   },
+  BOTS: {
+    LIST: "/api/bots/",
+    DETAIL: (id: number) => `/api/bots/${id}/`,
+    CONNECT_WHATSAPP: (id: number) => `/api/bots/${id}/connect-whatsapp/`,
+  },
 };
