@@ -24,18 +24,22 @@ const Index = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-foreground tracking-tight">
-            WEBOT
-          </h1>
-          <p className="text-xs text-muted-foreground">
-            Dashboard Control Center
-          </p>
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-primary-foreground font-bold italic">
+                W
+              </span>
+            </div>
+            <span className="text-2xl font-black tracking-tighter text-foreground">
+              Webot
+            </span>
+          </div>
         </div>
         <QuickControls />
       </div>
 
-      {/* Status Bar */}
       <StatusBar />
+      {/* Status Bar */}
 
       {/* KPI Strip */}
       <KPIStrip />

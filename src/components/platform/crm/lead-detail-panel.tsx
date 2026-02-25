@@ -14,16 +14,6 @@ interface LeadDetailPanelProps {
   onClose: () => void;
 }
 
-const tagConfig: Record<
-  string,
-  { variant: "default" | "secondary" | "outline" | "destructive" }
-> = {
-  Hot: { variant: "destructive" },
-  Interested: { variant: "default" },
-  VIP: { variant: "secondary" },
-  Enterprise: { variant: "outline" },
-};
-
 export default function LeadDetailPanel({
   lead,
   onClose,
@@ -31,172 +21,181 @@ export default function LeadDetailPanel({
   const [message, setMessage] = useState("");
 
   return (
-    <div className="h-full flex flex-col bg-background">
+    <div className="h-full flex flex-col bg-[#FCFDFF]">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-border">
+      <div className="flex items-center justify-between p-10 border-b border-muted/20 shrink-0 bg-white/40 backdrop-blur-md">
         <div>
-          <h3 className="text-sm font-bold text-foreground">Lead Details</h3>
-          <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold mt-0.5">
-            Contact Overview
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="h-8 w-8 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors">
-            <X className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
-
-      {/* Profile Section */}
-      <div className="p-6">
-        <div className="flex items-center gap-4">
-          <Avatar className="w-14 h-14 border-2 border-background shadow-md">
-            <AvatarFallback className="text-lg bg-primary/10 text-primary font-bold">
-              {lead.avatar}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1">
-            <h4 className="text-base font-bold text-foreground tracking-tight">
-              {lead.name}
-            </h4>
-            <div className="flex items-center gap-2 mt-1">
-              <Badge
-                variant="secondary"
-                className="h-5 px-1.5 gap-1 text-[10px] font-bold">
-                <Phone className="w-2.5 h-2.5" />
-                {lead.phone}
-              </Badge>
-              <Badge
-                variant="outline"
-                className="h-5 px-1.5 text-[10px] font-bold capitalize">
-                {lead.stage}
-              </Badge>
-            </div>
+          <h3 className="text-2xl font-black tracking-tight text-foreground">
+            Lead Detail
+          </h3>
+          <div className="flex items-center gap-3">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <p className="text-[10px] text-emerald-600 uppercase tracking-[0.3em] font-black">
+              Session Active
+            </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 mt-5 flex-wrap">
-          {lead.tags.map((tag) => (
-            <Badge
-              key={tag}
-              variant={tagConfig[tag]?.variant || "secondary"}
-              className="px-2 py-0 text-[10px] font-bold uppercase tracking-wider">
-              {tag}
-            </Badge>
-          ))}
-        </div>
+        <Button
+          variant="secondary"
+          size="icon"
+          onClick={onClose}
+          className="h-12 w-12 rounded-[1.25rem] bg-secondary/50 hover:bg-destructive/10 hover:text-destructive hover:scale-105 transition-all duration-500">
+          <X className="w-6 h-6" />
+        </Button>
       </div>
 
-      <Separator className="mx-6 w-auto opacity-50" />
-
-      {/* Conversation */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
-            Chat History
-          </p>
-          <span className="text-[10px] text-emerald-500 font-bold uppercase">
-            Active now
-          </span>
-        </div>
-
-        <div className="space-y-4">
-          {mockConversation.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.sender === "user" ? "justify-start" : "justify-end"}`}>
-              <div
-                className={`max-w-[85%] px-4 py-3 rounded-2xl text-xs leading-relaxed shadow-sm transition-all hover:shadow-md ${
-                  msg.sender === "user"
-                    ? "bg-muted text-foreground rounded-bl-none border border-border/50"
-                    : "bg-primary text-primary-foreground rounded-br-none"
-                }`}>
-                {msg.text}
-                <div
-                  className={`flex items-center gap-1.5 mt-2 justify-end ${msg.sender === "user" ? "text-muted-foreground" : "text-primary-foreground/70"}`}>
-                  <span className="text-[9px] font-medium uppercase">
-                    {msg.time}
-                  </span>
-                  {msg.sender !== "user" && (
-                    <CheckCircle className="w-2.5 h-2.5" />
-                  )}
-                </div>
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
+        {/* Profile Section */}
+        <div className="px-10">
+          <div className="flex items-center gap-8">
+            <div className="relative group">
+              <Avatar className="w-24 h-24 rounded-4xl border-[6px] border-white shadow-2xl ring-1 ring-black/5 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                <AvatarFallback className="text-3xl bg-primary/5 text-primary font-black uppercase">
+                  {lead.avatar}
+                </AvatarFallback>
+              </Avatar>
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-primary rounded-2xl border-[6px] border-white shadow-lg" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="text-2xl font-black text-foreground tracking-tight truncate">
+                {lead.name}
+              </h4>
+              <div className="flex items-center gap-3 mt-4">
+                <Badge className="h-8 px-4 gap-2 text-[11px] font-black rounded-xl border-none bg-primary/5 text-primary tracking-tight">
+                  <Phone className="w-3.5 h-3.5 opacity-60" />
+                  {lead.phone}
+                </Badge>
+                <Badge
+                  variant="outline"
+                  className="h-8 px-4 text-[11px] font-black uppercase tracking-widest rounded-xl border-muted-foreground/10 text-muted-foreground/60">
+                  {lead.stage}
+                </Badge>
               </div>
             </div>
-          ))}
+          </div>
+          <div className="flex items-center gap-2.5 mt-8 flex-wrap">
+            {lead.tags.map((tag) => (
+              <Badge
+                key={tag}
+                className="px-4 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl shadow-sm border-none bg-primary text-white hover:bg-primary/90 transition-colors">
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        <div className="px-10">
+          <Separator className="opacity-10" />
+        </div>
+
+        {/* Conversation */}
+        <div className="px-10 py-6 space-y-10">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-primary/40 font-black">
+              Communication Log
+            </p>
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+              <span className="text-[9px] font-black text-primary/30 uppercase tracking-[0.2em]">
+                Verified Sync
+              </span>
+            </div>
+          </div>
+
+          <div className="space-y-8 ">
+            {mockConversation.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${msg.sender === "user" ? "justify-start" : "justify-end"}`}>
+                <div
+                  className={`max-w-[85%] px-6 py-5 rounded-4xl text-[13px] font-black leading-relaxed shadow-sm transition-all hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.05)] ${
+                    msg.sender === "user"
+                      ? "bg-white text-foreground/80 rounded-bl-none border border-muted/20"
+                      : "bg-primary text-white rounded-br-none shadow-lg shadow-primary/30"
+                  }`}>
+                  {msg.text}
+                  <div
+                    className={`flex items-center gap-3 mt-4 justify-end ${msg.sender === "user" ? "text-muted-foreground/30" : "text-white/50"}`}>
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] tabular-nums">
+                      {msg.time}
+                    </span>
+                    {msg.sender !== "user" && (
+                      <CheckCircle className="w-3.5 h-3.5" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Block */}
+        <div className="p-10 bg-white/40 backdrop-blur-md rounded-t-[3rem] border-t border-muted/20">
+          <p className="text-[10px] uppercase tracking-[0.4em] text-primary/40 font-black mb-6">
+            Protocol Objective
+          </p>
+          {lead.nextMeeting ? (
+            <Card className="border-none bg-primary/2 rounded-[2.5rem] overflow-hidden group/card shadow-inner ring-1 ring-primary/5">
+              <div className="p-8">
+                <div className="flex items-center gap-6">
+                  <div className="w-14 h-14 rounded-[1.25rem] bg-primary flex items-center justify-center shadow-lg shadow-primary/30 group-hover/card:scale-110 group-hover:-rotate-3 transition-all duration-500">
+                    <Calendar className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <span className="text-xl font-black text-foreground block tracking-tight">
+                      {lead.nextMeeting}
+                    </span>
+                    <p className="text-[10px] text-primary font-black uppercase tracking-[0.25em] mt-1.5 opacity-40">
+                      Phase: Discovery • Rep: {lead.assignedAgent}
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4 mt-8">
+                  <Button
+                    variant="outline"
+                    className="rounded-2xl text-[10px] font-black h-12 gap-2 bg-white border-muted/20 shadow-sm hover:bg-secondary transition-all uppercase tracking-widest">
+                    <RotateCcw className="w-4 h-4" /> Reschedule
+                  </Button>
+                  <Button className="rounded-2xl text-[10px] font-black h-12 gap-2 bg-primary text-white shadow-lg shadow-primary/40 hover:scale-105 transition-all uppercase tracking-widest">
+                    <CheckCircle className="w-4 h-4" /> Confirmed
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          ) : (
+            <div className="p-10 rounded-[3rem] border-2 border-dashed border-primary/10 text-center bg-primary/2 group cursor-pointer hover:bg-primary/4 transition-all duration-500">
+              <p className="text-xs text-primary/40 font-black uppercase tracking-widest">
+                No active objectives
+              </p>
+              <Button
+                variant="ghost"
+                className="mt-6 text-[10px] font-black h-11 gap-3 text-primary hover:bg-primary/5 rounded-2xl uppercase tracking-[0.2em]">
+                <Calendar className="w-4 h-4" /> Initiate Discovery
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Quick Reply */}
-      <div className="p-6 border-t border-border bg-muted/20">
-        <div className="flex items-center gap-2 bg-background p-1.5 rounded-2xl border border-border shadow-sm focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+      <div className="p-10 pt-6 border-t border-muted/20 bg-white/40 backdrop-blur-md shrink-0">
+        <div className="flex items-center gap-4 bg-white p-2.5 rounded-4xl border border-muted/20 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.05)] focus-within:ring-4 focus-within:ring-primary/5 transition-all duration-500">
           <Input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-1 border-none shadow-none focus-visible:ring-0 text-xs h-9 bg-transparent"
+            placeholder="System response command..."
+            className="flex-1 border-none shadow-none focus-visible:ring-0 text-[14px] font-black h-11 bg-transparent px-5 placeholder:text-muted-foreground/30"
           />
           <Button
             size="icon"
-            className="h-9 w-9 rounded-xl shadow-none shrink-0">
-            <Send className="w-3.5 h-3.5" />
+            className="h-11 w-11 rounded-2xl shadow-lg shadow-primary/40 bg-primary hover:scale-110 active:scale-95 transition-all duration-500 shrink-0">
+            <Send className="w-4 h-4 ml-0.5 text-white" />
           </Button>
         </div>
-      </div>
-
-      {/* Action Block */}
-      <div className="p-6 border-t border-border">
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-4">
-          Next Scheduled Action
-        </p>
-        {lead.nextMeeting ? (
-          <Card className="shadow-none border-border/50 bg-muted/30 overflow-hidden">
-            <div className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Calendar className="w-4 h-4 text-primary" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold text-foreground block">
-                    {lead.nextMeeting}
-                  </span>
-                  <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mt-0.5">
-                    Demo Call • Agent {lead.assignedAgent}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 mt-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 text-[11px] font-bold h-8 rounded-lg gap-1.5 bg-background shadow-none">
-                  <RotateCcw className="w-3 h-3" /> Reschedule
-                </Button>
-                <Button
-                  size="sm"
-                  className="flex-1 text-[11px] font-bold h-8 rounded-lg gap-1.5 bg-emerald-500 hover:bg-emerald-600 shadow-none">
-                  <CheckCircle className="w-3 h-3" /> Complete
-                </Button>
-              </div>
-            </div>
-          </Card>
-        ) : (
-          <div className="p-4 rounded-xl border border-dashed border-border/50 text-center">
-            <p className="text-xs text-muted-foreground font-medium">
-              No upcoming meetings scheduled
-            </p>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mt-2 text-[11px] font-bold h-7 gap-1.5 text-primary hover:text-primary hover:bg-primary/5">
-              <Calendar className="w-3 h-3" /> Schedule Now
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );

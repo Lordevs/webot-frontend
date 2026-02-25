@@ -14,49 +14,48 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 export default function StatusBar() {
   const statusItems = [
     {
-      icon: <WhatsAppIcon className="w-4 h-4 text-emerald-500" />,
-      bg: "bg-emerald-500/10",
+      icon: <WhatsAppIcon className="w-5 h-5 text-white" />,
       label: "WhatsApp",
       status: "Connected",
       online: true,
     },
     {
-      icon: <Calendar className="w-4 h-4 text-primary" />,
-      bg: "bg-primary/10",
+      icon: <Calendar className="w-5 h-5 text-white" />,
       label: "Calendar",
-      status: "Synced 2m ago",
+      status: "Syncing...",
       online: true,
     },
     {
-      icon: <Bot className="w-4 h-4 text-emerald-500" />,
-      bg: "bg-emerald-500/10",
-      label: "Bot",
-      status: "Auto-reply active",
+      icon: <Bot className="w-5 h-5 text-white" />,
+      label: "Agent",
+      status: "Active",
       online: true,
     },
   ];
 
   return (
-    <div className="flex items-center gap-3 flex-wrap">
+    <div className="flex items-center gap-5 flex-wrap">
       {statusItems.map((item, idx) => (
         <Card
           key={idx}
-          className="shadow-none py-0 gap-0 bg-white border-border/50 min-w-[170px] flex-1 sm:flex-none">
-          <CardContent className="p-3 flex items-center gap-3">
-            <div
-              className={`w-9 h-9 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
+          className="border-none gap-0 py-0 bg-[#FCFDFF] shadow-[0_10px_35px_-10px_rgba(0,0,0,0.03)] rounded-4xl min-w-[200px] flex-1 sm:flex-none group hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-0.5 transition-all duration-500">
+          <CardContent className="p-4 flex items-center gap-5">
+            <div className="w-12 h-12 rounded-[1.25rem] bg-primary flex items-center justify-center shrink-0 shadow-lg shadow-primary/40 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500">
               {item.icon}
             </div>
             <div className="min-w-0">
-              <div className="flex items-center gap-1.5">
-                <span className="text-[11px] font-semibold text-foreground leading-tight">
+              <div className="flex items-center gap-2.5">
+                <span className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] leading-none">
                   {item.label}
                 </span>
                 {item.online && (
-                  <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </span>
                 )}
               </div>
-              <p className="text-[10px] text-muted-foreground truncate leading-tight">
+              <p className="text-[12px] font-black text-foreground tracking-tight mt-1.5 opacity-90">
                 {item.status}
               </p>
             </div>
@@ -64,17 +63,17 @@ export default function StatusBar() {
         </Card>
       ))}
 
-      <Card className="shadow-none py-0 gap-0 bg-white border-border/50 min-w-[140px] flex-1 sm:flex-none">
-        <CardContent className="p-3 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-orange-500/10 flex items-center justify-center shrink-0">
-            <Users className="w-4 h-4 text-orange-500" />
+      <Card className="border-none gap-0 py-0 bg-primary/5 shadow-inner rounded-4xl min-w-[180px] flex-1 sm:flex-none group/stat">
+        <CardContent className="p-4 flex items-center gap-5">
+          <div className="w-12 h-12 rounded-[1.25rem] bg-white flex items-center justify-center shrink-0 shadow-sm border border-primary/5 group-hover/stat:rotate-12 transition-all duration-500">
+            <Users className="w-5 h-5 text-primary" />
           </div>
-          <div>
-            <span className="text-base font-bold text-foreground leading-tight">
+          <div className="min-w-0">
+            <span className="text-2xl font-black text-primary tracking-tighter leading-none tabular-nums block">
               12
             </span>
-            <p className="text-[10px] text-muted-foreground leading-tight">
-              Active Chats
+            <p className="text-[9px] font-black text-primary/40 uppercase tracking-[0.2em] leading-none mt-1.5">
+              Live Sessions
             </p>
           </div>
         </CardContent>

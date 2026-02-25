@@ -18,72 +18,56 @@ export default function QuickControls() {
   const [botEnabled, setBotEnabled] = useState(true);
 
   return (
-    <Card className="py-2.5 gap-0 px-4 bg-white rounded-xl border-border/50 shadow-none">
-      <CardContent className="p-0 flex items-center gap-4 flex-wrap">
+    <Card className="p-2 px-6 gap-0 bg-[#FCFDFF] rounded-full border-none shadow-[0_10px_30px_-10px_rgba(0,0,0,0.03)] group hover:shadow-xl hover:shadow-primary/10 transition-all duration-500">
+      <CardContent className="p-0 flex items-center gap-6 flex-wrap">
         {/* Bot Toggle */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Bot className="w-4 h-4 text-primary" />
+        <div className="flex items-center gap-4 py-2">
+          <div className="flex items-center gap-3">
+            <div
+              className={`w-9 h-9 rounded-2xl bg-primary flex items-center justify-center shadow-md shadow-primary/30 transition-all duration-500 ${botEnabled ? "scale-110 rotate-3" : "opacity-50 grayscale"}`}>
+              <Bot className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xs font-medium text-foreground">
-              Bot Response
+            <span className="text-[10px] font-black text-foreground uppercase tracking-[0.2em]">
+              Autopilot
             </span>
           </div>
-          <Switch checked={botEnabled} onCheckedChange={setBotEnabled} />
+          <Switch
+            checked={botEnabled}
+            onCheckedChange={setBotEnabled}
+            className="data-[state=checked]:bg-primary shadow-sm scale-90"
+          />
         </div>
 
-        <Separator orientation="vertical" className="h-6" />
+        <Separator orientation="vertical" className="h-8 opacity-20" />
 
         {/* Operating Hours */}
-        <div className="flex items-center gap-2 px-1">
-          <Clock className="w-3.5 h-3.5 text-muted-foreground" />
+        <div className="flex items-center gap-3 px-1">
+          <div className="w-9 h-9 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/10">
+            <Clock className="w-4 h-4 text-white" />
+          </div>
           <div className="flex flex-col">
-            <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
-              Support Hours
+            <span className="text-[9px] text-primary font-black uppercase tracking-[0.3em] opacity-40">
+              Uptime
             </span>
-            <span className="text-[11px] text-foreground font-medium truncate">
-              9 AM – 6 PM
+            <span className="text-[11px] text-foreground font-black tabular-nums tracking-tight">
+              09:00 – 18:00
             </span>
           </div>
         </div>
 
-        <Separator orientation="vertical" className="h-6" />
+        <Separator orientation="vertical" className="h-8 opacity-20" />
 
         {/* Next Slot */}
-        <div className="flex items-center gap-2 px-1">
-          <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
+        <div className="flex items-center gap-3 px-1">
+          <div className="w-9 h-9 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/10">
+            <Calendar className="w-4 h-4 text-white" />
+          </div>
           <div className="flex flex-col">
-            <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
-              Next Demo Slot
+            <span className="text-[9px] text-primary font-black uppercase tracking-[0.3em] opacity-40">
+              Pending
             </span>
-            <span className="text-[11px] text-foreground font-medium truncate">
-              3:00 PM Today
-            </span>
-          </div>
-        </div>
-
-        <Separator orientation="vertical" className="h-6" />
-
-        {/* Statuses */}
-        <div className="flex items-center gap-4 ml-auto">
-          <div className="flex items-center gap-1.5 group cursor-default">
-            <div className="relative">
-              <CalendarIcon className="w-3.5 h-3.5 text-success" />
-              <span className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-success rounded-full animate-pulse" />
-            </div>
-            <span className="text-[11px] text-success font-medium">
-              Calendar Sync
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1.5 group cursor-default">
-            <div className="relative">
-              <WhatsAppIcon className="w-3.5 h-3.5 text-success" />
-              <span className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-success rounded-full animate-pulse" />
-            </div>
-            <span className="text-[11px] text-success font-medium">
-              WhatsApp
+            <span className="text-[11px] text-foreground font-black tracking-tight">
+              15:00 Today
             </span>
           </div>
         </div>
