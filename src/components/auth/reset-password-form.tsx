@@ -14,7 +14,12 @@ import { useEffect } from "react";
 import apiCaller from "@/lib/api/api-caller";
 import { API_ROUTES } from "@/constants/api-routes";
 import { AxiosError } from "axios";
-import { Lock as LockIcon, Eye as EyeIcon, EyeOff as EyeOffIcon, ArrowLeft as ArrowLeftIcon } from "lucide-react";
+import {
+  Lock as LockIcon,
+  Eye as EyeIcon,
+  EyeOff as EyeOffIcon,
+  ArrowLeft as ArrowLeftIcon,
+} from "lucide-react";
 
 export default function ResetPasswordForm() {
   const [password, setPassword] = useState("");
@@ -23,23 +28,47 @@ export default function ResetPasswordForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState<string | null>(null);
+  const [tokenType, setTokenType] = useState<"access_token" | "token_hash">(
+    "access_token",
+  );
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Extract token from URL hash (Supabase default for recovery)
+    // Supabase recovery links deliver the session token in one of two ways:
+    //
+    // 1. Implicit flow (older):  /reset-password#access_token=XXX&type=recovery
+    // 2. PKCE flow (newer):      /reset-password?token_hash=XXX&type=recovery
+    //    (Supabase verifies the token_hash server-side and sets access_token in the hash
+    //     after the redirect, but sometimes arrives as a query param first)
+    //
+    // We check both locations so either flow works.
+
+    // Check hash first (implicit flow)
     const hash = window.location.hash;
     if (hash) {
-      const params = new URLSearchParams(hash.substring(1));
-      const accessToken = params.get("access_token");
+      const hashParams = new URLSearchParams(hash.substring(1));
+      const accessToken = hashParams.get("access_token");
       if (accessToken) {
         setToken(accessToken);
-      } else {
-        setError("Invalid or expired reset link.");
+        setTokenType("access_token");
+        return;
       }
-    } else {
-      setError("No reset token found. Please use the link from your email.");
     }
+
+    // Check query params (PKCE / token_hash flow)
+    const searchParams = new URLSearchParams(window.location.search);
+    const tokenHash =
+      searchParams.get("token_hash") || searchParams.get("token");
+    const type = searchParams.get("type");
+
+    if (tokenHash && type === "recovery") {
+      setToken(tokenHash);
+      setTokenType("token_hash");
+      return;
+    }
+
+    setError("Invalid or expired reset link. Please request a new one.");
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,23 +89,35 @@ export default function ResetPasswordForm() {
     setIsLoading(true);
 
     try {
-      await apiCaller(
-        API_ROUTES.AUTH.RESET_PASSWORD,
-        "POST",
-        { password },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      if (tokenType === "token_hash") {
+        // PKCE flow: send token_hash in body — backend exchanges via verifyOtp
+        await apiCaller(API_ROUTES.AUTH.RESET_PASSWORD, "POST", {
+          password,
+          token_hash: token,
+        });
+      } else {
+        // Implicit flow: send access_token as Authorization header
+        await apiCaller(
+          API_ROUTES.AUTH.RESET_PASSWORD,
+          "POST",
+          { password },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        }
-      );
+        );
+      }
 
       toast.success("Password reset successful!", {
         description: "You can now log in with your new password.",
       });
       router.push(ROUTES.AUTH.LOGIN);
     } catch (error: unknown) {
-      const axiosError = error as AxiosError<{ error?: string; detail?: string }>;
+      const axiosError = error as AxiosError<{
+        error?: string;
+        detail?: string;
+      }>;
       const message =
         axiosError.response?.data?.error ||
         axiosError.response?.data?.detail ||
@@ -92,27 +133,34 @@ export default function ResetPasswordForm() {
       className="flex flex-1 items-center justify-center"
       initial={{ opacity: 0, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}>
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}>
+        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+      >
         <Card className="border-border/70 bg-card/20 w-full max-w-md shadow-[0_10px_26px_#e0e0e0a1] backdrop-blur-lg dark:shadow-none">
           <CardContent className="space-y-4 p-6">
             {error ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="py-8 flex flex-col items-center text-center space-y-4">
+                className="py-8 flex flex-col items-center text-center space-y-4"
+              >
                 <div className="p-4 rounded-2xl bg-destructive/10 text-destructive mb-2">
                   <LockIcon className="w-8 h-8 opacity-50" />
                 </div>
-                <h3 className="text-xl font-bold text-destructive">Invalid Link</h3>
+                <h3 className="text-xl font-bold text-destructive">
+                  Invalid Link
+                </h3>
                 <p className="text-muted-foreground text-sm max-w-[280px]">
                   {error}
                 </p>
                 <Button variant="outline" asChild className="mt-4 rounded-xl">
-                  <Link href={ROUTES.AUTH.FORGOT_PASSWORD}>Request New Link</Link>
+                  <Link href={ROUTES.AUTH.FORGOT_PASSWORD}>
+                    Request New Link
+                  </Link>
                 </Button>
               </motion.div>
             ) : (
@@ -121,7 +169,8 @@ export default function ResetPasswordForm() {
                   className="space-y-2 text-center"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}>
+                  transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+                >
                   <div className="flex items-center justify-center space-x-2">
                     <span className="text-2xl font-bold tracking-tight md:text-4xl">
                       Set New Password
@@ -138,7 +187,8 @@ export default function ResetPasswordForm() {
                     className="space-y-2"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}>
+                    transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
+                  >
                     <Label htmlFor="password">New Password</Label>
                     <div className="relative">
                       <LockIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -154,7 +204,8 @@ export default function ResetPasswordForm() {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      >
                         {showPassword ? (
                           <EyeOffIcon className="h-4 w-4" />
                         ) : (
@@ -169,8 +220,11 @@ export default function ResetPasswordForm() {
                     className="space-y-2"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}>
-                    <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                    transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+                  >
+                    <Label htmlFor="confirmPassword">
+                      Confirm New Password
+                    </Label>
                     <div className="relative">
                       <LockIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -187,7 +241,8 @@ export default function ResetPasswordForm() {
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
                         }
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      >
                         {showConfirmPassword ? (
                           <EyeOffIcon className="h-4 w-4" />
                         ) : (
@@ -202,11 +257,13 @@ export default function ResetPasswordForm() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}
                     whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}>
+                    whileTap={{ scale: 0.98 }}
+                  >
                     <Button
                       type="submit"
                       className="w-full font-bold"
-                      disabled={isLoading}>
+                      disabled={isLoading}
+                    >
                       {isLoading ? "Resetting..." : "Reset Password"}
                     </Button>
                   </motion.div>
@@ -218,10 +275,12 @@ export default function ResetPasswordForm() {
               className="pt-2 text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}>
+              transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
+            >
               <Link
                 href={ROUTES.AUTH.FORGOT_PASSWORD}
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-all">
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-all"
+              >
                 <ArrowLeftIcon className="h-4 w-4" />
                 Back to Forgot Password
               </Link>

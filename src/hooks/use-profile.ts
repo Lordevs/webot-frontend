@@ -12,6 +12,7 @@ export interface UserProfile {
   phone_number: string | null;
   is_phone_verified: boolean;
   is_google_connected: boolean;
+  is_staff: boolean;
   timezone: string;
   meeting_stats?: {
     today: number;

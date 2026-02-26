@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { getMyBot, createBot, connectWhatsApp, Bot } from "@/lib/api/bots";
 
 type SetupStatus = "idle" | "loading" | "connecting" | "connected" | "error";
@@ -24,7 +24,12 @@ export function useBotSetup(): UseBotSetupReturn {
   const [status, setStatus] = useState<SetupStatus>("loading");
   const [error, setError] = useState<string | null>(null);
 
+  const isFetchingRef = useRef(false);
+
   const fetchBot = useCallback(async () => {
+    if (isFetchingRef.current) return;
+    isFetchingRef.current = true;
+
     setStatus("loading");
     setError(null);
     try {
@@ -39,6 +44,8 @@ export function useBotSetup(): UseBotSetupReturn {
       console.error("useBotSetup: failed to fetch/create bot", err);
       setError("Could not load your bot. Please refresh.");
       setStatus("error");
+    } finally {
+      isFetchingRef.current = false;
     }
   }, []);
 

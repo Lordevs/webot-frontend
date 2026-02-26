@@ -27,5 +27,14 @@ export const API_ROUTES = {
     LIST: "/api/bots/",
     DETAIL: (id: number) => `/api/bots/${id}/`,
     CONNECT_WHATSAPP: (id: number) => `/api/bots/${id}/connect-whatsapp/`,
+    ACTIVATE_SUPERADMIN_BOT: (id: number) =>
+      `/api/bots/${id}/activate-superadmin-bot/`,
+    DEACTIVATE_SUPERADMIN_BOT: (id: number) =>
+      `/api/bots/${id}/deactivate-superadmin-bot/`,
+  },
+  BUSINESS: {
+    PROFILE: (botId: number) => `/api/bots/${botId}/setup/`,
+    CONTEXT: (botId: number) => `/api/bots/${botId}/context/`,
+    WORKING_HOURS: (botId: number) => `/api/bots/${botId}/working-hours/`,
   },
 };
