@@ -1,41 +1,51 @@
 import { Users, MessageSquare, Calendar, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
-const kpis = [
-  {
-    label: "Leads Today",
-    value: 24,
-    icon: Users,
-    trendColor: "text-emerald-500",
-  },
-  {
-    label: "Active Chats",
-    value: 18,
-    icon: MessageSquare,
-
-    trendColor: "text-emerald-500",
-  },
-  {
-    label: "Meetings Today",
-    value: 6,
-    icon: Calendar,
-    trendColor: "text-primary",
-  },
-  {
-    label: "Avg Response",
-    value: "2m",
-    icon: Clock,
-    trendColor: "text-muted-foreground",
-  },
-];
+import { useCRMStats } from "@/hooks/use-crm";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function KPIStrip() {
+  const { data: stats, isLoading } = useCRMStats();
+
+  const kpis = [
+    {
+      label: "Leads Today",
+      value: stats?.leads_today ?? 0,
+      icon: Users,
+    },
+    {
+      label: "Active Chats",
+      value: stats?.active_chats ?? 0,
+      icon: MessageSquare,
+    },
+    {
+      label: "Meetings Today",
+      value: stats?.meetings_today ?? 0,
+      icon: Calendar,
+    },
+    {
+      label: "Avg Response",
+      value: "2m", // Static for now as per backend implementation
+      icon: Clock,
+    },
+  ];
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[1, 2, 3, 4].map((i) => (
+          <Skeleton key={i} className="h-[160px] rounded-[2.5rem]" />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {kpis.map((kpi) => (
         <Card
           key={kpi.label}
-          className="relative gap-0 py-0 overflow-hidden border-none bg-[#FCFDFF] group transition-all duration-500 hover:-translate-y-1 rounded-[2.5rem] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-primary/20">
+          className="relative gap-0 py-0 overflow-hidden border-none bg-[#FCFDFF] group transition-all duration-500 hover:-translate-y-1 rounded-[2.5rem] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-primary/20"
+        >
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-primary/10 transition-colors" />
           <CardContent className="p-7">
             <div className="flex items-center gap-6">

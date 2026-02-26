@@ -22,6 +22,7 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
+import { WorkingHours } from "@/components/platform/calendar-settings/working-hours";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -41,7 +42,7 @@ interface BusinessContext {
   system_prompt: string;
 }
 
-type Tab = "profile" | "context" | "activate";
+type Tab = "profile" | "context" | "availability" | "activate";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -199,7 +200,7 @@ export default function SuperadminPage() {
     if (!bot) return;
     try {
       const [profRes, ctxRes] = await Promise.all([
-        api.get(API_ROUTES.BUSINESS.PROFILE(bot.id)),
+        api.get(API_ROUTES.BUSINESS.SETUP(bot.id)),
         api.get(API_ROUTES.BUSINESS.CONTEXT(bot.id)),
       ]);
       if (Object.keys(profRes.data).length > 0) {
@@ -222,7 +223,7 @@ export default function SuperadminPage() {
     if (!bot) return;
     setProfileSaving(true);
     try {
-      await api.post(API_ROUTES.BUSINESS.PROFILE(bot.id), profileData);
+      await api.post(API_ROUTES.BUSINESS.SETUP(bot.id), profileData);
       toast.success("Business profile saved!");
     } catch {
       toast.error("Failed to save profile.");
@@ -254,6 +255,7 @@ export default function SuperadminPage() {
       );
       await refreshBot();
     } catch (err: unknown) {
+      console.error(err);
       const msg =
         (err as { response?: { data?: { error?: string } } })?.response?.data
           ?.error ??
@@ -294,6 +296,7 @@ export default function SuperadminPage() {
   const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
     { id: "profile", label: "Business Profile", icon: Building2 },
     { id: "context", label: "AI Context", icon: Brain },
+    { id: "availability", label: "Availability", icon: Clock },
     { id: "activate", label: "Activation", icon: Zap },
   ];
 
@@ -673,6 +676,8 @@ export default function SuperadminPage() {
             </button>
           </motion.div>
         )}
+
+        {activeTab === "availability" && bot && <WorkingHours botId={bot.id} />}
 
         {/* ── Tab: Activation ───────────────────────────────────────────────── */}
         {activeTab === "activate" && (

@@ -1,23 +1,22 @@
 export interface Lead {
-  id: string;
+  id: number;
+  phone_number: string;
   name: string;
-  phone: string;
-  avatar: string;
-  lastMessage: string;
-  lastActive: string;
+  last_message: string;
+  last_active: string;
   stage: "new" | "engaged" | "followup" | "closed";
-  nextMeeting?: string;
-  assignedAgent: string;
-  interactionScore: number;
-  tags: string[];
+  created_at: string;
+  // UI helpers
+  avatar?: string;
 }
 
 export interface Activity {
-  id: string;
-  type: "message" | "bot" | "meeting" | "escalation" | "completed";
+  id: number;
+  type: "message" | "bot" | "calendar" | "alert" | "check";
   text: string;
-  time: string;
-  icon: string;
+  timestamp: string;
+  is_outgoing: boolean;
+  time?: string; // UI friendly time
 }
 
 export interface Meeting {
@@ -27,4 +26,10 @@ export interface Meeting {
   agent: string;
   status: "upcoming" | "done" | "missed";
   type: string;
+}
+
+export interface CRMStats {
+  leads_today: number;
+  active_chats: number;
+  meetings_today: number;
 }

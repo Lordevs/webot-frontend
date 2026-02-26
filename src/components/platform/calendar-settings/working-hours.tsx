@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -16,87 +14,212 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Clock, Briefcase } from "lucide-react";
+import { Clock, Briefcase, Save, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { useBotSetup } from "@/hooks/use-bot-setup";
+import { useWorkingHours, WorkingHour } from "@/hooks/use-business";
 
-export const WorkingHours = () => {
-  const [workingDays, setWorkingDays] = useState({
-    monday: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
-    tuesday: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
-    wednesday: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
-    thursday: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
-    friday: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
-    saturday: { enabled: false, start: "10:00 AM", end: "2:00 PM" },
-    sunday: { enabled: false, start: "10:00 AM", end: "2:00 PM" },
+// Helpers to convert between 24h backend and AM/PM UI
+const toUI = (time24: string) => {
+  if (!time24) return "9:00 AM";
+  const [h, m] = time24.split(":");
+  let hour = parseInt(h);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12;
+  return `${hour}:${m} ${ampm}`;
+};
+
+const toBackend = (timeUI: string) => {
+  const [time, ampm] = timeUI.split(" ");
+  const [h, m] = time.split(":");
+  let hour = parseInt(h);
+  if (ampm === "PM" && hour < 12) hour += 12;
+  if (ampm === "AM" && hour === 12) hour = 0;
+  return `${hour.toString().padStart(2, "0")}:${m}:00`;
+};
+
+const DAYS = [
+  { key: 0, label: "Mon", full: "monday" },
+  { key: 1, label: "Tue", full: "tuesday" },
+  { key: 2, label: "Wed", full: "wednesday" },
+  { key: 3, label: "Thu", full: "thursday" },
+  { key: 4, label: "Fri", full: "friday" },
+  { key: 5, label: "Sat", full: "saturday" },
+  { key: 6, label: "Sun", full: "sunday" },
+];
+
+const TIME_SLOTS = [
+  "12:00 AM",
+  "1:00 AM",
+  "2:00 AM",
+  "3:00 AM",
+  "4:00 AM",
+  "5:00 AM",
+  "6:00 AM",
+  "7:00 AM",
+  "8:00 AM",
+  "9:00 AM",
+  "10:00 AM",
+  "11:00 AM",
+  "12:00 PM",
+  "1:00 PM",
+  "2:00 PM",
+  "3:00 PM",
+  "4:00 PM",
+  "5:00 PM",
+  "6:00 PM",
+  "7:00 PM",
+  "8:00 PM",
+  "9:00 PM",
+  "10:00 PM",
+  "11:00 PM",
+];
+
+interface WorkingHoursProps {
+  botId?: number | string;
+}
+
+export const WorkingHours = ({ botId: propBotId }: WorkingHoursProps) => {
+  const { bot: contextBot } = useBotSetup();
+  const botId = propBotId || contextBot?.id;
+
+  const {
+    data: serverHours,
+    updateHours,
+    isUpdating,
+    isLoading,
+  } = useWorkingHours(botId);
+
+  const [workingDays, setWorkingDays] = useState<
+    Record<number, { enabled: boolean; start: string; end: string }>
+  >({
+    0: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
+    1: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
+    2: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
+    3: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
+    4: { enabled: true, start: "9:00 AM", end: "5:00 PM" },
+    5: { enabled: false, start: "10:00 AM", end: "2:00 PM" },
+    6: { enabled: false, start: "10:00 AM", end: "2:00 PM" },
   });
 
   const [useGlobalSchedule, setUseGlobalSchedule] = useState(true);
+  const [globalStart, setGlobalStart] = useState("9:00 AM");
+  const [globalEnd, setGlobalEnd] = useState("5:00 PM");
 
-  const toggleDay = (day: keyof typeof workingDays) => {
+  const hasInitialized = useRef(false);
+
+  // Sync from server
+  useEffect(() => {
+    if (serverHours && serverHours.length > 0 && !hasInitialized.current) {
+      // Defer to next tick to avoid cascading render warning
+      const timer = setTimeout(() => {
+        setWorkingDays((prev) => {
+          const newState: Record<
+            number,
+            { enabled: boolean; start: string; end: string }
+          > = { ...prev };
+
+          // Turn off all by default
+          Object.keys(newState).forEach(
+            (k) => (newState[parseInt(k)].enabled = false),
+          );
+
+          serverHours.forEach((h: WorkingHour) => {
+            newState[h.weekday] = {
+              enabled: true,
+              start: toUI(h.start_time),
+              end: toUI(h.end_time),
+            };
+          });
+          return newState;
+        });
+
+        // Simple heuristic for global schedule
+        const enabled = serverHours.filter((h: WorkingHour) => h.weekday < 7);
+        if (enabled.length > 0) {
+          setGlobalStart(toUI(enabled[0].start_time));
+          setGlobalEnd(toUI(enabled[0].end_time));
+          const allSame = enabled.every(
+            (i: WorkingHour) =>
+              i.start_time === enabled[0].start_time &&
+              i.end_time === enabled[0].end_time,
+          );
+          setUseGlobalSchedule(allSame);
+        }
+        hasInitialized.current = true;
+      }, 0);
+
+      return () => clearTimeout(timer);
+    }
+  }, [serverHours]);
+
+  const toggleDay = (day: number) => {
     setWorkingDays((prev) => ({
       ...prev,
       [day]: { ...prev[day], enabled: !prev[day].enabled },
     }));
   };
 
-  const days = [
-    { key: "monday", label: "Mon" },
-    { key: "tuesday", label: "Tue" },
-    { key: "wednesday", label: "Wed" },
-    { key: "thursday", label: "Thu" },
-    { key: "friday", label: "Fri" },
-    { key: "saturday", label: "Sat" },
-    { key: "sunday", label: "Sun" },
-  ];
+  const handleSave = () => {
+    const payload: WorkingHour[] = [];
+    DAYS.forEach(({ key }) => {
+      const day = workingDays[key];
+      if (day.enabled) {
+        payload.push({
+          weekday: key,
+          start_time: toBackend(useGlobalSchedule ? globalStart : day.start),
+          end_time: toBackend(useGlobalSchedule ? globalEnd : day.end),
+        });
+      }
+    });
+    updateHours(payload);
+  };
 
-  const timeSlots = [
-    "12:00 AM",
-    "1:00 AM",
-    "2:00 AM",
-    "3:00 AM",
-    "4:00 AM",
-    "5:00 AM",
-    "6:00 AM",
-    "7:00 AM",
-    "8:00 AM",
-    "9:00 AM",
-    "10:00 AM",
-    "11:00 AM",
-    "12:00 PM",
-    "1:00 PM",
-    "2:00 PM",
-    "3:00 PM",
-    "4:00 PM",
-    "5:00 PM",
-    "6:00 PM",
-    "7:00 PM",
-    "8:00 PM",
-    "9:00 PM",
-    "10:00 PM",
-    "11:00 PM",
-  ];
+  if (isLoading) {
+    return (
+      <Card className="border border-border/40 bg-card/60 backdrop-blur-sm shadow-xl rounded-4xl min-h-[400px] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </Card>
+    );
+  }
 
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, delay: 0.1 }}>
+      transition={{ duration: 0.5, delay: 0.1 }}
+    >
       <Card className="border border-border/40 bg-card/60 backdrop-blur-sm shadow-xl shadow-black/2 rounded-4xl overflow-hidden flex flex-col">
         <CardHeader className="p-8 pb-4 shrink-0">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <Clock className="w-6 h-6 text-primary" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <Clock className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-xl font-bold tracking-tight">
+                  Working Hours
+                </CardTitle>
+                <CardDescription className="text-sm font-medium text-muted-foreground/70">
+                  Configure your weekly availability.
+                </CardDescription>
+              </div>
             </div>
-            <div>
-              <CardTitle className="text-xl font-bold tracking-tight">
-                Working Hours
-              </CardTitle>
-              <CardDescription className="text-sm font-medium text-muted-foreground/70">
-                Configure your weekly availability.
-              </CardDescription>
-            </div>
+            <Button
+              onClick={handleSave}
+              disabled={isUpdating}
+              className="rounded-xl h-12 px-6 gap-2 font-bold"
+            >
+              {isUpdating ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
+              Save
+            </Button>
           </div>
         </CardHeader>
         <CardContent className="p-8 pt-0 overflow-visible">
@@ -127,18 +250,19 @@ export const WorkingHours = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="space-y-8">
+                className="space-y-8"
+              >
                 <div className="grid grid-cols-2 gap-4 w-[220px]">
                   <div className="space-y-2">
                     <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 px-1">
                       Start Time
                     </Label>
-                    <Select defaultValue="9:00 AM">
+                    <Select value={globalStart} onValueChange={setGlobalStart}>
                       <SelectTrigger className="h-12 rounded-xl bg-background border-border/50 focus:ring-primary/20 transition-all font-bold shadow-sm hover:border-primary/50">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-[200px] rounded-xl">
-                        {timeSlots.map((t) => (
+                        {TIME_SLOTS.map((t) => (
                           <SelectItem key={t} value={t} className="font-medium">
                             {t}
                           </SelectItem>
@@ -150,12 +274,12 @@ export const WorkingHours = () => {
                     <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 px-1">
                       End Time
                     </Label>
-                    <Select defaultValue="5:00 PM">
+                    <Select value={globalEnd} onValueChange={setGlobalEnd}>
                       <SelectTrigger className="h-12 rounded-xl bg-background border-border/50 focus:ring-primary/20 transition-all font-bold shadow-sm hover:border-primary/50">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-[200px] rounded-xl">
-                        {timeSlots.map((t) => (
+                        {TIME_SLOTS.map((t) => (
                           <SelectItem key={t} value={t} className="font-medium">
                             {t}
                           </SelectItem>
@@ -170,21 +294,19 @@ export const WorkingHours = () => {
                     Active Days
                   </Label>
                   <div className="flex flex-wrap gap-2">
-                    {days.map(({ key, label }) => {
-                      const isEnabled =
-                        workingDays[key as keyof typeof workingDays].enabled;
+                    {DAYS.map(({ key, label }) => {
+                      const isEnabled = workingDays[key].enabled;
                       return (
                         <button
                           key={key}
-                          onClick={() =>
-                            toggleDay(key as keyof typeof workingDays)
-                          }
+                          onClick={() => toggleDay(key)}
                           className={cn(
                             "w-12 h-12 rounded-2xl text-xs font-black transition-all duration-300 flex items-center justify-center border-2",
                             isEnabled
                               ? "bg-primary border-primary text-primary-foreground shadow-lg shadow-primary/25 scale-105"
                               : "bg-transparent border-muted-foreground/20 text-muted-foreground hover:border-primary/50 hover:text-foreground",
-                          )}>
+                          )}
+                        >
                           {label}
                         </button>
                       );
@@ -198,9 +320,10 @@ export const WorkingHours = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                {days.map(({ key, label }) => {
-                  const dayState = workingDays[key as keyof typeof workingDays];
+                className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar"
+              >
+                {DAYS.map(({ key, label }) => {
+                  const dayState = workingDays[key];
                   return (
                     <div
                       key={key}
@@ -209,16 +332,15 @@ export const WorkingHours = () => {
                         dayState.enabled
                           ? "bg-background border-primary/20 shadow-sm"
                           : "bg-muted/10 border-transparent opacity-60 hover:opacity-100",
-                      )}>
+                      )}
+                    >
                       <div className="flex items-center justify-between sm:w-32 shrink-0">
                         <span className="font-bold text-sm uppercase tracking-wider">
                           {label}
                         </span>
                         <Switch
                           checked={dayState.enabled}
-                          onCheckedChange={() =>
-                            toggleDay(key as keyof typeof workingDays)
-                          }
+                          onCheckedChange={() => toggleDay(key)}
                         />
                       </div>
 
@@ -226,17 +348,27 @@ export const WorkingHours = () => {
                         <motion.div
                           initial={{ opacity: 0, width: 0 }}
                           animate={{ opacity: 1, width: "auto" }}
-                          className="flex items-center gap-2 flex-1 min-w-0">
-                          <Select defaultValue={dayState.start}>
+                          className="flex items-center gap-2 flex-1 min-w-0"
+                        >
+                          <Select
+                            value={dayState.start}
+                            onValueChange={(val) =>
+                              setWorkingDays((prev) => ({
+                                ...prev,
+                                [key]: { ...prev[key], start: val },
+                              }))
+                            }
+                          >
                             <SelectTrigger className="h-9 rounded-lg border-border/50 text-xs font-bold w-full bg-muted/20">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {timeSlots.map((t) => (
+                              {TIME_SLOTS.map((t) => (
                                 <SelectItem
                                   key={t}
                                   value={t}
-                                  className="text-xs">
+                                  className="text-xs"
+                                >
                                   {t}
                                 </SelectItem>
                               ))}
@@ -245,16 +377,25 @@ export const WorkingHours = () => {
                           <span className="text-muted-foreground text-xs font-black">
                             -
                           </span>
-                          <Select defaultValue={dayState.end}>
+                          <Select
+                            value={dayState.end}
+                            onValueChange={(val) =>
+                              setWorkingDays((prev) => ({
+                                ...prev,
+                                [key]: { ...prev[key], end: val },
+                              }))
+                            }
+                          >
                             <SelectTrigger className="h-9 rounded-lg border-border/50 text-xs font-bold w-full bg-muted/20">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {timeSlots.map((t) => (
+                              {TIME_SLOTS.map((t) => (
                                 <SelectItem
                                   key={t}
                                   value={t}
-                                  className="text-xs">
+                                  className="text-xs"
+                                >
                                   {t}
                                 </SelectItem>
                               ))}

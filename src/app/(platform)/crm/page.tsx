@@ -22,7 +22,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background p-6 space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-3 shrink-0">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -36,7 +36,7 @@ const Index = () => {
           </div>
         </div>
         <QuickControls />
-      </div>
+      </div> */}
 
       <StatusBar />
       {/* Status Bar */}
@@ -46,12 +46,12 @@ const Index = () => {
 
       {/* Main Content: Leads + Activity */}
       <div className="grid grid-cols-12 gap-5">
-        <div className="col-span-12 lg:col-span-8">
+        <div className="col-span-12 lg:col-span-12">
           <LeadsTable onSelectLead={setSelectedLead} />
         </div>
-        <div className="col-span-12 lg:col-span-4">
-          <ActivityFeed />
-        </div>
+        {/* <div className="col-span-12 lg:col-span-4">
+          <ActivityFeed leadId={selectedLead?.id ?? null} />
+        </div> */}
       </div>
 
       {/* Meeting Timeline */}
@@ -60,11 +60,13 @@ const Index = () => {
       {/* Slide-out Panel */}
       <Sheet
         open={!!selectedLead}
-        onOpenChange={(open) => !open && setSelectedLead(null)}>
+        onOpenChange={(open) => !open && setSelectedLead(null)}
+      >
         <SheetContent
           side="right"
           showCloseButton={false}
-          className="p-0 w-[460px] sm:max-w-[460px] border-l border-border">
+          className="p-0 w-[460px] sm:max-w-[460px] border-l border-border"
+        >
           <SheetHeader className="sr-only">
             <SheetTitle>Lead Details</SheetTitle>
           </SheetHeader>
