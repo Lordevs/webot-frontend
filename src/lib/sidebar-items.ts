@@ -1,5 +1,11 @@
 import { ROUTES } from "@/constants/routes";
-import { LayoutDashboard, Settings2, MessageSquare } from "lucide-react";
+import {
+  LayoutDashboard,
+  Settings2,
+  MessageSquare,
+  Users,
+  Shield,
+} from "lucide-react";
 
 export const SIDEBAR_ITEMS = [
   {
@@ -12,6 +18,16 @@ export const SIDEBAR_ITEMS = [
     title: "Dashboard",
     href: ROUTES.PLATFORM.DASHBOARD,
     icon: LayoutDashboard,
+  },
+  {
+    title: "CRM",
+    href: ROUTES.PLATFORM.CRM,
+    icon: Users,
+  },
+  {
+    title: "Super Admin",
+    href: ROUTES.PLATFORM.SUPER_ADMIN,
+    icon: Shield,
   },
 ];
 

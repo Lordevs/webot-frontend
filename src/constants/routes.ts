@@ -10,6 +10,8 @@ export const ROUTES = {
 
   PLATFORM: {
     DASHBOARD: "/dashboard",
+    CRM: "/crm",
+    SUPER_ADMIN: "/superadmin",
     APPOINTMENTS: "/appointments",
     AUTOMATIONS: "/automations",
     CALENDAR_SETTINGS: "/calendar-settings",

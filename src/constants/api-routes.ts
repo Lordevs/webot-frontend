@@ -25,16 +25,23 @@ export const API_ROUTES = {
   },
   BOTS: {
     LIST: "/api/bots/",
-    DETAIL: (id: number) => `/api/bots/${id}/`,
+    CREATE: "/api/bots/",
+    MY_BOT: "/api/bots/me/",
     CONNECT_WHATSAPP: (id: number) => `/api/bots/${id}/connect-whatsapp/`,
-    ACTIVATE_SUPERADMIN_BOT: (id: number) =>
+    ACTIVATE_SUPERADMIN_BOT: (id: number | string) =>
       `/api/bots/${id}/activate-superadmin-bot/`,
-    DEACTIVATE_SUPERADMIN_BOT: (id: number) =>
+    DEACTIVATE_SUPERADMIN_BOT: (id: number | string) =>
       `/api/bots/${id}/deactivate-superadmin-bot/`,
   },
+  CRM: {
+    STATS: "/api/crm/leads/stats/",
+    LEADS: "/api/crm/leads/",
+    LEAD_ACTIVITY: (id: number | string) => `/api/crm/leads/${id}/activity/`,
+  },
   BUSINESS: {
-    PROFILE: (botId: number) => `/api/bots/${botId}/setup/`,
-    CONTEXT: (botId: number) => `/api/bots/${botId}/context/`,
-    WORKING_HOURS: (botId: number) => `/api/bots/${botId}/working-hours/`,
+    SETUP: (botId: number | string) => `/api/bots/${botId}/setup/`,
+    CONTEXT: (botId: number | string) => `/api/bots/${botId}/context/`,
+    WORKING_HOURS: (botId: number | string) =>
+      `/api/bots/${botId}/working-hours/`,
   },
 };
