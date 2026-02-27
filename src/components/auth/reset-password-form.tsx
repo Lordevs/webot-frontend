@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import apiCaller from "@/lib/api/api-caller";
 import { API_ROUTES } from "@/constants/api-routes";
 import { AxiosError } from "axios";
+import { getAuthTokens } from "@/lib/cookies";
 import {
   Lock as LockIcon,
   Eye as EyeIcon,
@@ -28,43 +29,82 @@ export default function ResetPasswordForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState<string | null>(null);
-  const [tokenType, setTokenType] = useState<"access_token" | "token_hash">(
-    "access_token",
-  );
+  const [tokenType, setTokenType] = useState<
+    "access_token" | "token_hash" | "code"
+  >("access_token");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Supabase recovery links deliver the session token in one of two ways:
+    // Supabase recovery links deliver tokens in several ways depending on flow:
+    // 1. Implicit:   #access_token=XXX&type=recovery
+    // 2. PKCE:       ?code=XXX
+    // 3. Email Link: ?token_hash=XXX&type=recovery
     //
-    // 1. Implicit flow (older):  /reset-password#access_token=XXX&type=recovery
-    // 2. PKCE flow (newer):      /reset-password?token_hash=XXX&type=recovery
-    //    (Supabase verifies the token_hash server-side and sets access_token in the hash
-    //     after the redirect, but sometimes arrives as a query param first)
-    //
-    // We check both locations so either flow works.
+    // Sometimes Supabase redirects with an error fragment if verification fails.
 
-    // Check hash first (implicit flow)
-    const hash = window.location.hash;
-    if (hash) {
-      const hashParams = new URLSearchParams(hash.substring(1));
-      const accessToken = hashParams.get("access_token");
-      if (accessToken) {
-        setToken(accessToken);
-        setTokenType("access_token");
-        return;
-      }
+    const searchParams = new URLSearchParams(window.location.search);
+    const hash = window.location.hash.startsWith("#")
+      ? window.location.hash.substring(1)
+      : window.location.hash;
+    const hashParams = new URLSearchParams(hash);
+
+    // 1. Check for explicit errors from Supabase
+    const errorMsg =
+      searchParams.get("error_description") ||
+      hashParams.get("error_description") ||
+      searchParams.get("error") ||
+      hashParams.get("error");
+
+    if (errorMsg) {
+      setError(decodeURIComponent(errorMsg.replace(/\+/g, " ")));
+      return;
     }
 
-    // Check query params (PKCE / token_hash flow)
-    const searchParams = new URLSearchParams(window.location.search);
+    // 2. Try to find a valid token
+    const accessToken =
+      hashParams.get("access_token") || searchParams.get("access_token");
     const tokenHash =
-      searchParams.get("token_hash") || searchParams.get("token");
-    const type = searchParams.get("type");
+      searchParams.get("token_hash") ||
+      hashParams.get("token_hash") ||
+      searchParams.get("token"); // Some older configs use 'token'
+    const code = searchParams.get("code") || hashParams.get("code");
+    const type = searchParams.get("type") || hashParams.get("type");
 
-    if (tokenHash && type === "recovery") {
+    // Log parameters for debugging if needed (visible in browser console)
+    console.log("Reset Password Params:", {
+      hasAccessToken: !!accessToken,
+      hasTokenHash: !!tokenHash,
+      hasCode: !!code,
+      type,
+    });
+
+    if (accessToken) {
+      setToken(accessToken);
+      setTokenType("access_token");
+      return;
+    }
+
+    if (tokenHash) {
       setToken(tokenHash);
       setTokenType("token_hash");
+      // Note: We used to strictly check type === 'recovery', but some custom
+      // redirect flows might omit it. If we have a hash, it's likely intended for this page.
+      return;
+    }
+
+    if (code) {
+      setToken(code);
+      setTokenType("code");
+      return;
+    }
+
+    // 3. Fallback: Check for existing session in cookies (set by AuthCallbackHandler)
+    const { accessToken: cookieToken } = getAuthTokens();
+    if (cookieToken) {
+      console.log("Reset Password: Found session in cookies.");
+      setToken(cookieToken);
+      setTokenType("access_token");
       return;
     }
 
@@ -89,11 +129,11 @@ export default function ResetPasswordForm() {
     setIsLoading(true);
 
     try {
-      if (tokenType === "token_hash") {
-        // PKCE flow: send token_hash in body — backend exchanges via verifyOtp
+      if (tokenType === "token_hash" || tokenType === "code") {
+        // PKCE or Email token: send in body — backend exchanges via verifyOtp or exchangeCode
         await apiCaller(API_ROUTES.AUTH.RESET_PASSWORD, "POST", {
           password,
-          token_hash: token,
+          [tokenType === "token_hash" ? "token_hash" : "code"]: token,
         });
       } else {
         // Implicit flow: send access_token as Authorization header
